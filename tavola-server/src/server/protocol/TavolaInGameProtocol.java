@@ -14,7 +14,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
    * @see server.protocol.Protocol#processInput(java.lang.Object)
    */
   @Override
-  public String processInput(String string) {
+  public String processInput(String message) {
     // TODO Auto-generated method stub
     return null;
   }

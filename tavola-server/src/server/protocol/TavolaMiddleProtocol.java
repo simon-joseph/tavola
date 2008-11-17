@@ -18,8 +18,8 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
    * @see server.protocol.Protocol#processInput(java.lang.Object)
    */
   @Override
-  public String processInput(String string) {
-    return string; // preGameProtocol.processInput(object);
+  public String processInput(String message) {
+    return message; // preGameProtocol.processInput(object);
   }
 
 }

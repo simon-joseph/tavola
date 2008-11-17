@@ -12,7 +12,7 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
    * @param object
    * @return
    */
-  public String processInput(String object) {
+  public String processInput(String message) {
     // TODO Auto-generated method stub
     return null;
   }
