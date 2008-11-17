@@ -23,7 +23,8 @@ public class TavolaServer {
     try {
       serverSocket = new ServerSocket(TavolaServer.PORT);
     } catch (final IOException e) {
-      System.err.println("Could not listen on port: 4444.");
+      System.err
+          .println("Could not listen on port: " + TavolaServer.PORT + ".");
       System.exit(1);
     }
 
