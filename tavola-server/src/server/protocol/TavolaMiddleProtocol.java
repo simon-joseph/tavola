@@ -1,5 +1,7 @@
 package server.protocol;
 
+import data.TavolaProtocol;
+
 /**
  * @author rafal.paliwoda
  * 

@@ -1,4 +1,4 @@
-package server.protocol;
+package data;
 
 /**
  * @author rafal.paliwoda
