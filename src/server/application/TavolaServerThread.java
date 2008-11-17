@@ -17,7 +17,6 @@ public class TavolaServerThread extends Thread {
   private Socket socket = null;
 
   public TavolaServerThread(Socket socket) {
-    super();
     this.socket = socket;
   }
 
