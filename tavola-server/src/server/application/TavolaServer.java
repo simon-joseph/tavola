@@ -3,13 +3,17 @@ package server.application;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import data.game.GameState;
+
 /**
  * @author rafal.paliwoda
  * 
  */
 public class TavolaServer {
 
-  final static int PORT = 4444;
+  private static GameState gameState;
+
+  private final static int PORT = 4444;
 
   public static void main(String[] args) throws IOException {
 
@@ -29,5 +33,20 @@ public class TavolaServer {
     }
 
     serverSocket.close();
+  }
+
+  /**
+   * @return the gameState
+   */
+  public GameState getGameState() {
+    return TavolaServer.gameState;
+  }
+
+  /**
+   * @param gameState
+   *          the gameState to set
+   */
+  public void setGameState(GameState gameState) {
+    TavolaServer.gameState = gameState;
   }
 }

@@ -1,6 +1,6 @@
 package server.protocol;
 
-import data.TavolaProtocol;
+import data.network.TavolaProtocol;
 
 /**
  * @author rafal.paliwoda
@@ -8,11 +8,6 @@ import data.TavolaProtocol;
  */
 public class TavolaInGameProtocol implements TavolaProtocol {
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see server.protocol.Protocol#processInput(java.lang.Object)
-   */
   @Override
   public String processInput(String message) {
     // TODO Auto-generated method stub

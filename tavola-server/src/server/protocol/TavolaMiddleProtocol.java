@@ -1,6 +1,6 @@
 package server.protocol;
 
-import data.TavolaProtocol;
+import data.network.TavolaProtocol;
 
 /**
  * @author rafal.paliwoda
@@ -12,11 +12,6 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
 
   final TavolaInGameProtocol inGameProtocol = new TavolaInGameProtocol();
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see server.protocol.Protocol#processInput(java.lang.Object)
-   */
   @Override
   public String processInput(String message) {
     return message; // preGameProtocol.processInput(object);
