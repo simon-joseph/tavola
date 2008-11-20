@@ -6,4 +6,6 @@ package data.game;
  */
 public class GameState {
 
+  private Board board;
+
 }
