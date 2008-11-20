@@ -30,16 +30,22 @@ public class TavolaServerThread extends Thread {
 
       String inputLine, outputLine;
       final TavolaMiddleProtocol protocol = new TavolaMiddleProtocol();
-      outputLine = protocol.processInput(null);
-      out.println(outputLine);
+      out.println("VERSION " + TavolaServer.VERSION);
 
-      while ((inputLine = in.readLine()) != null) {
-        outputLine = protocol.processInput(inputLine);
-        out.println(outputLine);
-        if (outputLine.equals("END")) {
-          break;
+      inputLine = in.readLine();
+
+      if (inputLine.matches("^Hello .+") /* TODO regexp */
+          && authentication(inputLine.substring(7)) /* TODO method */) {
+
+        while ((inputLine = in.readLine()) != null) {
+          outputLine = protocol.processInput(inputLine);
+          out.println(outputLine);
+          if (outputLine.equals("END")) {
+            break;
+          }
         }
       }
+
       out.close();
       in.close();
       socket.close();
@@ -47,6 +53,11 @@ public class TavolaServerThread extends Thread {
     } catch (final IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private boolean authentication(String cookie) {
+    // TODO Auto-generated method stub
+    return false;
   }
 
 }

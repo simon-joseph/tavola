@@ -9,7 +9,7 @@ import data.network.TavolaProtocol;
 public class TavolaInGameProtocol implements TavolaProtocol {
 
   @Override
-  public String processInput(String message) {
+  public String processInput(String input) {
     // TODO Auto-generated method stub
     return null;
   }

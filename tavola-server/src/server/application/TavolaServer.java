@@ -2,18 +2,22 @@ package server.application;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
 
-import data.game.GameState;
+import data.game.Game;
 
 /**
  * @author rafal.paliwoda
  * 
  */
-public class TavolaServer {
+public abstract class TavolaServer {
 
-  private static GameState gameState;
+  private static List<Game> games = new ArrayList<Game>();
 
-  private final static int PORT = 4444;
+  public final static int PORT = 4444;
+
+  public final static double VERSION = 0.1;
 
   public static void main(String[] args) throws IOException {
 
@@ -36,17 +40,14 @@ public class TavolaServer {
   }
 
   /**
-   * @return the gameState
+   * TODO something like that
    */
-  public GameState getGameState() {
-    return TavolaServer.gameState;
+
+  public synchronized static void gamesStateChanged() {
   }
 
-  /**
-   * @param gameState
-   *          the gameState to set
-   */
-  public void setGameState(GameState gameState) {
-    TavolaServer.gameState = gameState;
+  public static List<Game> getGames() {
+    return TavolaServer.games;
   }
+
 }
