@@ -6,6 +6,6 @@ package data.network;
  */
 public interface TavolaProtocol {
 
-  public String processInput(String message);
+  public String processInput(String input);
 
 }
