@@ -18,10 +18,6 @@ public class Snake {
 
   private ArrayList<Bonus> bonuses;
 
-  /**
-   * @param snake_id
-   * @param startField
-   */
   public Snake(int snake_id, Field startField) {
     if (startField == null) {
       throw new IllegalArgumentException("Incorrect start field of snake.");
@@ -33,37 +29,22 @@ public class Snake {
     assert invariant();
   }
 
-  /**
-   * @return the snake_id
-   */
   public int getSnake_id() {
     return snake_id;
   }
 
-  /**
-   * @return the length of snake
-   */
   public int getLength() {
     return length;
   }
 
-  /**
-   * @return the position of snake head
-   */
   public Field getFirstField() {
     return firstField;
   }
 
-  /**
-   * @return the last field of snake
-   */
   public Field getLastField() {
     return lastField;
   }
 
-  /**
-   * @return the bonuses
-   */
   public ArrayList<Bonus> getBonuses() {
     return bonuses;
   }

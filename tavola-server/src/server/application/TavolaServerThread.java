@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import server.protocol.TavolaMiddleProtocol;
+import data.game.Player;
 
 /**
  * @author rafal.paliwoda
@@ -14,7 +15,7 @@ import server.protocol.TavolaMiddleProtocol;
  */
 public class TavolaServerThread extends Thread {
 
-  private Socket socket = null;
+  private final Socket socket;
 
   public TavolaServerThread(Socket socket) {
     this.socket = socket;
@@ -28,19 +29,25 @@ public class TavolaServerThread extends Thread {
       final BufferedReader in = new BufferedReader(new InputStreamReader(socket
           .getInputStream()));
 
-      String inputLine, outputLine;
-      final TavolaMiddleProtocol protocol = new TavolaMiddleProtocol();
-      out.println("VERSION " + TavolaServer.VERSION);
+      String inputLine, outputLine, id;
+      final TavolaMiddleProtocol protocol;
 
+      out.println("VERSION " + TavolaServer.VERSION);
       inputLine = in.readLine();
 
-      if (inputLine.matches("^Hello .+") /* TODO regexp */
-          && authentication(inputLine.substring(7)) /* TODO method */) {
+      if (inputLine.matches("Hello .+")
+          && (id = authentication(inputLine.substring(7))) != null) {
 
-        while ((inputLine = in.readLine()) != null) {
+        Player player = new Player(id, socket);
+
+        protocol = new TavolaMiddleProtocol(player);
+
+        while (TavolaServer.isRunning() && (inputLine = in.readLine()) != null) {
           outputLine = protocol.processInput(inputLine);
-          out.println(outputLine);
-          if (outputLine.equals("END")) {
+          synchronized (player) {
+            out.println(outputLine);
+          }
+          if (outputLine.equals("BYE")) {
             break;
           }
         }
@@ -55,9 +62,12 @@ public class TavolaServerThread extends Thread {
     }
   }
 
-  private boolean authentication(String cookie) {
+  /**
+   * @return player's id
+   */
+  private String authentication(String cookie) {
     // TODO Auto-generated method stub
-    return false;
+    return "0";
   }
 
 }

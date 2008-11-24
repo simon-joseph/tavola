@@ -6,7 +6,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
- * @author ja
+ * @author Piotr Staszak
  * 
  */
 public class TestBoard extends TestCase {

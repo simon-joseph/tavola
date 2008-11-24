@@ -1,5 +1,6 @@
 package server.protocol;
 
+import data.game.Player;
 import data.network.TavolaProtocol;
 
 /**
@@ -8,13 +9,20 @@ import data.network.TavolaProtocol;
  */
 public class TavolaMiddleProtocol implements TavolaProtocol {
 
-  final TavolaPreGameProtocol preGameProtocol = new TavolaPreGameProtocol();
+  private final Player player;
 
-  final TavolaInGameProtocol inGameProtocol = new TavolaInGameProtocol();
+  final TavolaPreGameProtocol preGameProtocol;
 
-  @Override
-  public String processInput(String input) {
-    return input; // preGameProtocol.processInput(object);
+  final TavolaInGameProtocol inGameProtocol;
+
+  public TavolaMiddleProtocol(Player player) {
+    this.player = player;
+    preGameProtocol = new TavolaPreGameProtocol(this.player);
+    inGameProtocol = new TavolaInGameProtocol(this.player);
   }
 
+  @Override
+  public String processInput(String input) { // TODO
+    return preGameProtocol.processInput(input);
+  }
 }

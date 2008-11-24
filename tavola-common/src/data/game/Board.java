@@ -63,10 +63,6 @@ public class Board {
     assert invariant();
   }
 
-  /**
-   * @param snakes_number
-   *          add snakes_number snakes to board
-   */
   public void addSnakes(int snakes_number) {
     int random_number;
 
@@ -81,53 +77,30 @@ public class Board {
     assert invariant();
   }
 
-  /**
-   * @return the snakes
-   */
   public ArrayList<Snake> getSnakes() {
     return snakes;
   }
 
-  /**
-   * @param snake_id
-   * @return the snake
-   */
   public Snake getSnake(int snake_id) {
     return snakes.get(snake_id);
   }
 
-  /**
-   * @return the fields
-   */
   public ArrayList<Field> getFields() {
     return fields;
   }
 
-  /**
-   * @param field_number
-   * @return the field
-   */
   public Field getField(int field_number) {
     return fields.get(field_number);
   }
 
-  /**
-   * @return the bonuses_number
-   */
   public int getBonuses_number() {
     return bonuses_number;
   }
 
-  /**
-   * @return the bonuses
-   */
   public ArrayList<Bonus> getBonuses() {
     return bonuses;
   }
 
-  /**
-   * @return the obstructions
-   */
   public ArrayList<Obstruction> getObstructions() {
     return obstructions;
   }

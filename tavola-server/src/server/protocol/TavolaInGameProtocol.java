@@ -1,5 +1,6 @@
 package server.protocol;
 
+import data.game.Player;
 import data.network.TavolaProtocol;
 
 /**
@@ -7,6 +8,12 @@ import data.network.TavolaProtocol;
  * 
  */
 public class TavolaInGameProtocol implements TavolaProtocol {
+
+  private Player player;
+
+  public TavolaInGameProtocol(Player player) {
+    this.player = player;
+  }
 
   @Override
   public String processInput(String input) {
