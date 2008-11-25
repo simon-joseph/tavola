@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Snake {
 
-  private int snake_id;
+  private int snakeId;
 
   private int length;
 
@@ -18,19 +18,19 @@ public class Snake {
 
   private ArrayList<Bonus> bonuses;
 
-  public Snake(int snake_id, Field startField) {
+  public Snake(int snakeId, Field startField) {
     if (startField == null) {
       throw new IllegalArgumentException("Incorrect start field of snake.");
     }
-    this.snake_id = snake_id;
+    this.snakeId = snakeId;
     firstField = startField;
     lastField = startField;
     length = 1;
     assert invariant();
   }
 
-  public int getSnake_id() {
-    return snake_id;
+  public int getSnakeId() {
+    return snakeId;
   }
 
   public int getLength() {

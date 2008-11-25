@@ -23,7 +23,7 @@ public class Board {
 
   private int height, width;
 
-  private int bonuses_number, snakes_number;
+  private int bonusesNumber, snakesNumber;
 
   private Random random;
 
@@ -35,21 +35,21 @@ public class Board {
 
   private ArrayList<Snake> snakes;
 
-  public Board(int height, int width, int snakes_number, int bonuses_number,
+  public Board(int height, int width, int snakesNumber, int bonusesNumber,
       long seed) {
     if (height < Board.MIN_HEIGHT || height > Board.MAX_HEIGHT
         || width < Board.MIN_WIDTH || width > Board.MAX_WIDTH) {
       throw new IllegalArgumentException("Incorrect size of board.");
     }
-    if (snakes_number < Board.MIN_SNAKES_NUMBER
-        || snakes_number > Board.MAX_SNAKES_NUMBER) {
+    if (snakesNumber < Board.MIN_SNAKES_NUMBER
+        || snakesNumber > Board.MAX_SNAKES_NUMBER) {
       throw new IllegalArgumentException("Incorrect number of snakes.");
     }
 
     this.height = height;
     this.width = width;
-    this.bonuses_number = bonuses_number;
-    this.snakes_number = snakes_number;
+    this.bonusesNumber = bonusesNumber;
+    this.snakesNumber = snakesNumber;
     random = new Random(seed);
 
     fields = new ArrayList<Field>();
@@ -58,21 +58,21 @@ public class Board {
     }
 
     snakes = new ArrayList<Snake>();
-    addSnakes(snakes_number);
+    addSnakes(snakesNumber);
 
     assert invariant();
   }
 
-  public void addSnakes(int snakes_number) {
-    int random_number;
+  public void addSnakes(int snakesNumber) {
+    int randomNumber;
 
-    for (int i = 0; i < snakes_number; i++) {
+    for (int i = 0; i < snakesNumber; i++) {
       do {
-        random_number = random.nextInt(height * width);
-      } while (getField(random_number).getSnakePart() != null);
+        randomNumber = random.nextInt(height * width);
+      } while (getField(randomNumber).getSnakePart() != null);
 
-      snakes.add(new Snake(snakes.size(), fields.get(random_number)));
-      getField(random_number).setSnakePart(new SnakePart());
+      snakes.add(new Snake(snakes.size(), fields.get(randomNumber)));
+      getField(randomNumber).setSnakePart(new SnakePart());
     }
     assert invariant();
   }
@@ -81,20 +81,20 @@ public class Board {
     return snakes;
   }
 
-  public Snake getSnake(int snake_id) {
-    return snakes.get(snake_id);
+  public Snake getSnake(int snakeId) {
+    return snakes.get(snakeId);
   }
 
   public ArrayList<Field> getFields() {
     return fields;
   }
 
-  public Field getField(int field_number) {
-    return fields.get(field_number);
+  public Field getField(int fieldNumber) {
+    return fields.get(fieldNumber);
   }
 
-  public int getBonuses_number() {
-    return bonuses_number;
+  public int getBonusesNumber() {
+    return bonusesNumber;
   }
 
   public ArrayList<Bonus> getBonuses() {
@@ -108,8 +108,8 @@ public class Board {
   private boolean invariant() {
     return height >= Board.MIN_HEIGHT && height <= Board.MAX_HEIGHT
         && width >= Board.MIN_WIDTH && width <= Board.MAX_WIDTH
-        && snakes_number >= Board.MIN_SNAKES_NUMBER
-        && snakes_number <= Board.MAX_SNAKES_NUMBER;
+        && snakesNumber >= Board.MIN_SNAKES_NUMBER
+        && snakesNumber <= Board.MAX_SNAKES_NUMBER;
   }
 
 }
