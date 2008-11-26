@@ -1,5 +1,5 @@
 /**
- * 
+ * Przechowuje dane na temat pozycji.
  */
 package game;
 
