@@ -36,7 +36,7 @@ public class TavolaServerThread extends Thread {
       inputLine = in.readLine();
 
       if (inputLine.matches("Hello .+")
-          && (id = authentication(inputLine.substring(7))) != null) {
+          && (id = authentication(inputLine.substring(6))) != null) {
 
         Player player = new Player(id, socket);
 
