@@ -1,6 +1,5 @@
 package server.protocol;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -98,8 +97,6 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     InputStreamReader stream = new InputStreamReader(System.in);
 
-    final BufferedReader in = new BufferedReader(stream);
-
     final Player player = new Player("player1", new PrintWriter(System.out,
         true));
 
@@ -129,9 +126,6 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     Assert.assertTrue(protocol3.processInput("JOIN_GAME 2").equals(
         ", player1, player2, player3"));
-
-    // TODO test czytania
-    // System.out.println(stream.);// .equals("PLAYER_JOINED player2"));
 
   }
 }
