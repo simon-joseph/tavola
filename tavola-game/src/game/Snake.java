@@ -62,7 +62,7 @@ public final class Snake implements IPlayer {
   }
 
   public void move() {
-    body.addFirst(head);
+    body.addFirst(head.clone());
     last = body.getLast();
     body.removeLast();
     head.add(nextMove());

@@ -8,16 +8,23 @@ package game;
  * 
  */
 public final class Position {
-	public int vertical;
-	public int horizontal;
 
-	public Position(int vertical, int horizontal) {
-		this.vertical = vertical;
-		this.horizontal = horizontal;
-	}
+  public int horizontal;
 
-	public void add(Position p) {
-		this.vertical += p.vertical;
-		this.horizontal += p.horizontal;
-	}
+  public int vertical;
+
+  public Position(int horizontal, int vertical) {
+    this.vertical = vertical;
+    this.horizontal = horizontal;
+  }
+
+  public void add(Position p) {
+    vertical += p.vertical;
+    horizontal += p.horizontal;
+  }
+
+  @Override
+  public Position clone() {
+    return new Position(horizontal, vertical);
+  }
 }
