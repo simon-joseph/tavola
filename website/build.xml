@@ -1,0 +1,64 @@
+<project name="TavolaWebsite" default="dist" basedir=".">
+  <description>
+    Website of project Tavola.
+  </description>
+
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+  <path id="base.path">
+     <pathelement location="/usr/share/java/servlet-api.jar" />
+     <pathelement location="/usr/share/java/mysql.jar" />
+     <pathelement location="/usr/share/java/log4j-1.2.jar" />
+  </path>
+
+
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}/WEB-INF/classes"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+
+    <javac srcdir="${src}/java" destdir="${build}/WEB-INF/classes" target="1.5" source="1.5">
+      <classpath>
+        <path refid="base.path" />
+      </classpath>
+    </javac>
+
+    <copy file="${src}/java/WEB-INF/web.xml" toFile="${build}/WEB-INF/web.xml" overwrite="true" />
+    <copy todir="${build}/WEB-INF/lib">
+      <fileset dir="${src}/java/WEB-INF/lib" />
+    </copy>
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/java" />
+    <mkdir dir="${dist}/html" />
+
+    <!-- Put everything in ${build} into the jar file -->
+    <jar jarfile="${dist}/java/tavolaWebsite.jar" basedir="${build}">
+      <manifest>
+     <!--   <attribute name="Class-Path" value="/usr/share/java/java_memcached-release_2.0.1.jar"/> -->
+      </manifest>
+    </jar>
+
+    <copy todir="${dist}/html">
+      <fileset dir="${src}/html" />
+    </copy>
+  </target>
+
+
+  <target name="clean" description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

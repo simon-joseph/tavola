@@ -1,0 +1,318 @@
+<html dir="ltr">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="/js/sack.js" charset="UTF-8"></script>
+<title>Tavola</title>
+<style>
+<!--
+  div.form_field .form_field_control {
+    float: right;
+    margin: 0 0 0 5px;
+  }
+  div.form_field {
+    margin: 0 0 5px 0px;
+  }
+  #login_form {
+    margin: 0px auto;
+    background: rgb(200,230,255);
+    border: 1px solid rgb(160,200,255);
+    padding: 10px 5px;
+    width: 300px;
+  }
+  label {
+    padding: 2px 0 0 0;
+  }
+  div.clear_both {
+    clear: both;
+  }
+  #logo {
+    background: url(/img/snakeLady.jpg) no-repeat 0 80px;
+    width: 342px;
+    height: 330px;
+    margin: 0 auto;
+  }
+  #register_form {
+    margin: 10px auto;
+    width: 370px;
+    background: rgb(255,255,200);
+    padding: 10px 5px;
+    border: 1px solid rgb(150,150,50);
+  }
+  #ajax_result {
+    display: none;
+  }
+
+//-->
+</style>
+</head>
+
+<body id="page">
+
+<script>
+<!--
+  if (window != top) top.location = window.location;
+
+  function getById(id) {
+    return document.getElementById(id);
+  }
+
+  function setInputsEnabled(id, enabled) {
+    node = getById(id);
+    if (node != null) {
+      inputs = node.getElementsByTagName('input');
+      for (var i=0; i < inputs.length; ++i) {
+        inputs[i].disabled = !enabled;
+      }
+    }
+  }
+
+  window.onload = function () {
+    setInputsEnabled('login_form', true);
+    getById('login_form_login').focus();
+  }
+
+  var registerForm = null;
+
+  function openRegisterForm() {
+    if (registerForm != null) {
+      // window has been already openned
+      return;
+    }
+    setInputsEnabled('login_form', false);
+
+    getById('create_account_link').onclick = function() {
+      var cancelButton = getById('register_form_cancel_button');
+      if (cancelButton != null) {
+        cancelButton.click();
+      }
+      else {
+        openRegisterForm();
+      }
+      return false;
+    }
+
+    registerForm = new RegisterForm();
+    registerForm.appendTo(getById('page'));
+
+    getById('register_form_login').focus();
+  }
+
+  function serverIncompatible() {
+    alert('Server is incompatible, please reload the page and try again...');
+  }
+
+  function serverOverloaded() {
+    alert('Server is overloaded, please try again later...');
+  }
+
+  function RegisterForm() {
+    this.form = document.createElement('form');
+    this.form.id = 'register_form';
+    this.form.action = '/register';
+    this.form.method = 'post';
+
+    var createFormField = function () {
+      var formField = document.createElement('div');
+      formField.className = 'form_field';
+      return formField;
+    }
+
+    var createButton = function (id, value, type, className) {
+      var button = document.createElement('input');
+      button.type = type;
+      button.id = id;
+      button.value = value;
+      button.className = className;
+      return button;
+    }
+
+    var createCancelButton = function (className) {
+      var button = createButton('register_form_cancel_button', 'Cancel', 'button', className);
+      button.setAttribute('tabindex', 4);
+      button.onclick = function () {
+        getById('page').removeChild(this.form);
+        registerForm = null;
+        setInputsEnabled('login_form', true);
+        getById('login_form_login').focus();
+        return false;
+      };
+      return button;
+    }
+
+    var createCreateButton = function (className) {
+      var button = createButton('register_form_create_button', 'Create!', 'submit', className);
+      button.setAttribute('tabindex', 5);
+      button.onclick = function () {
+        setInputsEnabled('register_form', false);
+        var login = getById('register_form_login').value;
+        if (login == '') {
+          alert('Login cannot be empty.');
+          setInputsEnabled('register_form', true);
+          getById('register_form_login').focus();
+          return false;
+        }
+        var password = getById('register_form_password').value;
+        if (password == '') {
+          alert('Password cannot be empty.');
+          setInputsEnabled('register_form', true);
+          getById('register_form_password').focus();
+          return false;
+        }
+        var retyped_password_textbox = getById('register_form_password_retyped');
+        if (password != retyped_password_textbox.value) {
+          alert('Incorrectly re-typed password.');
+          setInputsEnabled('register_form', true);
+          retyped_password_textbox.value = '';
+          retyped_password_textbox.focus();
+          return false;
+        }
+        var sack = new Sack();
+        sack.requestFile = '/register';
+        sack.setVar('login', login);
+        sack.setVar('password', password);
+        sack.element = 'ajax_result';
+        sack.onCompletion = function () {
+          var result = getById('ajax_result').innerHTML;
+          if (result == "OK\n") {
+            alert('Account created. Please login.');
+            getById('login_form_login').value = login;
+            getById('login_form_password').value = '';
+            getById('page').removeChild(getById('register_form'));
+            registerForm = null;
+            setInputsEnabled('login_form', true);
+            getById('login_form_password').focus();
+          } else if (result == "FAILED\n") {
+            alert('Login is occupied by another player, please select different login.');
+            setInputsEnabled('register_form', true);
+            getById('register_form_login').focus();
+          } else if (result == "ERROR\n") {
+            serverOverloaded();
+            setInputsEnabled('register_form', true);
+          } else {
+            serverIncompatible();
+            setInputsEnabled('register_form', true);
+          }
+          return false;
+        };
+        sack.runAJAX();
+        return false;
+      };
+
+      return button;
+    }
+
+    var createClearBothDiv = function () {
+      var div = document.createElement('div');
+      div.className = 'clear_both';
+      return div;
+    }
+
+    var createEntryField = function (id, name, type, label, tabindex) {
+      var entryField = createFormField();
+      var entryTextBox = document.createElement('input');
+      entryTextBox.type = type;
+      entryTextBox.id = id;
+      entryTextBox.className = 'form_field_control';
+      entryTextBox.name = name;
+      entryTextBox.setAttribute('tabindex', tabindex);
+      entryField.appendChild(entryTextBox);
+      var entryLabel = document.createElement('label');
+      entryLabel.setAttribute('for', id);
+      entryLabel.className = 'form_field_control';
+      entryLabel.appendChild(document.createTextNode(label));
+      entryField.appendChild(entryLabel);
+      entryField.appendChild(createClearBothDiv());
+      return entryField;
+    }
+
+    this.form.appendChild(createEntryField('register_form_login', 'login', 'text', 'Login:', 1));
+    this.form.appendChild(createEntryField('register_form_password', 'password', 'password', 'Password:', 2));
+    this.form.appendChild(createEntryField('register_form_password_retyped', 'password_retyped', 'password', 'Re-type password:', 3));
+
+    var buttonsField = createFormField();
+    buttonsField.appendChild(btn1 = createCreateButton('form_field_control'));
+    buttonsField.appendChild(btn2 = createCancelButton('form_field_control'));
+    buttonsField.appendChild(createClearBothDiv());
+    this.form.appendChild(buttonsField);
+  }
+
+
+  RegisterForm.prototype.appendTo = function (parentNode) {
+    if (this.form != null) {
+      parentNode.appendChild(this.form);
+    }
+  }
+
+
+  function doLogin() {
+    setInputsEnabled('login_form', false);
+    var sack = new Sack();
+    sack.requestFile = '/login';
+    sack.setVar('login', getById('login_form_login').value);
+    sack.setVar('password', getById('login_form_password').value);
+    sack.element = 'ajax_result';
+    sack.onCompletion = function () {
+      var result = getById('ajax_result').innerHTML;
+      if (result == "BAD\n") {
+        alert('Bad login or password.');
+        setInputsEnabled('login_form', true);
+        getById('login_form_login').focus();
+      } else if (result == "ERROR\n") {
+        serverOverloaded();
+        setInputsEnabled('login_form', true);
+      } else {
+        ret = /^OK ([A-F0-9]*)\n$/.exec(result);
+        if (ret) {
+          var gameContainer = document.createElement('applet');
+          gameContainer.setAttribute('codebase', '/applets/0000002');
+          gameContainer.archive = 'GameApplet.jar';
+          gameContainer.code = 'GameApplet.class';
+          gameContainer.width = document.body.clientWidth - 30;
+          gameContainer.height = document.body.clientHeight - 30;
+          gameContainer.style.position = 'absolute';
+          gameContainer.style.left = 10;
+          gameContainer.style.top = 10;
+          gameContainer.style.width = document.body.clientWidth - 20;
+          gameContainer.style.height = document.body.clientHeight - 20;
+          gameContainer.style.opacity = 0.95;
+          gameContainer.style.filter = 'alpha(opacity=95)';
+          gameContainer.style.background = 'black';
+          gameContainer.appendChild(document.createTextNode("You must download Java in order to play this game."));
+          var ticketParam = document.createElement('param');
+          ticketParam.name = 'ticket';
+          ticketParam.value = ret[1];
+          gameContainer.appendChild(ticketParam);
+          getById('page').appendChild(gameContainer);
+        } else {
+          serverIncompatible();
+          setInputsEnabled('login_form', true);
+        }
+      }
+    };
+    sack.runAJAX();
+  }
+//-->
+</script>
+  <div id="logo">
+  </div>
+  <form id="login_form" action="/login" method="post">
+    <div class="form_field">
+      <input type="text" id="login_form_login" name="login" class="form_field_control">
+      <label for="login_form_login" class="form_field_control">Login:</label>
+      <div class="clear_both"></div>
+    </div>
+    <div class="form_field">
+      <input type="password" id="login_form_password" name="password" class="form_field_control">
+      <label for="login_form_password" class="form_field_control">Password:</label>
+      <div class="clear_both"></div>
+    </div>
+    <div class="form_field">
+      <input id="login_form_button" type="submit" value="Enter!" class="form_field_control" onclick="doLogin(); return false;">
+      <div class="clear_both"></div>
+    </div>
+    <a id="create_account_link" href="/register" onclick="openRegisterForm(); return false;">Create new account&hellip;</a>
+  </form>
+
+  <div id="ajax_result"></div>
+</body>
+</html>
