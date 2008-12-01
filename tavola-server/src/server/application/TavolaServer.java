@@ -64,7 +64,7 @@ public abstract class TavolaServer {
 
   public synchronized static boolean addPlayer(Game game, Player player) {
     return game.getPlayers().size() < game.getMaxPlayersCount()
-        && game.getPlayers().add(player);
+        && !game.getPlayers().contains(player) && game.getPlayers().add(player);
   }
 
   public static void clearGames() {

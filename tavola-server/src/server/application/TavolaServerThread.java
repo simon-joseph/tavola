@@ -38,7 +38,7 @@ public class TavolaServerThread extends Thread {
       if (inputLine.matches("Hello .+")
           && (id = authentication(inputLine.substring(6))) != null) {
 
-        Player player = new Player(id, socket);
+        final Player player = new Player(id, out);
 
         protocol = new TavolaMiddleProtocol(player);
 

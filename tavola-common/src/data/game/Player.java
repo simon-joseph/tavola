@@ -1,6 +1,6 @@
 package data.game;
 
-import java.net.Socket;
+import java.io.PrintWriter;
 
 /**
  * @author rafal.paliwoda
@@ -12,11 +12,11 @@ public class Player {
 
   private String id;
 
-  private Socket socket;
+  private PrintWriter printWriter;
 
-  public Player(String id, Socket socket) {
+  public Player(String id, PrintWriter printWriter) {
     this.id = id;
-    this.socket = socket;
+    this.printWriter = printWriter;
   }
 
   public String getId() {
@@ -27,12 +27,16 @@ public class Player {
     this.id = id;
   }
 
-  public Socket getSocket() {
-    return socket;
+  public PrintWriter getPrintWriter() {
+    return printWriter;
   }
 
-  public void setSocket(Socket socket) {
-    this.socket = socket;
+  public void setPrintWriter(PrintWriter printWriter) {
+    this.printWriter = printWriter;
   }
 
+  @Override
+  public String toString() {
+    return getId();
+  }
 }

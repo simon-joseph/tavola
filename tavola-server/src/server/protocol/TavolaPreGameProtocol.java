@@ -1,5 +1,6 @@
 package server.protocol;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import server.application.TavolaServer;
@@ -32,7 +33,7 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
       // LIST GAMES
       if (input.equals("LIST_GAMES")) {
         for (Game game : games) {
-          result.append(", " + game.getId());
+          result.append(", " + game);
         }
 
         // JOIN GAME
@@ -55,22 +56,20 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
         } else if (TavolaServer.addPlayer(gameToJoin, player)) {
 
           for (Player p : gameToJoin.getPlayers()) {
-            if (player != p) {
-              result.append(", " + p);
+            result.append(", " + p);
+          }
+
+          for (Player player : gameToJoin.getPlayers()) {
+            synchronized (player) {
+              if (player != this.player) {
+                player.getPrintWriter().println(
+                    "PLAYER_JOINED " + this.player.getId());
+              }
             }
           }
 
-          /*
-           * for (Player player : gameToJoin.getPlayers()) { synchronized
-           * (player) { try { new
-           * PrintWriter(player.getSocket().getOutputStream(), true)
-           * .println("PLAYER_JOINED " + this.player.getId()); } catch
-           * (IOException e) { // TODO Auto-generated catch block
-           * e.printStackTrace(); } } }
-           */
-
         } else {
-          result.append("MAXIMUM_PLAYERS_NUMBER_REACHED");
+          result.append("CANNOT JOIN GAME");
         }
 
         // CREATE GAME
@@ -89,6 +88,11 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
 
           Game newGame = new Game(id, levelId, maxPlayersCount,
               maxBonusesCount, creatorId);
+
+          ArrayList<Player> players = new ArrayList<Player>();
+          players.add(player);
+
+          newGame.setPlayers(players);
 
           if (TavolaServer.addGame(newGame)) {
             result.append("OK " + id);

@@ -1,6 +1,9 @@
 package server.protocol;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 
 import junit.framework.Assert;
@@ -20,8 +23,8 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     TavolaServer.clearGames();
 
-    Game game = new Game("somegame1", null, null, 2, 3, null, null, 5);
-    Game game2 = new Game("anothergame2", null, null, 2, 3, null, null, 5);
+    Game game = new Game("somegame1", null, "level2", 2, 3, "player1", null, 5);
+    Game game2 = new Game("anothergame2", "level1", 4, 30, "player2");
 
     TavolaServer.addGame(game);
     TavolaServer.addGame(game2);
@@ -38,7 +41,7 @@ public class TestTavolaPreGameProtocol extends TestCase {
         "UNKNOWN_COMMAND"));
 
     Assert.assertTrue(protocol.processInput("LIST_GAMES").equals(
-        ", somegame1, anothergame2"));
+        ", somegame1 level2 2 3 player1, anothergame2 level1 4 30 player2"));
   }
 
   public void testCreateGame() {
@@ -48,7 +51,7 @@ public class TestTavolaPreGameProtocol extends TestCase {
     TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
 
     Assert.assertTrue(protocol.processInput("LIST_GAMES").equals(
-        ", somegame1, anothergame2"));
+        ", somegame1 level2 2 3 player1, anothergame2 level1 4 30 player2"));
 
     Assert.assertTrue(protocol.processInput("CREATE_GAME 25").equals(
         "UNKNOWN_COMMAND"));
@@ -93,12 +96,24 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
   public void testJoinGame() throws UnknownHostException, IOException {
 
-    // TavolaServer.startUp();
+    InputStreamReader stream = new InputStreamReader(System.in);
 
-    Player player = new Player("player1", null);// new Socket("localhost",
-    // 4444));
+    final BufferedReader in = new BufferedReader(stream);
 
-    TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
+    final Player player = new Player("player1", new PrintWriter(System.out,
+        true));
+
+    final Player player2 = new Player("player2", new PrintWriter(System.out,
+        true));
+
+    final Player player3 = new Player("player3", new PrintWriter(System.out,
+        true));
+
+    final TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
+
+    final TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player2);
+
+    final TavolaPreGameProtocol protocol3 = new TavolaPreGameProtocol(player3);
 
     Assert.assertTrue(protocol.processInput("CREATE_GAME level6 6 6 player1")
         .equals("OK 2"));
@@ -106,11 +121,17 @@ public class TestTavolaPreGameProtocol extends TestCase {
     Assert.assertTrue(protocol.processInput("JOIN_GAME game99").equals(
         "INCORRECT_GAME_ID"));
 
-    System.out.println(protocol.processInput("JOIN_GAME 2"));
+    Assert.assertTrue(protocol.processInput("JOIN_GAME 2").equals(
+        "CANNOT JOIN GAME"));
 
-    Assert.assertTrue(protocol.processInput("JOIN_GAME 2").equals(""));
+    Assert.assertTrue(protocol2.processInput("JOIN_GAME 2").equals(
+        ", player1, player2"));
 
-    // TavolaServer.shutDown();
+    Assert.assertTrue(protocol3.processInput("JOIN_GAME 2").equals(
+        ", player1, player2, player3"));
+
+    // TODO test czytania
+    // System.out.println(stream.);// .equals("PLAYER_JOINED player2"));
 
   }
 }
