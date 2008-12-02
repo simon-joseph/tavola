@@ -14,7 +14,11 @@ import java.util.Random;
  */
 public final class SnakeBoard implements IBoard {
 
-  public final long SPEED = 100;
+  public final long INITIAL_MOVE_TIME = 101;
+
+  private long speed = 1;
+
+  private int level = 1;
 
   public final int WIDTH = 60;
 
@@ -22,8 +26,10 @@ public final class SnakeBoard implements IBoard {
 
   private boolean gameOver;
 
+  private boolean levelChanged;
+
   private Snake snake;
-  
+
   private Random generator;
 
   private int[][] board;
@@ -70,6 +76,10 @@ public final class SnakeBoard implements IBoard {
   public void update() {
     snake.changeDirection(snakeDirection);
     snake.move();
+    if ((snake.body.size() % 5 == 0) && !levelChanged) {
+      this.speedup();
+      levelChanged = true;
+    }
     for (int i = 0; i < snake.body.size(); i++) {
       board[snake.body.get(i).horizontal][snake.body.get(i).vertical] = 1;
     }
@@ -84,9 +94,17 @@ public final class SnakeBoard implements IBoard {
     } else {
       if (board[snake.head.horizontal][snake.head.vertical] == 3) {
         snake.enlarge();
+        levelChanged = false;
         this.generateBonus();
       }
       board[snake.head.horizontal][snake.head.vertical] = 2;
+    }
+  }
+
+  private void speedup() {
+    if (this.speed < 70) {
+      this.speed += 4;
+      this.level++;
     }
   }
 
@@ -110,5 +128,13 @@ public final class SnakeBoard implements IBoard {
 
   public void setSnakeDirection(Direction d) {
     snakeDirection = d;
+  }
+
+  public long getSpeed() {
+    return speed;
+  }
+
+  public int getLevel() {
+    return level;
   }
 }

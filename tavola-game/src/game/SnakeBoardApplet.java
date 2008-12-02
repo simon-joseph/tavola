@@ -34,21 +34,24 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
       for (int i = 0; i < sb.WIDTH; i++) {
         for (int j = 0; j < sb.HEIGHT; j++) {
           if (board[i][j] > 0) {
-            g.setColor(Color.red);
+            g.setColor(Color.pink);
             if (board[i][j] == 2)
-              g.setColor(Color.pink);
+              g.setColor(Color.yellow);
             if (board[i][j] == 3)
-              g.setColor(Color.blue);
+              g.setColor(Color.orange);
           } else
-            g.setColor(Color.white);
-            g.fillRect(i * 10, j * 10, 10, 10);
+            g.setColor(new Color(100, 100, 150));
+          g.fillOval(i * 10, j * 10, 10, 10);
         }
       }
+      g.setColor(Color.red);
+      g.drawString("Speed: " + sb.getSpeed(), 10, 10);
+      g.drawString("Level: " + sb.getLevel(), 10, 30);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-      setBackground(new Color(20, 10, 80));
+      setBackground(new Color(100, 100, 150));
       super.paintComponent(g);
       paintBoard(g);
     }
@@ -161,10 +164,9 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
         sb.update();
         board.repaint();
         i++;
-        // System.out.println("narysowalem " + i);
       }
       try {
-        Thread.sleep(sb.SPEED);
+        Thread.sleep(sb.INITIAL_MOVE_TIME - sb.getSpeed());
       } catch (InterruptedException e) {
         break;
       }
