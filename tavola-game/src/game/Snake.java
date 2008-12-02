@@ -27,6 +27,8 @@ public final class Snake implements IPlayer {
     head = new Position(width / 2, height / 2);
     body = new LinkedList<Position>();
     last = new Position(width / 2 - 4, height / 2);
+    // body.addFirst(new Position(width / 2 - 5, height / 2));
+    // body.addFirst(new Position(width / 2 - 4, height / 2));
     body.addFirst(new Position(width / 2 - 3, height / 2));
     body.addFirst(new Position(width / 2 - 2, height / 2));
     body.addFirst(new Position(width / 2 - 1, height / 2));
@@ -53,9 +55,9 @@ public final class Snake implements IPlayer {
       case LEFT:
         return new Position(-1, 0);
       case UP:
-        return new Position(0, 1);
-      case DOWN:
         return new Position(0, -1);
+      case DOWN:
+        return new Position(0, 1);
       default:
         return new Position(0, 0);
     }

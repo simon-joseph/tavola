@@ -3,6 +3,7 @@
  */
 package game;
 
+import interfaces.Direction;
 import interfaces.IBoard;
 
 /**
@@ -23,10 +24,13 @@ public final class SnakeBoard implements IBoard {
 
   private int[][] board;
 
+  private Direction snakeDirection;
+
   public SnakeBoard() {
     initBoard();
     snake = new Snake(WIDTH, HEIGHT);
     gameOver = false;
+    snakeDirection = Direction.RIGHT;
   }
 
   public int[][] getBoard() {
@@ -47,6 +51,7 @@ public final class SnakeBoard implements IBoard {
   }
 
   public void update() {
+    snake.changeDirection(snakeDirection);
     snake.move();
     for (int i = 0; i < snake.body.size(); i++) {
       board[snake.body.get(i).horizontal][snake.body.get(i).vertical] = 1;
@@ -73,5 +78,13 @@ public final class SnakeBoard implements IBoard {
 
   public boolean isGameOver() {
     return gameOver;
+  }
+
+  public Snake getSnake() {
+    return snake;
+  }
+
+  public void setSnakeDirection(Direction d) {
+    snakeDirection = d;
   }
 }

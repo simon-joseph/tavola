@@ -1,11 +1,15 @@
 package game;
 
+import interfaces.Direction;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -89,6 +93,61 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 
   }
 
+  private class ChangeDirectionListener implements KeyListener {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent e) {
+      if (true) {
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_UP:
+            sb.setSnakeDirection(Direction.UP);
+            break;
+          case KeyEvent.VK_DOWN:
+            sb.setSnakeDirection(Direction.DOWN);
+            break;
+          case KeyEvent.VK_LEFT:
+            sb.setSnakeDirection(Direction.LEFT);
+            break;
+          case KeyEvent.VK_RIGHT:
+            sb.setSnakeDirection(Direction.RIGHT);
+            break;
+          default:
+            break;
+          // sb.getSnake().changeDirection(Direction.UP);
+        }
+      } else {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+          sb.getSnake().changeDirection(Direction.UP);
+        }
+        // sb.getSnake().changeDirection(Direction.UP);
+      }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent e) {
+      // TODO Auto-generated method stub
+
+    }
+
+  }
+
   public SnakeBoardApplet() {
     super();
     initGUI();
@@ -122,6 +181,11 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
       board.setPreferredSize(new Dimension(10 * sb.WIDTH + 1,
           10 * sb.HEIGHT + 1));
       board.setVisible(false);
+
+      setFocusable(true);
+      setFocusTraversalKeysEnabled(false);
+      addKeyListener(new ChangeDirectionListener());
+
       startButton = new JButton();
       startButton.setText("START");
       startButton.addActionListener(bl);
