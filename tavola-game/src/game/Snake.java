@@ -18,6 +18,8 @@ public final class Snake implements IPlayer {
 
   protected Position head;
 
+  private int delay = 0;
+
   protected LinkedList<Position> body;
 
   protected Position last;
@@ -32,6 +34,10 @@ public final class Snake implements IPlayer {
     body.addFirst(new Position(width / 2 - 3, height / 2));
     body.addFirst(new Position(width / 2 - 2, height / 2));
     body.addFirst(new Position(width / 2 - 1, height / 2));
+  }
+
+  public void enlarge() {
+    delay++;
   }
 
   /*
@@ -66,7 +72,10 @@ public final class Snake implements IPlayer {
   public void move() {
     body.addFirst(head.clone());
     last = body.getLast();
-    body.removeLast();
+    if (delay == 0)
+      body.removeLast();
+    else
+      delay--;
     head.add(nextMove());
   }
 }

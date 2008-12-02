@@ -35,15 +35,13 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
         for (int j = 0; j < sb.HEIGHT; j++) {
           if (board[i][j] > 0) {
             g.setColor(Color.red);
-            if (board[i][j] == 2) {
+            if (board[i][j] == 2)
               g.setColor(Color.pink);
-              // System.out.println("glowa weza");
-            }
-            g.fillRect(i * 10, j * 10, 10, 10);
-          } else {
+            if (board[i][j] == 3)
+              g.setColor(Color.blue);
+          } else
             g.setColor(Color.white);
             g.fillRect(i * 10, j * 10, 10, 10);
-          }
         }
       }
     }

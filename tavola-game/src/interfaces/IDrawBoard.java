@@ -8,8 +8,9 @@ package interfaces;
  * 
  */
 public interface IDrawBoard {
-	/**
-	 * Rysuje planszę na podstawie danych z argumentu board.
-	 */
-	public void draw(IBoard board);
+
+  /**
+   * Rysuje planszę na podstawie danych z argumentu board.
+   */
+  public void draw(IBoard board);
 }

@@ -8,18 +8,19 @@ package interfaces;
  * 
  */
 public interface IDriver {
-	/**
-	 * Uruchamia wczytywanie z klawiatury
-	 */
-	public void start();
 
-	/**
-	 * Zatrzymuje wczytywanie z klawiatury
-	 */
-	public void stop();
+  /**
+   * Uruchamia wczytywanie z klawiatury
+   */
+  public void start();
 
-	/**
-	 * Ustawia właściciela (Player);
-	 */
-	public void setOwner(IPlayer player);
+  /**
+   * Zatrzymuje wczytywanie z klawiatury
+   */
+  public void stop();
+
+  /**
+   * Ustawia właściciela (Player);
+   */
+  public void setOwner(IPlayer player);
 }

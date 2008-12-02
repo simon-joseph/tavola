@@ -6,6 +6,8 @@ package game;
 import interfaces.Direction;
 import interfaces.IBoard;
 
+import java.util.Random;
+
 /**
  * @author sla
  * 
@@ -21,12 +23,15 @@ public final class SnakeBoard implements IBoard {
   private boolean gameOver;
 
   private Snake snake;
+  
+  private Random generator;
 
   private int[][] board;
 
   private Direction snakeDirection;
 
   public SnakeBoard() {
+    generator = new Random();
     initBoard();
     snake = new Snake(WIDTH, HEIGHT);
     gameOver = false;
@@ -37,6 +42,17 @@ public final class SnakeBoard implements IBoard {
     return board;
   }
 
+  private void generateBonus() {
+    while (true) {
+      int i = this.generator.nextInt(this.WIDTH - 1);
+      int j = this.generator.nextInt(this.HEIGHT - 1);
+      if (board[i][j] == 0) {
+        board[i][j] = 3;
+        break;
+      }
+    }
+  }
+
   private void initBoard() {
     board = new int[WIDTH][HEIGHT];
     for (int w = 0; w < WIDTH; w++) {
@@ -44,6 +60,7 @@ public final class SnakeBoard implements IBoard {
         board[w][h] = 0;
       }
     }
+    generateBonus();
   }
 
   public void run() {
@@ -65,6 +82,10 @@ public final class SnakeBoard implements IBoard {
       gameOver = true;
       System.out.println("przegrales");
     } else {
+      if (board[snake.head.horizontal][snake.head.vertical] == 3) {
+        snake.enlarge();
+        this.generateBonus();
+      }
       board[snake.head.horizontal][snake.head.vertical] = 2;
     }
   }
@@ -72,8 +93,11 @@ public final class SnakeBoard implements IBoard {
   private boolean stopConditions() {
     Position p = snake.head;
     // System.out.println("Pozycja glowy: " + p.horizontal + " " + p.vertical);
-    return p.horizontal < 0 || p.horizontal >= WIDTH || p.vertical < 0
-        || p.vertical >= HEIGHT || board[p.horizontal][p.vertical] != 0;
+    return p.horizontal < 0
+        || p.horizontal >= WIDTH
+        || p.vertical < 0
+        || p.vertical >= HEIGHT
+        || (board[p.horizontal][p.vertical] != 0 && board[p.horizontal][p.vertical] != 3);
   }
 
   public boolean isGameOver() {
