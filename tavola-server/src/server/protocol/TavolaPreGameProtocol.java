@@ -18,8 +18,12 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
 
   private final Player player;
 
-  public TavolaPreGameProtocol(Player player) {
+  private final TavolaMiddleProtocol middleProtocol;
+
+  public TavolaPreGameProtocol(Player player,
+      TavolaMiddleProtocol middleProtocol) {
     this.player = player;
+    this.middleProtocol = middleProtocol;
     isConnected = false;
   }
 
@@ -68,6 +72,8 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
             }
           }
 
+          isConnected = true;
+
         } else {
           result.append("CANNOT JOIN GAME");
         }
@@ -95,6 +101,8 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           newGame.setPlayers(players);
 
           if (TavolaServer.addGame(newGame)) {
+            isConnected = true;
+            player.setGame(newGame);
             result.append("OK " + id);
           } else {
             result.append("GAMES_LIMIT_EXCEEDED");
@@ -107,7 +115,18 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
       }
 
     } else {
-      // TODO
+      if (input.equals("LEAVE GAME")) {
+        isConnected = false;
+
+        result.append("OK");
+
+      } else {
+        if (input.equals("START_GAME")) {
+          synchronized (player.getGame()) {
+            middleProtocol.startGame();
+          }
+        }
+      }
 
     }
 

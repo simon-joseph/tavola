@@ -1,7 +1,6 @@
 package server.protocol;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
 
@@ -34,7 +33,7 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     Player player = new Player("player1", null);
 
-    TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
+    TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player, null);
 
     Assert.assertTrue(protocol.processInput("LIST GAME").equals(
         "UNKNOWN_COMMAND"));
@@ -47,7 +46,7 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     Player player = new Player("player1", null);
 
-    TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
+    TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player, null);
 
     Assert.assertTrue(protocol.processInput("LIST_GAMES").equals(
         ", somegame1 level2 2 3 player1, anothergame2 level1 4 30 player2"));
@@ -95,8 +94,6 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
   public void testJoinGame() throws UnknownHostException, IOException {
 
-    InputStreamReader stream = new InputStreamReader(System.in);
-
     final Player player = new Player("player1", new PrintWriter(System.out,
         true));
 
@@ -106,11 +103,14 @@ public class TestTavolaPreGameProtocol extends TestCase {
     final Player player3 = new Player("player3", new PrintWriter(System.out,
         true));
 
-    final TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player);
+    final TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player,
+        null);
 
-    final TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player2);
+    final TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player2,
+        null);
 
-    final TavolaPreGameProtocol protocol3 = new TavolaPreGameProtocol(player3);
+    final TavolaPreGameProtocol protocol3 = new TavolaPreGameProtocol(player3,
+        null);
 
     Assert.assertTrue(protocol.processInput("CREATE_GAME level6 6 6 player1")
         .equals("OK 2"));
@@ -126,6 +126,5 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     Assert.assertTrue(protocol3.processInput("JOIN_GAME 2").equals(
         ", player1, player2, player3"));
-
   }
 }

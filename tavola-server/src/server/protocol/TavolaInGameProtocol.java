@@ -11,8 +11,12 @@ public class TavolaInGameProtocol implements TavolaProtocol {
 
   private Player player;
 
-  public TavolaInGameProtocol(Player player) {
+  private final TavolaMiddleProtocol middleProtocol;
+
+  public TavolaInGameProtocol(Player player, TavolaMiddleProtocol middleProtocol) {
+    super();
     this.player = player;
+    this.middleProtocol = middleProtocol;
   }
 
   @Override

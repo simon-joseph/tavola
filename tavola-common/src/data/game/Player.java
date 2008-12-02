@@ -14,8 +14,11 @@ public class Player {
 
   private PrintWriter printWriter;
 
+  private Game game;
+
   public Player(String id, PrintWriter printWriter) {
     this.id = id;
+    game = null;
     this.printWriter = printWriter;
   }
 
@@ -35,8 +38,17 @@ public class Player {
     this.printWriter = printWriter;
   }
 
+  public Game getGame() {
+    return game;
+  }
+
+  public void setGame(Game game) {
+    this.game = game;
+  }
+
   @Override
   public String toString() {
     return getId();
   }
+
 }
