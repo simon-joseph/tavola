@@ -20,7 +20,6 @@ public class TavolaClientProtocol implements TavolaProtocol {
     status = "pre";
   }
 
-  @Override
   public String processInput(String input) {
     if (status.equals("pre")) {
       if (input.equals("START_GAME")) {

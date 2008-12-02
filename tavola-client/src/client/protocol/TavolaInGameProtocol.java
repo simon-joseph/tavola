@@ -6,7 +6,6 @@ public class TavolaInGameProtocol implements TavolaProtocol {
 
   // private int moveNumber = 0;
 
-  @Override
   public String processInput(String input) {
 
     if (input.matches("NEXT")) {

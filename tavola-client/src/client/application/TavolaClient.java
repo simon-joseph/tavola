@@ -18,50 +18,33 @@ public class TavolaClient {
 
   // private final static double VERSION = 0.1;
 
-  private final static String HOST = "localhost";
+  final static String HOST = "localhost";
 
-  private final static int PORT = 4444;
+  final static int PORT = 4444;
 
-  private static boolean connected = false;
-
+  static boolean connected = false;
+  
   private static Game game;
+  
 
   public static void main(String[] args) throws IOException {
+     
+    //String fromServer;
+    //String fromUser;
+    //TavolaClientProtocol protocol = new TavolaClientProtocol();
 
-    Socket socket = null;
-    PrintWriter out = null;
-    BufferedReader in = null;
-
-    try {
-      socket = new Socket(TavolaClient.HOST, TavolaClient.PORT);
-      out = new PrintWriter(socket.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      TavolaClient.connected = true;
-    } catch (UnknownHostException e) {
-      System.err.println("Unknown host " + TavolaClient.HOST);
-      System.exit(1);
-    } catch (IOException e) {
-      System.err.println("Couldn't get I/O for the connection to: "
-          + TavolaClient.HOST);
-      System.exit(1);
-    }
-
-    String fromServer;
-    String fromUser;
-    TavolaClientProtocol protocol = new TavolaClientProtocol();
-
-    while (TavolaClient.isConnected() && (fromServer = in.readLine()) != null) {
+    /* jak wy to chcieliscie zrobic? przeciez klient nie zachowuje sie deterministycznie, i to co oraz kiedy wysle zalezy od uzytkownika
+     * while (TavolaClient.isConnected() && (fromServer = in.readLine()) != null) {
+      System.out.println("pakiet " + fromServer);
       fromUser = protocol.processInput(fromServer);
+      System.out.println("odp:" + fromUser);
       if (fromUser != null) {
         out.println(fromUser);
       }
-    }
+    }*/
 
-    TavolaClient.connected = false;
-    out.close();
-    in.close();
-    socket.close();
   }
+  
 
   public static boolean isConnected() {
     return TavolaClient.connected;
