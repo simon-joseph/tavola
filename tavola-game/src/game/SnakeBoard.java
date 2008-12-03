@@ -9,8 +9,7 @@ import interfaces.IBoard;
 import java.util.Random;
 
 /**
- * @author sla
- * 
+ * @author sla + agl
  */
 public final class SnakeBoard implements IBoard {
 

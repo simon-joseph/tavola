@@ -3,6 +3,7 @@ package game;
 import interfaces.Direction;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -11,12 +12,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+/**
+ * @author sla + agl
+ */
 
 @SuppressWarnings("serial")
 public class SnakeBoardApplet extends JApplet implements Runnable {
@@ -60,9 +68,19 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
   class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent ev) {
-      startButton.setVisible(false);
-      board.setVisible(true);
-      clicked = true;
+      if (ev.getSource() == startButton) {
+        startButton.setVisible(false);
+        messageField.setVisible(true);
+        board.setVisible(true);
+        controlPanel.setVisible(true);
+        clicked = true;
+      }
+      if (ev.getSource() == exitButton) {
+        System.exit(0);
+      }
+      if (ev.getSource() == pauseButton) {
+        clicked = !clicked;
+      }
     }
   }
 
@@ -72,7 +90,15 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 
   private boolean clicked = false;
 
+  private JPanel controlPanel;
+
   private JButton startButton;
+
+  private JButton exitButton;
+
+  private JButton pauseButton;
+
+  private JTextField messageField;
 
   private SnakeBoard sb = new SnakeBoard();
 
@@ -96,11 +122,6 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 
   private class ChangeDirectionListener implements KeyListener {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
     public void keyPressed(KeyEvent e) {
       if (true) {
         switch (e.getKeyCode()) {
@@ -124,25 +145,15 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
           sb.getSnake().changeDirection(Direction.UP);
         }
-        // sb.getSnake().changeDirection(Direction.UP);
       }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-     */
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent arg0) {
+      // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-     */
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent arg0) {
       // TODO Auto-generated method stub
 
     }
@@ -162,6 +173,7 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
     while (!sb.isGameOver()) {
       if (clicked) {
         sb.update();
+        requestFocus();
         board.repaint();
         i++;
       }
@@ -171,16 +183,53 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
         break;
       }
     }
+    messageField.setText("GAME OVER");
   }
 
   private void initGUI() {
     try {
       setSize(new Dimension(800, 600));
-      getContentPane().setLayout(new FlowLayout());
+      getContentPane().setLayout(
+          new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+      messageField = new JTextField();
+      messageField.setVisible(false);
+      messageField.setMinimumSize(new Dimension(200, 100));
+      messageField.setPreferredSize(new Dimension(200, 100));
+      messageField.setMaximumSize(new Dimension(200, 100));
+      messageField.setHorizontalAlignment(SwingConstants.CENTER);
+
       board = new BoardPanel(sb);
       board.setPreferredSize(new Dimension(10 * sb.WIDTH + 1,
           10 * sb.HEIGHT + 1));
+      board
+          .setMaximumSize(new Dimension(10 * sb.WIDTH + 1, 10 * sb.HEIGHT + 1));
       board.setVisible(false);
+
+      controlPanel = new JPanel();
+      controlPanel.setLayout(new FlowLayout());
+
+      {
+        pauseButton = new JButton();
+        pauseButton.setText("PAUSE");
+        pauseButton.setPreferredSize(new Dimension(100, 50));
+        pauseButton.setMinimumSize(new Dimension(100, 50));
+        pauseButton.setMaximumSize(new Dimension(100, 50));
+        pauseButton.addActionListener(bl);
+        pauseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exitButton = new JButton();
+        exitButton.setText("EXIT");
+        exitButton.setPreferredSize(new Dimension(100, 50));
+        exitButton.setMinimumSize(new Dimension(100, 50));
+        exitButton.setMaximumSize(new Dimension(100, 50));
+        exitButton.addActionListener(bl);
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+      }
+      
+      controlPanel.add(pauseButton);
+      controlPanel.add(exitButton);
+      controlPanel.setVisible(false);
+      controlPanel.setFocusable(false);
 
       setFocusable(true);
       setFocusTraversalKeysEnabled(false);
@@ -188,10 +237,15 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 
       startButton = new JButton();
       startButton.setText("START");
+      startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
       startButton.addActionListener(bl);
+      startButton.setMinimumSize(new Dimension(200, 100));
+      startButton.setMaximumSize(new Dimension(200, 100));
       startButton.setPreferredSize(new Dimension(200, 100));
       startButton.setVisible(false);
+      getContentPane().add(messageField);
       getContentPane().add(board);
+      getContentPane().add(controlPanel);
       getContentPane().add(startButton);
     } catch (Exception e) {
       e.printStackTrace();

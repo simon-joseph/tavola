@@ -9,7 +9,7 @@ import interfaces.IPlayer;
 import java.util.LinkedList;
 
 /**
- * @author sla
+ * @author sla + agl
  * 
  */
 public final class Snake implements IPlayer {
