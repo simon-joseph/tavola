@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Snake</name>
+	<name>Tavola</name>
 	<comment></comment>
 	<projects>
+		<project>tavola-game</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
