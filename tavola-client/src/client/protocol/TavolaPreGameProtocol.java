@@ -1,13 +1,17 @@
 package client.protocol;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import data.game.Game;
+import data.gamePawel.Game;
 import data.network.TavolaProtocol;
 
 public class TavolaPreGameProtocol implements TavolaProtocol {
 
-  public ArrayList<Game> listGames(BufferedReader br, PrintWriter pw) throws InvalidProtocolException, IOException {
+  public ArrayList<Game> listGames(BufferedReader br, PrintWriter pw)
+      throws InvalidProtocolException, IOException {
     pw.println("LIST_GAMES");
     ArrayList<Game> games = new ArrayList<Game>();
     String line;
@@ -28,8 +32,10 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           throw new InvalidProtocolException();
         }
       }
-      // gameId, levelId, playersCount, maxPlayersCount, bonusesCount, creatorName
-      games.add(new Game(args[0], args[1], numbers[2], numbers[3], numbers[4], args[5]));
+      // gameId, levelId, playersCount, maxPlayersCount, bonusesCount,
+      // creatorName
+      games.add(new Game(args[0], args[1], numbers[2], numbers[3], numbers[4],
+          args[5]));
     }
     throw new InvalidProtocolException();
   }
