@@ -35,7 +35,7 @@ public class TavolaServerThread extends Thread {
       out.println("VERSION " + TavolaServer.VERSION);
       inputLine = in.readLine();
 
-      if (inputLine.matches("Hello .+")
+      if (inputLine.matches("HELLO .+")
           && (id = authentication(inputLine.substring(6))) != null) {
 
         out.println("OK");

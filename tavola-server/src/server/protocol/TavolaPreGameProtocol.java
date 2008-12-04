@@ -167,11 +167,9 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
                 }
               }
             }
-
           } else {
             result.append("FAILED");
           }
-
         } else {
           result.append("FAILED");
         }
