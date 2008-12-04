@@ -11,6 +11,7 @@ import data.network.TavolaProtocol;
 /**
  * @author rafal.paliwoda
  * 
+ *         TODO kod wymaga rekaktoryzacji
  */
 public class TavolaPreGameProtocol implements TavolaProtocol {
 
@@ -75,6 +76,7 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           }
 
           isConnected = true;
+          player.setGame(gameToJoin);
 
         } else {
           result.append("CANNOT JOIN GAME");
@@ -94,13 +96,11 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           int maxBonusesCount = Integer.valueOf(temp[3]);
           String creatorId = temp[4];
 
-          Game newGame = new Game(id, levelId, maxPlayersCount,
-              maxBonusesCount, creatorId);
-
           ArrayList<Player> players = new ArrayList<Player>();
           players.add(player);
 
-          newGame.setPlayers(players);
+          Game newGame = new Game(id, players, levelId, maxPlayersCount,
+              maxBonusesCount, creatorId, null, 3);
 
           if (TavolaServer.addGame(newGame)) {
 
@@ -120,11 +120,63 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
 
       // isConnected == true
     } else {
-      if (input.equals("LEAVE GAME")) {
-        isConnected = false;
 
-        result.append("OK");
+      // LEAVE GAME
+      if (input.equals("LEAVE_GAME")) {
+        List<Player> players = player.getGame().getPlayers();
 
+        if (TavolaServer.removePlayer(player.getGame(), player)) {
+          isConnected = false;
+          result.append("OK");
+
+          for (Player p : players) {
+            if (player != p) {
+              synchronized (p) {
+                p.getPrintWriter().println("PLAYER_LEFT " + player.getId());
+              }
+            }
+          }
+        } else {
+          result.append("FAILED");
+        }
+
+        // BAN (na razie tylko kick)
+      } else if (input.matches("BAN [a-zA-Z0-9]+")) {
+        String id = input.substring(5);
+        if (player.getGame().getCreatorId().equals(player.getId())) {
+          Player playerToBan = null;
+
+          List<Player> players = player.getGame().getPlayers();
+
+          for (Player p : player.getGame().getPlayers()) {
+            if (p.getId().equals(id)) {
+              playerToBan = p;
+              break;
+            }
+          }
+
+          if (playerToBan != null
+              && TavolaServer.removePlayer(player.getGame(), playerToBan)) {
+            isConnected = false;
+            result.append("OK");
+
+            for (Player p : players) {
+              if (player != p) {
+                synchronized (p) {
+                  p.getPrintWriter().println("PLAYER_BANNED " + player.getId());
+                }
+              }
+            }
+
+          } else {
+            result.append("FAILED");
+          }
+
+        } else {
+          result.append("FAILED");
+        }
+
+        // START_GAME TODO
       } else if (input.equals("START_GAME")) {
         synchronized (player.getGame()) {
           middleProtocol.startGame();
@@ -132,9 +184,7 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
       } else {
         result.append("UNKNOWN_COMMAND");
       }
-
     }
-
     return result.toString();
   }
 }

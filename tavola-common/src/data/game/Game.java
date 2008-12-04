@@ -1,6 +1,5 @@
 package data.game;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +11,9 @@ public class Game {
 
   private String id;
 
-  List<Player> players;
+  final List<Player> players;
 
-  private String levelId; // TODO enums
+  private String levelId;
 
   private int maxPlayersCount;
 
@@ -26,17 +25,7 @@ public class Game {
 
   private int speed;
 
-  public Game(String id, String levelId, int maxPlayersCount,
-      int maxBonusesCount, String creatorId) {
-    this.id = id;
-    this.levelId = levelId;
-    players = new ArrayList<Player>();
-    this.maxPlayersCount = maxPlayersCount;
-    this.maxBonusesCount = maxBonusesCount;
-    this.creatorId = creatorId;
-    gameState = new GameState();
-    speed = 100; // TODO
-  }
+  private boolean isRunning;
 
   public Game(String id, List<Player> players, String levelId,
       int maxPlayersCount, int maxBonusesCount, String creatorId,
@@ -49,14 +38,11 @@ public class Game {
     this.creatorId = creatorId;
     this.gameState = gameState;
     this.speed = speed;
+    isRunning = false;
   }
 
   public List<Player> getPlayers() {
     return players;
-  }
-
-  public void setPlayers(List<Player> players) {
-    this.players = players;
   }
 
   public String getId() {
@@ -113,6 +99,14 @@ public class Game {
 
   public void setSpeed(int speed) {
     this.speed = speed;
+  }
+
+  public boolean isRunning() {
+    return isRunning;
+  }
+
+  public void setRunning(boolean isRunning) {
+    this.isRunning = isRunning;
   }
 
   @Override
