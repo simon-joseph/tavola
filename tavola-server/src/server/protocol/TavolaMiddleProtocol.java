@@ -1,5 +1,7 @@
 package server.protocol;
 
+import java.io.BufferedReader;
+
 import data.game.Player;
 import data.network.TavolaProtocol;
 
@@ -10,11 +12,9 @@ import data.network.TavolaProtocol;
 public class TavolaMiddleProtocol implements TavolaProtocol {
 
   private final Player player;
-
-  final TavolaPreGameProtocol preGameProtocol;
-
-  final TavolaInGameProtocol inGameProtocol;
-
+  private final TavolaPreGameProtocol preGameProtocol;
+  private final TavolaInGameProtocol inGameProtocol;
+  private final BufferedReader in;
   private boolean inGame;
 
   public void startGame() {
@@ -25,10 +25,11 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
     inGame = false;
   }
 
-  public TavolaMiddleProtocol(Player player) {
+  public TavolaMiddleProtocol(Player player, BufferedReader in) {
     this.player = player;
+    this.in = in;
     preGameProtocol = new TavolaPreGameProtocol(this.player, this);
-    inGameProtocol = new TavolaInGameProtocol(this.player, this);
+    inGameProtocol = new TavolaInGameProtocol(this.player, this, in);
     inGame = false;
   }
 

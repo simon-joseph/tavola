@@ -15,9 +15,7 @@ import data.network.TavolaProtocol;
 public class TavolaPreGameProtocol implements TavolaProtocol {
 
   private boolean isConnected;
-
   private final Player player;
-
   private final TavolaMiddleProtocol middleProtocol;
 
   public TavolaPreGameProtocol(Player player,
@@ -37,8 +35,10 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
       // LIST GAMES
       if (input.equals("LIST_GAMES")) {
         for (Game game : games) {
-          result.append(", " + game);
+          result.append(game + "\n");
         }
+
+        result.append("END");
 
         // JOIN GAME
       } else if (input.matches("JOIN_GAME [a-zA-Z0-9]+$")) {
@@ -60,12 +60,14 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
         } else if (TavolaServer.addPlayer(gameToJoin, player)) {
 
           for (Player p : gameToJoin.getPlayers()) {
-            result.append(", " + p);
+            result.append(p + "\n");
           }
 
+          result.append("END");
+
           for (Player player : gameToJoin.getPlayers()) {
-            synchronized (player) {
-              if (player != this.player) {
+            if (player != this.player) {
+              synchronized (player) {
                 player.getPrintWriter().println(
                     "PLAYER_JOINED " + this.player.getId());
               }
@@ -101,9 +103,11 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           newGame.setPlayers(players);
 
           if (TavolaServer.addGame(newGame)) {
+
             isConnected = true;
             player.setGame(newGame);
             result.append("OK " + id);
+
           } else {
             result.append("GAMES_LIMIT_EXCEEDED");
           }
@@ -114,18 +118,19 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
         result.append("UNKNOWN_COMMAND");
       }
 
+      // isConnected == true
     } else {
       if (input.equals("LEAVE GAME")) {
         isConnected = false;
 
         result.append("OK");
 
-      } else {
-        if (input.equals("START_GAME")) {
-          synchronized (player.getGame()) {
-            middleProtocol.startGame();
-          }
+      } else if (input.equals("START_GAME")) {
+        synchronized (player.getGame()) {
+          middleProtocol.startGame();
         }
+      } else {
+        result.append("UNKNOWN_COMMAND");
       }
 
     }

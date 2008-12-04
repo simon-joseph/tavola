@@ -38,9 +38,11 @@ public class TavolaServerThread extends Thread {
       if (inputLine.matches("Hello .+")
           && (id = authentication(inputLine.substring(6))) != null) {
 
+        out.println("OK");
+
         final Player player = new Player(id, out);
 
-        protocol = new TavolaMiddleProtocol(player);
+        protocol = new TavolaMiddleProtocol(player, in);
 
         while (TavolaServer.isRunning() && (inputLine = in.readLine()) != null) {
           outputLine = protocol.processInput(inputLine);
@@ -51,6 +53,10 @@ public class TavolaServerThread extends Thread {
             break;
           }
         }
+      }
+
+      else {
+        out.println("BAD");
       }
 
       out.close();

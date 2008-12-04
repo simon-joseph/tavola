@@ -39,7 +39,7 @@ public class TestTavolaPreGameProtocol extends TestCase {
         "UNKNOWN_COMMAND"));
 
     Assert.assertTrue(protocol.processInput("LIST_GAMES").equals(
-        ", somegame1 level2 2 3 player1, anothergame2 level1 4 30 player2"));
+        "somegame1 level2 2 3 player1\nanothergame2 level1 4 30 player2\n"));
   }
 
   public void testCreateGame() {
@@ -48,8 +48,10 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player, null);
 
+    TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player, null);
+
     Assert.assertTrue(protocol.processInput("LIST_GAMES").equals(
-        ", somegame1 level2 2 3 player1, anothergame2 level1 4 30 player2"));
+        "somegame1 level2 2 3 player1\nanothergame2 level1 4 30 player2\n"));
 
     Assert.assertTrue(protocol.processInput("CREATE_GAME 25").equals(
         "UNKNOWN_COMMAND"));
@@ -66,27 +68,25 @@ public class TestTavolaPreGameProtocol extends TestCase {
     Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5 5 5").equals(
         "UNKNOWN_COMMAND"));
 
-    Assert.assertTrue(protocol.processInput("CREATE_GAME a5 5 5 h5").equals(
-        "OK 2"));
+    for (int i = 0; i < 4; i++) {
+      Assert
+          .assertTrue(new TavolaPreGameProtocol(new Player("asd", null), null)
+              .processInput("CREATE_GAME a5 5 5 h5").equals("OK " + (i + 2)));
 
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5h 5 5 5G").equals(
-        "OK 3"));
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "OK 4"));
+    }
 
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "OK 5"));
-
-    Assert.assertTrue(protocol.processInput("CREATE_GAME level6 6 6 player1")
+    Assert.assertTrue(protocol2.processInput("CREATE_GAME level6 6 6 player1")
         .equals("OK 6"));
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "OK 7"));
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "OK 8"));
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "OK 9"));
-    Assert.assertTrue(protocol.processInput("CREATE_GAME 5 5 5 5").equals(
-        "GAMES_LIMIT_EXCEEDED"));
+
+    for (int i = 5; i < 8; i++) {
+      Assert
+          .assertTrue(new TavolaPreGameProtocol(new Player("asd", null), null)
+              .processInput("CREATE_GAME 5 5 5 5").equals("OK " + (i + 2)));
+
+    }
+
+    Assert.assertTrue(new TavolaPreGameProtocol(new Player("asd", null), null)
+        .processInput("CREATE_GAME 5 5 5 5").equals("GAMES_LIMIT_EXCEEDED"));
 
     Assert.assertTrue(TavolaServer.getGames().get(6).toString().equals(
         "6 level6 6 6 player1"));
@@ -116,15 +116,15 @@ public class TestTavolaPreGameProtocol extends TestCase {
         .equals("OK 2"));
 
     Assert.assertTrue(protocol.processInput("JOIN_GAME game99").equals(
-        "INCORRECT_GAME_ID"));
+        "UNKNOWN_COMMAND"));
 
     Assert.assertTrue(protocol.processInput("JOIN_GAME 2").equals(
-        "CANNOT JOIN GAME"));
+        "UNKNOWN_COMMAND"));
 
     Assert.assertTrue(protocol2.processInput("JOIN_GAME 2").equals(
-        ", player1, player2"));
+        "player1\nplayer2\n"));
 
     Assert.assertTrue(protocol3.processInput("JOIN_GAME 2").equals(
-        ", player1, player2, player3"));
+        "player1\nplayer2\nplayer3\n"));
   }
 }

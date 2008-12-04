@@ -1,5 +1,7 @@
 package server.protocol;
 
+import java.io.BufferedReader;
+
 import data.game.Player;
 import data.network.TavolaProtocol;
 
@@ -10,11 +12,12 @@ import data.network.TavolaProtocol;
 public class TavolaInGameProtocol implements TavolaProtocol {
 
   private Player player;
-
+  private BufferedReader in;
   private final TavolaMiddleProtocol middleProtocol;
 
-  public TavolaInGameProtocol(Player player, TavolaMiddleProtocol middleProtocol) {
-    super();
+  public TavolaInGameProtocol(Player player,
+      TavolaMiddleProtocol middleProtocol, BufferedReader in) {
+    this.in = in;
     this.player = player;
     this.middleProtocol = middleProtocol;
   }
@@ -24,5 +27,4 @@ public class TavolaInGameProtocol implements TavolaProtocol {
     // TODO Auto-generated method stub
     return null;
   }
-
 }
