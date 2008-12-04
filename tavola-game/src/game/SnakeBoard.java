@@ -14,25 +14,15 @@ import java.util.Random;
 public final class SnakeBoard implements IBoard {
 
   public final long INITIAL_MOVE_TIME = 101;
-
   private long speed = 1;
-
   private int level = 1;
-
   public final int WIDTH = 60;
-
   public final int HEIGHT = 35;
-
   private boolean gameOver;
-
   private boolean levelChanged;
-
   private Snake snake;
-
   private Random generator;
-
   private int[][] board;
-
   private Direction snakeDirection;
 
   public SnakeBoard() {
@@ -49,8 +39,8 @@ public final class SnakeBoard implements IBoard {
 
   private void generateBonus() {
     while (true) {
-      int i = this.generator.nextInt(this.WIDTH - 1);
-      int j = this.generator.nextInt(this.HEIGHT - 1);
+      int i = generator.nextInt(WIDTH - 1);
+      int j = generator.nextInt(HEIGHT - 1);
       if (board[i][j] == 0) {
         board[i][j] = 3;
         break;
@@ -75,8 +65,8 @@ public final class SnakeBoard implements IBoard {
   public void update() {
     snake.changeDirection(snakeDirection);
     snake.move();
-    if ((snake.body.size() % 5 == 0) && !levelChanged) {
-      this.speedup();
+    if (snake.body.size() % 5 == 0 && !levelChanged) {
+      speedup();
       levelChanged = true;
     }
     for (int i = 0; i < snake.body.size(); i++) {
@@ -94,27 +84,25 @@ public final class SnakeBoard implements IBoard {
       if (board[snake.head.horizontal][snake.head.vertical] == 3) {
         snake.enlarge();
         levelChanged = false;
-        this.generateBonus();
+        generateBonus();
       }
       board[snake.head.horizontal][snake.head.vertical] = 2;
     }
   }
 
   private void speedup() {
-    if (this.speed < 70) {
-      this.speed += 4;
-      this.level++;
+    if (speed < 70) {
+      speed += 4;
+      level++;
     }
   }
 
   private boolean stopConditions() {
     Position p = snake.head;
     // System.out.println("Pozycja glowy: " + p.horizontal + " " + p.vertical);
-    return p.horizontal < 0
-        || p.horizontal >= WIDTH
-        || p.vertical < 0
-        || p.vertical >= HEIGHT
-        || (board[p.horizontal][p.vertical] != 0 && board[p.horizontal][p.vertical] != 3);
+    return p.horizontal < 0 || p.horizontal >= WIDTH || p.vertical < 0
+        || p.vertical >= HEIGHT || board[p.horizontal][p.vertical] != 0
+        && board[p.horizontal][p.vertical] != 3;
   }
 
   public boolean isGameOver() {

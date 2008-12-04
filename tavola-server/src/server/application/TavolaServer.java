@@ -15,15 +15,10 @@ import data.game.Player;
 public abstract class TavolaServer {
 
   private final static List<Game> games = new ArrayList<Game>();
-
   private final static int maxGamesCount = 10;
-
   private static Integer gamesCounter = 0;
-
   public final static int PORT = 4444;
-
   public final static double VERSION = 0.1;
-
   private static boolean listening;
 
   public static void main(String[] args) throws IOException {
