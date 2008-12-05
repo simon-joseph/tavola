@@ -1,7 +1,9 @@
 package server.protocol;
 
 import java.io.BufferedReader;
+import java.io.PrintWriter;
 
+import data.game.Game;
 import data.game.Player;
 import data.network.TavolaProtocol;
 
@@ -15,14 +17,29 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
   private final TavolaPreGameProtocol preGameProtocol;
   private final TavolaInGameProtocol inGameProtocol;
   private final BufferedReader in;
-  private boolean inGame;
 
   public void startGame() {
-    inGame = true;
-  }
+    final Game game = player.getGame();
+    final PrintWriter out = player.getPrintWriter();
 
-  public void stopGame() {
-    inGame = false;
+    for (Player p : game.getPlayers()) {
+      synchronized (p) {
+        if (p != player) {
+          p.getServerThread().suspend(); // TODO
+        }
+        p.getPrintWriter().println("START_GAME");
+      }
+    }
+
+    // TODO
+    for (Player p : game.getPlayers()) {
+      synchronized (p) {
+        if (p != player) {
+          p.getServerThread().resume(); // TODO
+
+        }
+      }
+    }
   }
 
   public TavolaMiddleProtocol(Player player, BufferedReader in) {
@@ -30,15 +47,10 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
     this.in = in;
     preGameProtocol = new TavolaPreGameProtocol(this.player, this);
     inGameProtocol = new TavolaInGameProtocol(this.player, this, in);
-    inGame = false;
   }
 
   @Override
   public String processInput(String input) {
-    if (inGame == false) {
-      return preGameProtocol.processInput(input);
-    } else {
-      return inGameProtocol.processInput(input);
-    }
+    return preGameProtocol.processInput(input);
   }
 }

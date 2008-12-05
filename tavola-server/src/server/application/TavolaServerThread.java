@@ -40,7 +40,7 @@ public class TavolaServerThread extends Thread {
 
         out.println("OK");
 
-        final Player player = new Player(id, out);
+        final Player player = new Player(id, out, this);
 
         protocol = new TavolaMiddleProtocol(player, in);
 

@@ -9,17 +9,30 @@ import java.io.PrintWriter;
 public class Player {
 
   private String name; // TODO
-
   private String id;
-
   private PrintWriter printWriter;
-
   private Game game;
+  private Thread serverThread;
 
   public Player(String id, PrintWriter printWriter) {
     this.id = id;
     game = null;
     this.printWriter = printWriter;
+  }
+
+  public Player(String id, PrintWriter printWriter, Thread serverThread) {
+    this.id = id;
+    game = null;
+    this.printWriter = printWriter;
+    this.serverThread = serverThread;
+  }
+
+  public Thread getServerThread() {
+    return serverThread;
+  }
+
+  public void setServerThread(Thread serverThread) {
+    this.serverThread = serverThread;
   }
 
   public String getId() {

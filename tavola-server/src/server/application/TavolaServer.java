@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
+import server.protocol.TavolaMiddleProtocol;
 import data.game.Game;
 import data.game.Player;
 
@@ -88,5 +89,19 @@ public abstract class TavolaServer {
 
   public static void startUp() throws IOException {
     TavolaServer.main(new String[] {});
+  }
+
+  public static synchronized boolean startGame(Game game,
+      TavolaMiddleProtocol middleProtocol) {
+
+    if (true /* warunki wystartowania gry */) {
+
+      middleProtocol.startGame();
+
+      return true;
+    } else {
+
+      return false;
+    }
   }
 }

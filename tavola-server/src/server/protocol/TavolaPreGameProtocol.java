@@ -176,9 +176,19 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
 
         // START_GAME TODO
       } else if (input.equals("START_GAME")) {
-        synchronized (player.getGame()) {
-          middleProtocol.startGame();
+        if (TavolaServer.startGame(player.getGame(), middleProtocol) == false) {
+          result.append("FAILED");
+        } else {
+          result.append("GAME_OVER");
+          for (Player p : player.getGame().getPlayers()) {
+            if (player != p) {
+              synchronized (p) {
+                p.getPrintWriter().println("GAME_OVER");
+              }
+            }
+          }
         }
+
       } else {
         result.append("UNKNOWN_COMMAND");
       }
