@@ -1,10 +1,11 @@
 package applet;
 
 import game.SnakeBoard;
-import interfaces.Direction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import commons.Direction;
 
 /**
  * @author sla + agl

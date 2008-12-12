@@ -3,79 +3,90 @@
  */
 package game;
 
-import interfaces.Direction;
 import interfaces.IPlayer;
 
 import java.util.LinkedList;
+
+import commons.Direction;
+import commons.Position;
 
 /**
  * @author sla + agl
  * 
  */
+
 public final class Snake implements IPlayer {
 
-  private Direction direction;
+    private Direction direction;
+    private int delay;
+    protected Position head;
+    protected Position last;
+    protected LinkedList<Position> body;
 
-  protected Position head;
-
-  private int delay = 0;
-
-  protected LinkedList<Position> body;
-
-  protected Position last;
-
-  public Snake(int width, int height) {
-    direction = Direction.RIGHT;
-    head = new Position(width / 2, height / 2);
-    body = new LinkedList<Position>();
-    last = new Position(width / 2 - 4, height / 2);
-    // body.addFirst(new Position(width / 2 - 5, height / 2));
-    // body.addFirst(new Position(width / 2 - 4, height / 2));
-    body.addFirst(new Position(width / 2 - 3, height / 2));
-    body.addFirst(new Position(width / 2 - 2, height / 2));
-    body.addFirst(new Position(width / 2 - 1, height / 2));
-  }
-
-  public void enlarge() {
-    delay++;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see interfaces.Player#changeDirection(interfaces.Direction)
-   */
-  public void changeDirection(Direction direction) {
-    if (!this.direction.opposite(direction)) {
-      this.direction = direction;
+    public Snake() {
     }
-  }
 
-  /*
-   * Oblicz zmianę położenia głowy na podstawie aktualnego kierunku (direction).
-   */
-  private Position nextMove() {
-    switch (direction) {
-      case RIGHT:
-        return new Position(1, 0);
-      case LEFT:
-        return new Position(-1, 0);
-      case UP:
-        return new Position(0, -1);
-      case DOWN:
-        return new Position(0, 1);
-      default:
-        return new Position(0, 0);
+    /**
+     * Sets up {@link #direction}, {@link #head} and {@link #delay} from
+     * parameters. Sets {@link #last} to null and {@link #body} to empty
+     * {@link LinkedList}.
+     * 
+     * 
+     * @param direction
+     *            the direction to set
+     * @param head
+     *            the head to set
+     * @param length
+     *            the delay to set
+     */
+    protected void setUpSnake(Direction direction, Position head, int length) {
+	delay = length;
+	body = new LinkedList<Position>();
+	this.direction = direction;
+	this.head = head;
+	last = null;
     }
-  }
 
-  public void move() {
-    body.addFirst(head.clone());
-    last = body.getLast();
-    if (delay == 0)
-      body.removeLast();
-    else
-      delay--;
-    head.add(nextMove());
-  }
+    /**
+     * @return the delay
+     */
+    public int getDelay() {
+	return delay;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see interfaces.IPlayer#changeDirection(commons.Direction)
+     */
+    public void changeDirection(Direction direction) {
+	if (!this.direction.opposite(direction)) {
+	    this.direction = direction;
+	}
+    }
+
+    /**
+     * Adds {@link #head} as first {@link #body} element and sets {@link #last}
+     * position to last {@link #body} element. If {@link #delay} is 0 it means
+     * we are not getting longer so we must remove the last {@link #body}
+     * element.
+     */
+    public void move() {
+	body.addFirst(head.clone());
+	last = body.getLast();
+	if (delay == 0) {
+	    body.removeLast();
+	} else {
+	    delay--;
+	}
+	head.add(direction.toPosition());
+    }
+
+    /**
+     * @param delay
+     *            the delay to set
+     */
+    public void setDelay(int delay) {
+	this.delay = delay;
+    }
 }
