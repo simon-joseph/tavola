@@ -7,59 +7,45 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import client.protocol.TavolaClientProtocol;
-import data.game.Game;
-
-/**
- * @author Piotr Staszak
- * 
- */
 public class TavolaClient {
 
-  // private final static double VERSION = 0.1;
+  public final static String HOST = "localhost";
+  public final static int PORT = 4444;
+  public volatile static boolean inGame;
+  private static Pipe pipe;
 
-  final static String HOST = "localhost";
+  public static void main(String[] args) {
 
-  final static int PORT = 4444;
+    try {
+      Socket socket = new Socket(TavolaClient.HOST, TavolaClient.PORT);
+      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+      BufferedReader in = new BufferedReader(new InputStreamReader(socket
+          .getInputStream()));
+      TavolaClient.pipe = new Pipe(in, out);
+    } catch (UnknownHostException e) {
+      System.err.println("Unknown host " + TavolaClient.HOST);
+      System.exit(1);
+    } catch (IOException e) {
+      System.err.println("Couldn't get I/O for the connection to: "
+          + TavolaClient.HOST);
+      System.exit(1);
+    }
 
-  static boolean connected = false;
-  
-  private static Game game;
-  
-
-  public static void main(String[] args) throws IOException {
-     
-    //String fromServer;
-    //String fromUser;
-    //TavolaClientProtocol protocol = new TavolaClientProtocol();
-
-    /* jak wy to chcieliscie zrobic? przeciez klient nie zachowuje sie deterministycznie, i to co oraz kiedy wysle zalezy od uzytkownika
-     * while (TavolaClient.isConnected() && (fromServer = in.readLine()) != null) {
-      System.out.println("pakiet " + fromServer);
-      fromUser = protocol.processInput(fromServer);
-      System.out.println("odp:" + fromUser);
-      if (fromUser != null) {
-        out.println(fromUser);
-      }
-    }*/
-
-  }
-  
-
-  public static boolean isConnected() {
-    return TavolaClient.connected;
+    // Po rozpoczęciu gry
+    TavolaClient.inGame = true;
+    TavolaInGameClient inGameClient = new TavolaInGameClient(TavolaClient.pipe);
+    new Thread(inGameClient).start();
+    // TavolaClient.inGame = false; - usypia go
+    // inGameClient.kill(); - zabija
   }
 
-  public static void setConnected(boolean connected) {
-    TavolaClient.connected = connected;
+  public static void nextMoves(String[] array) {
+    // TODO Auto-generated method stub
   }
 
-  public static Game getGame() {
-    return TavolaClient.game;
-  }
-
-  public static void setGame(Game game) {
-    TavolaClient.game = game;
+  public static String getLastMove() {
+    // TODO Auto-generated method stub
+    return "0";
   }
 
 }

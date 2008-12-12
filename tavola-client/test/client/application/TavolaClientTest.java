@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
-
 import client.protocol.InvalidProtocolException;
 
 public class TavolaClientTest extends TestCase {
@@ -21,13 +21,14 @@ public class TavolaClientTest extends TestCase {
 
   private BufferedReader in = null;
 
+  @Override
   protected void setUp() throws Exception {
 
     try {
       socket = new Socket(TavolaClient.HOST, TavolaClient.PORT);
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      TavolaClient.setConnected(true);
+      // TavolaClient.setConnected(true);
     } catch (UnknownHostException e) {
       System.err.println("Unknown host " + TavolaClient.HOST);
       System.exit(1);
@@ -41,8 +42,9 @@ public class TavolaClientTest extends TestCase {
     pipe.readln(); // VERSION xxx
   }
 
+  @Override
   protected void tearDown() throws Exception {
-    TavolaClient.setConnected(false);
+    // TavolaClient.setConnected(false);
     out.close();
     in.close();
     socket.close();
@@ -51,17 +53,17 @@ public class TavolaClientTest extends TestCase {
   public void testHello() throws IOException, InvalidProtocolException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     String ticket = br.readLine();
-    assertTrue(new HelloGameMessage(ticket).send(pipe));// kopytko*/
+    Assert.assertTrue(new HelloGameMessage(ticket).send(pipe));// kopytko*/
   }
 
   public void testCreateGame() throws IOException, InvalidProtocolException {
     testHello();
-    assertTrue(new CreateGameMessage("testLevel", 4, 5, "emptyTheme")
+    Assert.assertTrue(new CreateGameMessage("testLevel", 4, 5, "emptyTheme")
         .send(pipe) != null);
   }
 
   public void testJoinGame() throws IOException, InvalidProtocolException {
     testHello();
-    assertTrue(new JoinGameMessage("0").send(pipe).length == 0);
+    Assert.assertTrue(new JoinGameMessage("0").send(pipe).length == 0);
   }
 }
