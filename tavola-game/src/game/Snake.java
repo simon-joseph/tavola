@@ -29,8 +29,9 @@ public final class Snake implements IPlayer {
     /**
      * Sets up {@link #direction}, {@link #head} and {@link #delay} from
      * parameters. Sets {@link #last} to null and {@link #body} to empty
-     * {@link LinkedList}.
-     * 
+     * {@link LinkedList}. It's best not to start with head position near the
+     * borders. Otherwise you should remember not to face directly the nearest
+     * wall.
      * 
      * @param direction
      *            the direction to set
@@ -39,19 +40,12 @@ public final class Snake implements IPlayer {
      * @param length
      *            the delay to set
      */
-    protected void setUpSnake(Direction direction, Position head, int length) {
+    public void setUpSnake(Direction direction, Position head, int length) {
 	delay = length;
 	body = new LinkedList<Position>();
 	this.direction = direction;
 	this.head = head;
 	last = null;
-    }
-
-    /**
-     * @return the delay
-     */
-    public int getDelay() {
-	return delay;
     }
 
     /*
@@ -83,10 +77,45 @@ public final class Snake implements IPlayer {
     }
 
     /**
+     * @return the delay
+     */
+    public int getDelay() {
+	return delay;
+    }
+
+    /**
      * @param delay
      *            the delay to set
      */
     public void setDelay(int delay) {
 	this.delay = delay;
+    }
+
+    /**
+     * @return the direction
+     */
+    public Direction getDirection() {
+	return direction;
+    }
+
+    /**
+     * @return the head
+     */
+    public Position getHead() {
+	return head;
+    }
+
+    /**
+     * @return the last
+     */
+    public Position getLast() {
+	return last;
+    }
+
+    /**
+     * @return the body
+     */
+    public LinkedList<Position> getBody() {
+	return body;
     }
 }
