@@ -17,11 +17,11 @@ import commons.Position;
 
 public final class Snake implements IPlayer {
 
-    private Direction direction;
     private int delay;
-    protected Position head;
-    protected Position last;
-    protected LinkedList<Position> body;
+    private Position head;
+    private Position last;
+    private Direction direction;
+    private LinkedList<Position> body;
 
     public Snake() {
     }
