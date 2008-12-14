@@ -77,23 +77,23 @@ public final class SnakeBoard implements IBoard {
 	    levelChanged = true;
 	}
 	for (int i = 0; i < snake.getBody().size(); i++) {
-	    board[snake.getBody().get(i).horizontal][snake.getBody().get(i).vertical] = 1;
+	    board[snake.getBody().get(i).x()][snake.getBody().get(i).y()] = 1;
 	}
 	// System.out.println("Pozycja head: " + snake.head.horizontal + " "
 	// + snake.head.vertical);
 	// System.out.println("Pozycja last: " + snake.last.horizontal + " "
 	// + snake.last.vertical);
-	board[snake.getLast().horizontal][snake.getLast().vertical] = 0;
+	board[snake.getLast().x()][snake.getLast().y()] = 0;
 	if (stopConditions()) {
 	    gameOver = true;
 	    System.out.println("przegrales");
 	} else {
-	    if (board[snake.getHead().horizontal][snake.getHead().vertical] == 3) {
+	    if (board[snake.getHead().x()][snake.getHead().y()] == 3) {
 		snake.setDelay(snake.getDelay() + 1);
 		levelChanged = false;
 		generateBonus();
 	    }
-	    board[snake.getHead().horizontal][snake.getHead().vertical] = 2;
+	    board[snake.getHead().x()][snake.getHead().y()] = 2;
 	}
     }
 
@@ -110,9 +110,9 @@ public final class SnakeBoard implements IBoard {
 	Position p = snake.getHead();
 	// System.out.println("Pozycja glowy: " + p.horizontal + " " +
 	// p.vertical);
-	return p.horizontal < 0 || p.horizontal >= WIDTH || p.vertical < 0
-		|| p.vertical >= HEIGHT || board[p.horizontal][p.vertical] != 0
-		&& board[p.horizontal][p.vertical] != 3;
+	return p.x() < 0 || p.x() >= WIDTH || p.y() < 0
+		|| p.y() >= HEIGHT || board[p.x()][p.y()] != 0
+		&& board[p.x()][p.y()] != 3;
     }
 
     public boolean isGameOver() {
@@ -123,8 +123,10 @@ public final class SnakeBoard implements IBoard {
 	return snake;
     }
 
-    public void setSnakeDirection(Direction d) {
-	snakeDirection = d;
+    public void setSnakeDirection(Direction direction) {
+	if (!snakeDirection.opposite(direction)) {
+	    snakeDirection = direction;
+	}
     }
 
     public long getSpeed() {

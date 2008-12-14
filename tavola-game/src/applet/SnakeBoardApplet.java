@@ -26,21 +26,14 @@ import commons.Direction;
 public class SnakeBoardApplet extends JApplet implements Runnable {
 
     protected BoardPanel board;
-
     protected boolean clicked = false;
-
     protected JPanel controlPanel;
-
     protected JButton startButton;
-
     protected JButton exitButton;
-
     protected JButton pauseButton;
-
     protected JTextField messageField;
 
     private ButtonListener buttonListener = new ButtonListener(this);
-
     private SnakeBoard snakeBoard = new SnakeBoard(); // FIXME should be
 
     // initialized elsewhere

@@ -1,5 +1,5 @@
 /**
- * Przechowuje dane na temat pozycji.
+ * Contains information about position in horizontal and vertical.
  */
 package commons;
 
@@ -9,22 +9,56 @@ package commons;
  */
 public final class Position {
 
-  public int horizontal;
+    private int horizontal;
+    private int vertical;
 
-  public int vertical;
+    public Position(int horizontal, int vertical) {
+	setVertical(vertical);
+	setHorizontal(horizontal);
+    }
 
-  public Position(int horizontal, int vertical) {
-    this.vertical = vertical;
-    this.horizontal = horizontal;
-  }
+    /**
+     * Modifies this by adding position parameter.
+     * 
+     * @param position
+     */
+    public void add(Position position) {
+	setVertical(y() + position.y());
+	setHorizontal(x() + position.x());
+    }
 
-  public void add(Position p) {
-    vertical += p.vertical;
-    horizontal += p.horizontal;
-  }
+    @Override
+    public Position clone() {
+	return new Position(x(), y());
+    }
 
-  @Override
-  public Position clone() {
-    return new Position(horizontal, vertical);
-  }
+    /**
+     * @return the horizontal
+     */
+    public int x() {
+	return horizontal;
+    }
+
+    /**
+     * @return the vertical
+     */
+    public int y() {
+	return vertical;
+    }
+
+    /**
+     * @param horizontal
+     *            the horizontal to set
+     */
+    public void setHorizontal(int horizontal) {
+	this.horizontal = horizontal;
+    }
+
+    /**
+     * @param vertical
+     *            the vertical to set
+     */
+    public void setVertical(int vertical) {
+	this.vertical = vertical;
+    }
 }

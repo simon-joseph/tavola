@@ -1,5 +1,5 @@
 /**
- * Opisuje kierunki ruchu. LEFT, RIGHT, UP, DOWN.
+ * Describes directions of movement in game. LEFT, RIGHT, UP, DOWN.
  */
 package commons;
 
@@ -10,15 +10,28 @@ package commons;
 public enum Direction {
     LEFT, RIGHT, UP, DOWN;
 
-    public boolean opposite(Direction d) {
-	if (this == LEFT && d == RIGHT || this == RIGHT && d == LEFT
-		|| this == UP && d == DOWN || this == DOWN && d == UP) {
+    /**
+     * @param direction
+     * @return true if direction is opposite to this, and false otherwise
+     */
+    public boolean opposite(Direction direction) {
+	if (this == LEFT && direction == RIGHT || this == RIGHT
+		&& direction == LEFT || this == UP && direction == DOWN
+		|| this == DOWN && direction == UP) {
 	    return true;
 	} else {
 	    return false;
 	}
     }
 
+    /**
+     * Translates this to corresponding Position value. In horizontal LEFT means
+     * lower values, and RIGHT higher values. Yet in vertical UP means lower
+     * values and DOWN means higher values because the board representing
+     * in-game elements are drawn from left to right, and from up to down.
+     * 
+     * @return translation from Direction to one step as Position
+     */
     public Position toPosition() {
 	switch (this) {
 	case RIGHT:
