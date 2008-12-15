@@ -28,7 +28,17 @@ public final class SnakeBoard implements IBoard {
     public SnakeBoard() {
     }
 
-    // TODO javadoc
+    /**
+         * Initiates fields: {@link #generator}, {@link #snakeDirection},
+         * {@link #snake}, {@link #gameOver}, {@link #speed} and
+         * {@link #level}. Sets snakes position in the center of the board.
+         * Initial length of snake is set at 3. Both {@link #speed} and
+         * {@link #level} are set at 1; {@link #gameOver} is set to false .
+         * Calls method {@link #initBoard()}.
+         * 
+         * @param direction
+         *                the direction of snake to set
+         */
     public void initialize(Direction direction) {
 	generator = new Random();
 	snakeDirection = direction;
@@ -41,6 +51,9 @@ public final class SnakeBoard implements IBoard {
     }
 
     // TODO javadoc
+    /**
+         * Initiates an empty board with one bonus.
+         */
     private void initBoard() {
 	board = new int[WIDTH][HEIGHT];
 	for (int w = 0; w < WIDTH; w++) {
@@ -51,7 +64,9 @@ public final class SnakeBoard implements IBoard {
 	generateBonus();
     }
 
-    // TODO javadoc
+    /**
+         * Randomly selects an empty field on the board and puts a bonus there.
+         */
     private void generateBonus() {
 	while (true) {
 	    int i = generator.nextInt(WIDTH - 1);
@@ -73,16 +88,12 @@ public final class SnakeBoard implements IBoard {
 	snake.changeDirection(snakeDirection);
 	snake.move();
 	if (snake.getBody().size() % 5 == 0 && !levelChanged) {
-	    speedup();
+	    speedup(4);
 	    levelChanged = true;
 	}
 	for (int i = 0; i < snake.getBody().size(); i++) {
 	    board[snake.getBody().get(i).x()][snake.getBody().get(i).y()] = 1;
 	}
-	// System.out.println("Pozycja head: " + snake.head.horizontal + " "
-	// + snake.head.vertical);
-	// System.out.println("Pozycja last: " + snake.last.horizontal + " "
-	// + snake.last.vertical);
 	board[snake.getLast().x()][snake.getLast().y()] = 0;
 	if (stopConditions()) {
 	    gameOver = true;
@@ -97,22 +108,30 @@ public final class SnakeBoard implements IBoard {
 	}
     }
 
-    // TODO javadoc
-    private void speedup() {
+    /**
+         * Increases speed of snake by adding value of jump parameter to current
+         * {@link #speed}
+         * 
+         * @param jump
+         */
+    private void speedup(int jump) {
 	if (speed < 70) {
-	    speed += 4;
+	    speed += jump;
 	    level++;
 	}
     }
 
-    // TODO javadoc
+    /**
+         * Checks whether at least one of the conditions of termination is
+         * satisfied. The condition is the collision of snakes head with other
+         * part of snake or edge of board.
+         * 
+         * @return true if at least one condition is satisfied, false if none
+         */
     private boolean stopConditions() {
 	Position p = snake.getHead();
-	// System.out.println("Pozycja glowy: " + p.horizontal + " " +
-	// p.vertical);
-	return p.x() < 0 || p.x() >= WIDTH || p.y() < 0
-		|| p.y() >= HEIGHT || board[p.x()][p.y()] != 0
-		&& board[p.x()][p.y()] != 3;
+	return p.x() < 0 || p.x() >= WIDTH || p.y() < 0 || p.y() >= HEIGHT
+		|| board[p.x()][p.y()] != 0 && board[p.x()][p.y()] != 3;
     }
 
     public boolean isGameOver() {
