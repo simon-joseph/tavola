@@ -41,6 +41,7 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 	snakeBoard = new SnakeBoard();
 	initGUI();
 	startButton.setVisible(true);
+	new Thread(this).start();
     }
 
     public static void main(String[] args) {
@@ -49,7 +50,6 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SnakeBoardApplet inst = new SnakeBoardApplet();
-		new Thread(inst).start();
 		frame.getContentPane().add(inst);
 		((JComponent) frame.getContentPane()).setPreferredSize(inst
 			.getSize());
