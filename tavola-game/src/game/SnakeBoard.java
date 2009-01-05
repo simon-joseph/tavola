@@ -21,6 +21,7 @@ public final class SnakeBoard implements IBoard {
     private boolean gameOver;
     private boolean levelChanged;
     private Snake snake;
+    private Position bonus;
     private Random generator;
     private int[][] board;
     private Direction snakeDirection;
@@ -29,16 +30,15 @@ public final class SnakeBoard implements IBoard {
     }
 
     /**
-         * Initiates fields: {@link #generator}, {@link #snakeDirection},
-         * {@link #snake}, {@link #gameOver}, {@link #speed} and
-         * {@link #level}. Sets snakes position in the center of the board.
-         * Initial length of snake is set at 3. Both {@link #speed} and
-         * {@link #level} are set at 1; {@link #gameOver} is set to false .
-         * Calls method {@link #initBoard()}.
-         * 
-         * @param direction
-         *                the direction of snake to set
-         */
+     * Initiates fields: {@link #generator}, {@link #snakeDirection},
+     * {@link #snake}, {@link #gameOver}, {@link #speed} and {@link #level}.
+     * Sets snakes position in the center of the board. Initial length of snake
+     * is set at 3. Both {@link #speed} and {@link #level} are set at 1;
+     * {@link #gameOver} is set to false . Calls method {@link #initBoard()}.
+     * 
+     * @param direction
+     *            the direction of snake to set
+     */
     public void initialize(Direction direction) {
 	generator = new Random();
 	snakeDirection = direction;
@@ -52,8 +52,8 @@ public final class SnakeBoard implements IBoard {
 
     // TODO javadoc
     /**
-         * Initiates an empty board with one bonus.
-         */
+     * Initiates an empty board with one bonus.
+     */
     private void initBoard() {
 	board = new int[WIDTH][HEIGHT];
 	for (int w = 0; w < WIDTH; w++) {
@@ -65,14 +65,15 @@ public final class SnakeBoard implements IBoard {
     }
 
     /**
-         * Randomly selects an empty field on the board and puts a bonus there.
-         */
+     * Randomly selects an empty field on the board and puts a bonus there.
+     */
     private void generateBonus() {
 	while (true) {
 	    int i = generator.nextInt(WIDTH - 1);
 	    int j = generator.nextInt(HEIGHT - 1);
 	    if (board[i][j] == 0) {
 		board[i][j] = 3;
+		bonus = new Position(i, j);
 		break;
 	    }
 	}
@@ -109,11 +110,11 @@ public final class SnakeBoard implements IBoard {
     }
 
     /**
-         * Increases speed of snake by adding value of jump parameter to current
-         * {@link #speed}
-         * 
-         * @param jump
-         */
+     * Increases speed of snake by adding value of jump parameter to current
+     * {@link #speed}
+     * 
+     * @param jump
+     */
     private void speedup(int jump) {
 	if (speed < 70) {
 	    speed += jump;
@@ -122,12 +123,12 @@ public final class SnakeBoard implements IBoard {
     }
 
     /**
-         * Checks whether at least one of the conditions of termination is
-         * satisfied. The condition is the collision of snakes head with other
-         * part of snake or edge of board.
-         * 
-         * @return true if at least one condition is satisfied, false if none
-         */
+     * Checks whether at least one of the conditions of termination is
+     * satisfied. The condition is the collision of snakes head with other part
+     * of snake or edge of board.
+     * 
+     * @return true if at least one condition is satisfied, false if none
+     */
     private boolean stopConditions() {
 	Position p = snake.getHead();
 	return p.x() < 0 || p.x() >= WIDTH || p.y() < 0 || p.y() >= HEIGHT
@@ -158,5 +159,12 @@ public final class SnakeBoard implements IBoard {
 
     public int[][] getBoard() {
 	return board;
+    }
+
+    /**
+     * @return the bonus
+     */
+    public Position getBonus() {
+	return bonus;
     }
 }

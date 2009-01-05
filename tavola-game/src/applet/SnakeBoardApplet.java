@@ -32,39 +32,33 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
     protected JButton exitButton;
     protected JButton pauseButton;
     protected JTextField messageField;
+    private ButtonListener buttonListener;
+    private SnakeBoard snakeBoard;
 
-    private ButtonListener buttonListener = new ButtonListener(this);
-    private SnakeBoard snakeBoard = new SnakeBoard(); // FIXME should be
-
-    // initialized elsewhere
+    public SnakeBoardApplet() {
+	super();
+	buttonListener = new ButtonListener(this);
+	snakeBoard = new SnakeBoard();
+	initGUI();
+	startButton.setVisible(true);
+    }
 
     public static void main(String[] args) {
 	SwingUtilities.invokeLater(new Runnable() {
-
 	    public void run() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SnakeBoardApplet inst = new SnakeBoardApplet();
-		// new Thread(inst).start();
+		new Thread(inst).start();
 		frame.getContentPane().add(inst);
 		((JComponent) frame.getContentPane()).setPreferredSize(inst
 			.getSize());
 		frame.pack();
 		frame.setVisible(true);
 		inst.startButton.setVisible(true);
-
 	    }
 	});
 
-    }
-
-    public SnakeBoardApplet() {
-	super();
-	initGUI();
-	startButton.setVisible(true);
-	new Thread(this).start(); // FIXME wolałbym jeśli dało by się to
-	// gdzie
-	// indziej zrobić
     }
 
     public void run() {

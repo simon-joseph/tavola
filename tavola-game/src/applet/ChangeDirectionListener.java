@@ -13,46 +13,41 @@ import commons.Direction;
  */
 class ChangeDirectionListener implements KeyListener {
 
-  SnakeBoard snakeBoard;
+    SnakeBoard snakeBoard;
 
-  public ChangeDirectionListener(SnakeBoard snakeBoard) {
-    super();
-    this.snakeBoard = snakeBoard;
-  }
-
-  public void keyPressed(KeyEvent e) {
-    if (true) {
-      switch (e.getKeyCode()) {
-        case KeyEvent.VK_UP:
-          snakeBoard.setSnakeDirection(Direction.UP);
-          break;
-        case KeyEvent.VK_DOWN:
-          snakeBoard.setSnakeDirection(Direction.DOWN);
-          break;
-        case KeyEvent.VK_LEFT:
-          snakeBoard.setSnakeDirection(Direction.LEFT);
-          break;
-        case KeyEvent.VK_RIGHT:
-          snakeBoard.setSnakeDirection(Direction.RIGHT);
-          break;
-        default:
-          break;
-        // sb.getSnake().changeDirection(Direction.UP);
-      }
-    } else {
-      if (e.getKeyCode() == KeyEvent.VK_UP) {
-        snakeBoard.getSnake().changeDirection(Direction.UP);
-      }
+    public ChangeDirectionListener(SnakeBoard snakeBoard) {
+	super();
+	this.snakeBoard = snakeBoard;
     }
-  }
 
-  public void keyReleased(KeyEvent arg0) {
-    // TODO Auto-generated method stub
+    public void keyPressed(KeyEvent e) {
 
-  }
+	switch (e.getKeyCode()) {
+	case KeyEvent.VK_UP:
+	    snakeBoard.setSnakeDirection(Direction.UP);
+	    break;
+	case KeyEvent.VK_DOWN:
+	    snakeBoard.setSnakeDirection(Direction.DOWN);
+	    break;
+	case KeyEvent.VK_LEFT:
+	    snakeBoard.setSnakeDirection(Direction.LEFT);
+	    break;
+	case KeyEvent.VK_RIGHT:
+	    snakeBoard.setSnakeDirection(Direction.RIGHT);
+	    break;
+	default:
+	    break;
+	}
 
-  public void keyTyped(KeyEvent arg0) {
-    // TODO Auto-generated method stub
+    }
 
-  }
+    public void keyReleased(KeyEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
+
+    public void keyTyped(KeyEvent arg0) {
+	// TODO Auto-generated method stub
+
+    }
 }
