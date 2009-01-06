@@ -25,6 +25,7 @@ import commons.Direction;
 @SuppressWarnings("serial")
 public class SnakeBoardApplet extends JApplet implements Runnable {
 
+    private DefaultTheme th;
     protected BoardPanel board;
     protected boolean clicked = false;
     protected JPanel controlPanel;
@@ -37,10 +38,13 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 
     public SnakeBoardApplet() {
 	super();
+	// wybierz temat
+	th = new DefaultTheme();
 	buttonListener = new ButtonListener(this);
 	snakeBoard = new SnakeBoard();
 	initGUI();
 	startButton.setVisible(true);
+
 	new Thread(this).start();
     }
 
@@ -94,12 +98,8 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 	    messageField.setMaximumSize(new Dimension(200, 100));
 	    messageField.setHorizontalAlignment(SwingConstants.CENTER);
 
-	    board = new BoardPanel(snakeBoard);
-	    board.setPreferredSize(new Dimension(10 * snakeBoard.WIDTH + 1,
-		    10 * snakeBoard.HEIGHT + 1));
-	    board.setMaximumSize(new Dimension(10 * snakeBoard.WIDTH + 1,
-		    10 * snakeBoard.HEIGHT + 1));
-	    board.setVisible(false);
+	    board = new BoardPanel();
+	    board.init(snakeBoard);
 
 	    controlPanel = new JPanel();
 	    controlPanel.setLayout(new FlowLayout());
