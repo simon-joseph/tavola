@@ -72,11 +72,14 @@ public class TavolaClientTest extends TestCase {
     testHello();
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     while (true) {
-      pipe.println(br.readLine());
+      String s3 = br.readLine();
+      if (!s3.equals("")) {
+        pipe.println(s3);
+      }
 
       do {
-        String s = pipe.readln();
-        if (s.equals("START_GAME")) {
+        String s2 = pipe.readln();
+        if (s2.equals("START_GAME")) {
           TavolaClient.inGame = true;
           TavolaInGameClient inGameClient = new TavolaInGameClient(pipe);
           Thread t = new Thread(inGameClient);
