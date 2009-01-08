@@ -41,11 +41,22 @@ public class TavolaClient {
 
   public static void nextMoves(String[] array) {
     // TODO Auto-generated method stub
+    System.out.println("MOVES");
+    for (String s : array) {
+      System.out.println(s);
+    }
   }
 
   public static String getLastMove() {
     // TODO Auto-generated method stub
-    return "0";
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      return br.readLine();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return "0";
+    }
   }
 
 }

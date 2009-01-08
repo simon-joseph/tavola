@@ -67,14 +67,22 @@ public class TavolaClientTest extends TestCase {
     new JoinGameMessage(br.readLine()).send(pipe);
   }
 
-  public void testUser() throws IOException, InvalidProtocolException {
+  public void testUser() throws IOException, InvalidProtocolException,
+      InterruptedException {
     testHello();
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     while (true) {
       pipe.println(br.readLine());
 
       do {
-        pipe.readln();
+        String s = pipe.readln();
+        if (s.equals("START_GAME")) {
+          TavolaClient.inGame = true;
+          TavolaInGameClient inGameClient = new TavolaInGameClient(pipe);
+          Thread t = new Thread(inGameClient);
+          t.start();
+          t.join();
+        }
       } while (pipe.readyToRead());
     }
   }
