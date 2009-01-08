@@ -116,7 +116,13 @@ public abstract class TavolaServer {
     if (true /* warunki wystartowania gry */) {
 
       try {
-        middleProtocol.startGame();
+        try {
+          middleProtocol.startGame();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+          return false;
+        }
       } catch (InterruptedException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();

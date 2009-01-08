@@ -189,6 +189,16 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           }
         }
 
+      } else if (input.equals("GAME_STARTED")) {
+        System.out.println("Game started " + player.getId());
+        while (player.getGame() != null && player.getGame().isRunning()) {
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
       } else {
         result.append("UNKNOWN_COMMAND");
       }

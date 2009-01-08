@@ -15,7 +15,7 @@ import data.game.Player;
  */
 public class TavolaServerThread extends Thread {
 
-  private final Socket socket;
+  public final Socket socket;
 
   public TavolaServerThread(Socket socket) {
     this.socket = socket;

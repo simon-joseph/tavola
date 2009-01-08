@@ -34,6 +34,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
   public void startGame(Game game) throws InterruptedException, IOException,
       InvalidInGameProtocolException {
 
+    game.setRunning(true);
     int moveId = 0;
 
     Map<String, String> moves = new HashMap<String, String>();
@@ -47,6 +48,11 @@ public class TavolaInGameProtocol implements TavolaProtocol {
       }
       for (Player p : game.getPlayers()) {
         synchronized (p) {
+          /*
+           * String move = new BufferedReader(new InputStreamReader(
+           * ((TavolaServerThread) p.getServerThread()).socket
+           * .getInputStream())).readLine();
+           */
           String move = p.getIn().readLine();
           System.out.println(move);
 

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author rafal.paliwoda
  * 
- *         game and players settings
+ * game and players settings
  */
 public class Game {
 
@@ -101,11 +101,11 @@ public class Game {
     this.speed = speed;
   }
 
-  public boolean isRunning() {
+  public synchronized boolean isRunning() {
     return isRunning;
   }
 
-  public void setRunning(boolean isRunning) {
+  public synchronized void setRunning(boolean isRunning) {
     this.isRunning = isRunning;
   }
 
