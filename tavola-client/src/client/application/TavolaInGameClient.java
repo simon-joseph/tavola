@@ -31,7 +31,7 @@ public class TavolaInGameClient implements Runnable {
           if (s.matches("^NEXT [0-9]+$")
               && Integer.parseInt(s.substring(5)) == ++moveId) {
 
-            pipe.println("NEXT " + String.valueOf(moveId) + " "
+            pipe.println("MOVE " + String.valueOf(moveId) + " "
                 + TavolaClient.getLastMove());
 
             s = pipe.readln();

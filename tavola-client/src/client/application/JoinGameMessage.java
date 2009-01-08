@@ -11,7 +11,7 @@ public class JoinGameMessage extends GameMessage<Player[]> {
   @Override
   protected boolean endOfAnswer(String s) {
     // TODO Auto-generated method stub
-    return s.equals("END");
+    return s != null && s.equals("END");
   }
 
   public JoinGameMessage(String id) {
@@ -41,7 +41,7 @@ public class JoinGameMessage extends GameMessage<Player[]> {
         }
       }
       String[] a = answerStrings[i].split(" ");
-      players[i] = new Player(a[0], a[1]);
+      players[i] = new Player(a[0], ""/* a[1] */);
     }
     return players;
   }

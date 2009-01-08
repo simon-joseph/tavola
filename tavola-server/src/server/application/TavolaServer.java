@@ -58,10 +58,22 @@ public abstract class TavolaServer {
         && TavolaServer.games.add(game);
   }
 
+  /**
+   * 
+   */
+  private static List<String> getPlayersIds(Game game) {
+    ArrayList<String> ids = new ArrayList<String>();
+
+    for (Player player : game.getPlayers()) {
+      ids.add(player.getId());
+    }
+    return ids;
+  }
+
   public synchronized static boolean addPlayer(Game game, Player player) {
     return game.getPlayers().size() < game.getMaxPlayersCount()
-        && !game.getPlayers().contains(player) && game.getPlayers().add(player)
-        && !game.isRunning();
+        && !TavolaServer.getPlayersIds(game).contains(player.getId())
+        && game.getPlayers().add(player) && !game.isRunning();
   }
 
   public synchronized static boolean removePlayer(Game game, Player player) {

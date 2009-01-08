@@ -73,7 +73,15 @@ public class TavolaServerThread extends Thread {
    */
   private String authentication(String cookie) {
     // TODO Auto-generated method stub
-    return "0";
+
+    /*
+     * MemCachedClient cache = new MemCachedClient(); String cacheKey =
+     * cache.get(cookie); if (cacheKey == null) { return null; } return
+     * cacheKey.split(" ")[0];
+     */
+
+    return cookie;
+
   }
 
 }

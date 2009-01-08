@@ -7,7 +7,7 @@ public class HelloGameMessage extends GameMessage<Boolean> {
   @Override
   protected boolean endOfAnswer(String s) {
     // TODO Auto-generated method stub
-    return true;
+    return s != null;
   }
 
   @Override
@@ -25,7 +25,7 @@ public class HelloGameMessage extends GameMessage<Boolean> {
   @Override
   protected Boolean parseAnswerStrings(String[] answerStrings) {
     // TODO Auto-generated method stub
-    return answerStrings.length == 0 || answerStrings[0].equals("");
+    return answerStrings.length == 1 && answerStrings[0].equals("OK");
   }
 
 }
