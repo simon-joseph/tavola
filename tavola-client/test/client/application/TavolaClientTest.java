@@ -21,10 +21,11 @@ public class TavolaClientTest extends TestCase {
 
   private BufferedReader in = null;
 
-  protected void testConnection() throws Exception {
+  @Override
+  protected void setUp() throws Exception {
 
     try {
-      socket = new Socket(TavolaClient.HOST, TavolaClient.PORT);
+      socket = new Socket("192.168.4.178", TavolaClient.PORT);
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       // TavolaClient.setConnected(true);
@@ -41,6 +42,13 @@ public class TavolaClientTest extends TestCase {
     pipe.readln(); // VERSION xxx
   }
 
+  @Override
+  protected void tearDown() throws IOException {
+    in.close();
+    out.close();
+    socket.close();
+  }
+
   public void testHello() throws IOException, InvalidProtocolException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     String ticket = br.readLine();
@@ -48,12 +56,23 @@ public class TavolaClientTest extends TestCase {
   }
 
   public void testCreateGame() throws IOException, InvalidProtocolException {
+    testHello();
     Assert.assertTrue(new CreateGameMessage("testLevel", 4, 5, "emptyTheme")
         .send(pipe) != null);
   }
 
   public void testJoinGame() throws IOException, InvalidProtocolException {
+    testHello();
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     new JoinGameMessage(br.readLine()).send(pipe);
+  }
+
+  public void testUser() throws IOException, InvalidProtocolException {
+    testHello();
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    while (true) {
+      pipe.println(br.readLine());
+      pipe.readln();
+    }
   }
 }
