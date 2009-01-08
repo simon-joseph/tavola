@@ -51,6 +51,7 @@ public class TavolaClient {
     // TODO Auto-generated method stub
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     try {
+      System.out.println("??");
       return br.readLine();
     } catch (IOException e) {
       // TODO Auto-generated catch block

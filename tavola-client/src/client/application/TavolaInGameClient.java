@@ -23,13 +23,13 @@ public class TavolaInGameClient implements Runnable {
 
     int moveId = 0;
 
-    while (!termination) {
-      try {
+    try {
+      while (!termination) {
         String s;
         if (TavolaClient.inGame && (s = pipe.readln()) != null) {
 
           if (s.matches("^NEXT [0-9]+$")
-              && Integer.parseInt(s.substring(5)) == ++moveId) {
+              && Integer.parseInt(s.substring(5)) == moveId) {
 
             pipe.println("MOVE " + String.valueOf(moveId) + " "
                 + TavolaClient.getLastMove());
@@ -50,6 +50,7 @@ public class TavolaInGameClient implements Runnable {
             }
 
             TavolaClient.nextMoves(moves.toArray(new String[] {}));
+            moveId++;
 
           } else {
             throw new InvalidProtocolException();
@@ -64,13 +65,13 @@ public class TavolaInGameClient implements Runnable {
             e.printStackTrace();
           }
         }
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (InvalidProtocolException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
       }
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InvalidProtocolException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
 
   }
