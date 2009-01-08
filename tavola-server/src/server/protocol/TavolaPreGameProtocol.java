@@ -11,7 +11,7 @@ import data.network.TavolaProtocol;
 /**
  * @author rafal.paliwoda
  * 
- *         TODO kod wymaga rekaktoryzacji
+ * TODO kod wymaga rekaktoryzacji
  */
 public class TavolaPreGameProtocol implements TavolaProtocol {
 

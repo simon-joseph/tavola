@@ -80,10 +80,17 @@ public abstract class TavolaServer {
     if (game.isRunning() == false) {
       game.getPlayers().remove(player);
       player.setGame(null);
+      if (game.getPlayers().isEmpty()) {
+        TavolaServer.removeGame(game);
+      }
       return true;
     } else {
       return false;
     }
+  }
+
+  private synchronized static boolean removeGame(Game game) {
+    return game.getPlayers().isEmpty() && TavolaServer.games.remove(game);
   }
 
   public static void clearGames() {

@@ -72,7 +72,10 @@ public class TavolaClientTest extends TestCase {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     while (true) {
       pipe.println(br.readLine());
-      pipe.readln();
+
+      do {
+        pipe.readln();
+      } while (pipe.readyToRead());
     }
   }
 }

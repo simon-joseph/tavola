@@ -18,6 +18,11 @@ public class Pipe {
     pw.println(s);
   }
 
+  synchronized public boolean readyToRead() throws IOException {
+    return br.ready();
+
+  }
+
   synchronized public String readln() throws IOException {
     String ans = br.readLine();
     System.out.println("pipe received: " + ans);
