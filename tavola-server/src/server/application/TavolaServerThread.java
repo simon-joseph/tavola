@@ -40,18 +40,24 @@ public class TavolaServerThread extends Thread {
 
         out.println("OK");
 
-        final Player player = new Player(id, out, this);
+        final Player player = new Player(id, out, this, in);
 
         protocol = new TavolaMiddleProtocol(player, in);
-
-        while (TavolaServer.isRunning() && (inputLine = in.readLine()) != null) {
-          outputLine = protocol.processInput(inputLine);
-          synchronized (player) {
-            out.println(outputLine);
+        try {
+          while (TavolaServer.isRunning()
+              && (inputLine = in.readLine()) != null) {
+            outputLine = protocol.processInput(inputLine);
+            synchronized (player) {
+              out.println(outputLine);
+            }
+            if (outputLine.equals("BYE")) {
+              break;
+            }
           }
-          if (outputLine.equals("BYE")) {
-            break;
-          }
+        } catch (final IOException e) {
+          protocol.processInput("LEAVE_GAME");
+          e.printStackTrace();
+          throw e;
         }
       }
 
@@ -62,10 +68,10 @@ public class TavolaServerThread extends Thread {
       out.close();
       in.close();
       socket.close();
-
     } catch (final IOException e) {
       e.printStackTrace();
     }
+
   }
 
   /**

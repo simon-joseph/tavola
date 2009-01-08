@@ -1,5 +1,6 @@
 package data.game;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 /**
@@ -13,6 +14,7 @@ public class Player {
   private PrintWriter printWriter;
   private Game game;
   private Thread serverThread;
+  private BufferedReader in;
 
   public Player(String id, PrintWriter printWriter) {
     this.id = id;
@@ -20,11 +22,13 @@ public class Player {
     this.printWriter = printWriter;
   }
 
-  public Player(String id, PrintWriter printWriter, Thread serverThread) {
+  public Player(String id, PrintWriter printWriter, Thread serverThread,
+      BufferedReader in) {
     this.id = id;
     game = null;
     this.printWriter = printWriter;
     this.serverThread = serverThread;
+    this.in = in;
   }
 
   public Thread getServerThread() {
@@ -62,6 +66,21 @@ public class Player {
   @Override
   public String toString() {
     return getId();
+  }
+
+  /**
+   * @return the in
+   */
+  public BufferedReader getIn() {
+    return in;
+  }
+
+  /**
+   * @param in
+   *            the in to set
+   */
+  public void setIn(BufferedReader in) {
+    this.in = in;
   }
 
 }

@@ -1,6 +1,7 @@
 package server.protocol;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import data.game.Game;
@@ -18,20 +19,30 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
   private final TavolaInGameProtocol inGameProtocol;
   private final BufferedReader in;
 
-  public void startGame() {
+  public void startGame() throws InterruptedException {
     final Game game = player.getGame();
     final PrintWriter out = player.getPrintWriter();
 
     for (Player p : game.getPlayers()) {
       synchronized (p) {
+        p.getPrintWriter().println("START_GAME");
         if (p != player) {
+
           p.getServerThread().suspend(); // TODO
         }
-        p.getPrintWriter().println("START_GAME");
       }
     }
 
-    // TODO
+    try {
+      inGameProtocol.startGame(game);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InvalidInGameProtocolException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     for (Player p : game.getPlayers()) {
       synchronized (p) {
         if (p != player) {
