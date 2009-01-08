@@ -80,6 +80,7 @@ public class TavolaClientTest extends TestCase {
       do {
         String s2 = pipe.readln();
         if (s2.equals("START_GAME")) {
+          pipe.println("GAME_STARTED");
           TavolaClient.inGame = true;
           TavolaInGameClient inGameClient = new TavolaInGameClient(pipe);
           Thread t = new Thread(inGameClient);
