@@ -2,7 +2,7 @@ package client.application;
 
 import client.protocol.GameMessage;
 import client.protocol.InvalidProtocolException;
-import data.gamePawel.Player;
+import data.game.Player;
 
 public class JoinGameMessage extends GameMessage<Player[]> {
 
@@ -41,7 +41,7 @@ public class JoinGameMessage extends GameMessage<Player[]> {
         }
       }
       String[] a = answerStrings[i].split(" ");
-      players[i] = new Player(a[0], ""/* a[1] */);
+      players[i] = new Player(a[0], null/* a[1] */);
     }
     return players;
   }

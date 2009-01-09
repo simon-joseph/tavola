@@ -41,7 +41,7 @@ public class TavolaInGameClient implements Runnable {
 
             ArrayList<String> moves = new ArrayList<String>();
             while ((s = pipe.readln()) != null
-                && s.matches("^[a-zA-Z0-9]+ [0-9]+$")) {
+                && s.matches("^[a-zA-Z0-9]+ [0,1,2,3]?$")) {
               moves.add(s);
             }
 
