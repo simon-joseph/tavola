@@ -2,48 +2,84 @@ package applet;
 
 import game.SnakeBoard;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JApplet;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
-import commons.Direction;
 
 /**
  * @author sla + agl
  */
 
 @SuppressWarnings("serial")
-public class SnakeBoardApplet extends JApplet implements Runnable {
+public class SnakeBoardApplet extends JApplet implements Runnable,
+	ActionListener {
 
     protected BoardPanel board;
-    protected boolean clicked = false;
-    protected JPanel controlPanel;
-    protected JButton startButton;
-    protected JButton exitButton;
-    protected JButton pauseButton;
-    protected JTextField messageField;
-    private ButtonListener buttonListener;
+    static boolean clicked;
+    private StartButton startButton;
     private SnakeBoard snakeBoard;
 
     public SnakeBoardApplet() {
 	super();
-	buttonListener = new ButtonListener(this);
+	SnakeBoardApplet.clicked = false;
 	snakeBoard = new SnakeBoard();
 	initGUI();
-	startButton.setVisible(true);
-	new Thread(this).start();
     }
 
+    public void run() {
+	while (!snakeBoard.isGameOver()) {
+	    if (SnakeBoardApplet.clicked) {
+		snakeBoard.update();
+		requestFocus();
+		board.repaint();
+	    }
+	    try {
+		Thread.sleep(snakeBoard.INITIAL_MOVE_TIME
+			- snakeBoard.getSpeed());
+	    } catch (InterruptedException e) {
+		break;
+	    }
+	}
+    }
+
+    private void initGUI() {
+	setSize(new Dimension(800, 600));
+	getContentPane().setLayout(
+		new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+	setFocusable(true);
+	setFocusTraversalKeysEnabled(false);
+
+	board = new BoardPanel(snakeBoard);
+	addKeyListener(board);
+
+	startButton = new StartButton(this);
+
+	getContentPane().add(board);
+	getContentPane().add(startButton);
+
+	startButton.setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+	if (StartButton.cmdName.equals(e.getActionCommand())) {
+	    startButton.setVisible(false);
+	    board.setVisible(true);
+	    SnakeBoardApplet.clicked = true;
+	    new Thread(this).start();
+	}
+    }
+
+    /*
+     * Ta metoda jest uzywana tylko do uruchomienia gry jako aplikacj. Applet
+     * nie potrzebuje tej metody do poprawnej pracy.
+     */
+    @Deprecated
     public static void main(String[] args) {
 	SwingUtilities.invokeLater(new Runnable() {
 	    public void run() {
@@ -60,87 +96,4 @@ public class SnakeBoardApplet extends JApplet implements Runnable {
 	});
 
     }
-
-    public void run() {
-	snakeBoard.initialize(Direction.RIGHT);
-	int i = 0;
-	while (!snakeBoard.isGameOver()) {
-	    if (clicked) {
-		snakeBoard.update();
-		requestFocus();
-		board.repaint();
-		i++;
-	    }
-	    try {
-		Thread.sleep(snakeBoard.INITIAL_MOVE_TIME
-			- snakeBoard.getSpeed());
-	    } catch (InterruptedException e) {
-		break;
-	    }
-	}
-	messageField.setText("GAME OVER");
-    }
-
-    private void initGUI() {
-	try {
-	    setSize(new Dimension(800, 600));
-	    getContentPane().setLayout(
-		    new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-
-	    messageField = new JTextField();
-	    messageField.setVisible(false);
-	    messageField.setMinimumSize(new Dimension(200, 100));
-	    messageField.setPreferredSize(new Dimension(200, 100));
-	    messageField.setMaximumSize(new Dimension(200, 100));
-	    messageField.setHorizontalAlignment(SwingConstants.CENTER);
-
-	    board = new BoardPanel();
-	    board.init(snakeBoard);
-
-	    controlPanel = new JPanel();
-	    controlPanel.setLayout(new FlowLayout());
-
-	    {
-		pauseButton = new JButton();
-		pauseButton.setText("PAUSE");
-		pauseButton.setPreferredSize(new Dimension(100, 50));
-		pauseButton.setMinimumSize(new Dimension(100, 50));
-		pauseButton.setMaximumSize(new Dimension(100, 50));
-		pauseButton.addActionListener(buttonListener);
-		pauseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		exitButton = new JButton();
-		exitButton.setText("EXIT");
-		exitButton.setPreferredSize(new Dimension(100, 50));
-		exitButton.setMinimumSize(new Dimension(100, 50));
-		exitButton.setMaximumSize(new Dimension(100, 50));
-		exitButton.addActionListener(buttonListener);
-		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    }
-
-	    controlPanel.add(pauseButton);
-	    controlPanel.add(exitButton);
-	    controlPanel.setVisible(false);
-	    controlPanel.setFocusable(false);
-
-	    setFocusable(true);
-	    setFocusTraversalKeysEnabled(false);
-	    addKeyListener(new ChangeDirectionListener(snakeBoard));
-
-	    startButton = new JButton();
-	    startButton.setText("START");
-	    startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    startButton.addActionListener(buttonListener);
-	    startButton.setMinimumSize(new Dimension(200, 100));
-	    startButton.setMaximumSize(new Dimension(200, 100));
-	    startButton.setPreferredSize(new Dimension(200, 100));
-	    startButton.setVisible(false);
-	    getContentPane().add(messageField);
-	    getContentPane().add(board);
-	    getContentPane().add(controlPanel);
-	    getContentPane().add(startButton);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
-
 }

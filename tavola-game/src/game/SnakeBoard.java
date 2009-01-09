@@ -27,6 +27,7 @@ public final class SnakeBoard implements IBoard {
     private Direction snakeDirection;
 
     public SnakeBoard() {
+	initialize();
     }
 
     /**
@@ -39,11 +40,13 @@ public final class SnakeBoard implements IBoard {
      * @param direction
      *            the direction of snake to set
      */
-    public void initialize(Direction direction) {
+    public void initialize() {
 	generator = new Random();
-	snakeDirection = direction;
+	snakeDirection = Direction.RIGHT;
 	snake = new Snake();
-	snake.setUpSnake(direction, new Position(WIDTH / 2, HEIGHT / 2), 3);
+	snake
+		.setUpSnake(snakeDirection,
+			new Position(WIDTH / 2, HEIGHT / 2), 3);
 	gameOver = false;
 	speed = 1;
 	level = 1;
