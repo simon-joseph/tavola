@@ -5,7 +5,6 @@ import game.SnakeBoard;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,14 +33,14 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 
     public void init(SnakeBoard s) {
 	sb = s;
-	th = new DefaultTheme();
+	th = new SmoothTheme();
 	setPreferredSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
 		th.fieldSize * sb.HEIGHT + 1));
 	setMaximumSize(new Dimension(th.fieldSize * sb.WIDTH + 1, th.fieldSize
 		* sb.HEIGHT + 1));
-	setLayout(new FlowLayout());
-	add(new PauseButton(this));
-	add(new ExitButton(this));
+	// setLayout(new FlowLayout());
+	// add(new PauseButton(this));
+	// add(new ExitButton(this));
 	setVisible(false);
     }
 
@@ -84,9 +83,9 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 	    }
 	} else {
 	    if (f.x() < s.x()) {
-		return Direction.LEFT;
-	    } else {
 		return Direction.RIGHT;
+	    } else {
+		return Direction.LEFT;
 	    }
 	}
     }

@@ -46,4 +46,20 @@ public enum Direction {
 	    return new Position(0, 0);
 	}
     }
+
+    @Override
+    public String toString() {
+	switch (this) {
+	case RIGHT:
+	    return "RIGHT";
+	case LEFT:
+	    return "LEFT";
+	case UP:
+	    return "UP";
+	case DOWN:
+	    return "DOWN";
+	default:
+	    return "";
+	}
+    }
 }
