@@ -27,6 +27,22 @@ public final class Position {
 	setHorizontal(x() + position.x());
     }
 
+    public Direction directionTo(Position target) {
+	if (x() == target.x()) {
+	    if (y() < target.y()) {
+		return Direction.DOWN;
+	    } else {
+		return Direction.UP;
+	    }
+	} else {
+	    if (x() < target.x()) {
+		return Direction.RIGHT;
+	    } else {
+		return Direction.LEFT;
+	    }
+	}
+    }
+
     @Override
     public Position clone() {
 	return new Position(x(), y());

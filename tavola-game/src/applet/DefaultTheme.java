@@ -3,6 +3,7 @@ package applet;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import commons.BodyParts;
 import commons.Direction;
 import commons.Position;
 
@@ -26,13 +27,13 @@ public class DefaultTheme {
      * @param g
      * @param toPaint
      * @param reverseDirection
+     * @param direction
      */
-    public void paintBodyPart(Graphics g, Position toPaint,
-	    Direction reverseDirection) {
-	if (toPaint != null) {
+    public void paintBodyPart(Graphics g, Position part, BodyParts bodyPart) {
+	if (part != null) {
 	    g.setColor(Color.pink);
-	    g.fillOval(toPaint.x() * fieldSize, toPaint.y() * fieldSize,
-		    fieldSize, fieldSize);
+	    g.fillOval(part.x() * fieldSize, part.y() * fieldSize, fieldSize,
+		    fieldSize);
 	}
     }
 
@@ -47,6 +48,29 @@ public class DefaultTheme {
 	    g.fillOval(head.x() * fieldSize, head.y() * fieldSize, fieldSize,
 		    fieldSize);
 	}
+    }
+
+    /**
+     * @param g
+     * @param last
+     */
+    public void paintLast(Graphics g, Position last, Direction direction) {
+	if (last != null) {
+	    g.setColor(Color.pink);
+	    g.fillOval(last.x() * fieldSize, last.y() * fieldSize, fieldSize,
+		    fieldSize);
+	}
+    }
+
+    public void paintBoard(Graphics g, int width, int height) {
+	g.setColor(Color.BLUE);
+	g.fillRect(0, 0, width, height);
+	g.setColor(Color.BLACK);
+    }
+
+    public void paintStatBoard(Graphics g, int width, int height) {
+	g.setColor(Color.GRAY);
+	g.fillRect(width, 0, 100, height);
     }
 
 }

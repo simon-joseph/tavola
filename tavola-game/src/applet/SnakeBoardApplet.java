@@ -49,7 +49,7 @@ public class SnakeBoardApplet extends JApplet implements Runnable,
     }
 
     private void initGUI() {
-	setSize(new Dimension(60, 35));
+	setSize(new Dimension(600, 350));
 	getContentPane().setLayout(
 		new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 	setFocusable(true);

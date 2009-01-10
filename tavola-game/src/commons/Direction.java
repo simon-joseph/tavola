@@ -1,14 +1,13 @@
-/**
- * Describes directions of movement in game. LEFT, RIGHT, UP, DOWN.
- */
 package commons;
 
 /**
+ * Describes directions of movement in game. LEFT, RIGHT, UP, DOWN.
+ * 
  * @author sla
  * 
  */
 public enum Direction {
-    LEFT, RIGHT, UP, DOWN;
+    DOWN, RIGHT, LEFT, UP, ;
 
     /**
      * @param direction
@@ -44,22 +43,6 @@ public enum Direction {
 	    return new Position(0, 1);
 	default:
 	    return new Position(0, 0);
-	}
-    }
-
-    @Override
-    public String toString() {
-	switch (this) {
-	case RIGHT:
-	    return "RIGHT";
-	case LEFT:
-	    return "LEFT";
-	case UP:
-	    return "UP";
-	case DOWN:
-	    return "DOWN";
-	default:
-	    return "";
 	}
     }
 }

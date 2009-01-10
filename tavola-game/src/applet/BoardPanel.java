@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import commons.BodyParts;
 import commons.Direction;
 import commons.Position;
 
@@ -34,9 +35,12 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
     public void init(SnakeBoard s) {
 	sb = s;
 	th = new SmoothTheme();
-	setPreferredSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
-		th.fieldSize * sb.HEIGHT + 1));
-	setMaximumSize(new Dimension(th.fieldSize * sb.WIDTH + 1, th.fieldSize
+	// setPreferredSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
+	// th.fieldSize * sb.HEIGHT + 1));
+	// setMaximumSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
+	// th.fieldSize
+	// * sb.HEIGHT + 1));
+	setSize(new Dimension(th.fieldSize * sb.WIDTH + 1, th.fieldSize
 		* sb.HEIGHT + 1));
 	// setLayout(new FlowLayout());
 	// add(new PauseButton(this));
@@ -51,8 +55,10 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 
     private void paintBoard(Graphics g) {
 	drawBackground(g);
+	th.paintBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintSnake(g, sb.getSnake());
 	th.paintBonus(g, sb.getBonus());
+	th.paintStatBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintStats(g);
     }
 
@@ -62,32 +68,25 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
     }
 
     private void paintSnake(Graphics g, Snake s) {
-	Position oldPosition = s.getHead();
+	Position old = s.getHead();
+	Position curr;
+	Position next;
 	th.paintHead(g, s.getHead(), s.getDirection());
-	for (int i = 0; i < s.getBody().size(); i++) {
-	    oldPosition = paintSnakeBody(g, s.getBody().get(i), oldPosition);
+	for (int i = 0; i < s.getBody().size() - 1; i++) {
+	    curr = s.getBody().get(i);
+	    next = s.getBody().get(i + 1);
+	    BodyParts bodyPart = chooseBodyPart(curr.directionTo(old), curr
+		    .directionTo(next));
+	    th.paintBodyPart(g, curr, bodyPart);
+	    old = curr;
 	}
+	curr = s.getBody().getLast();
+	th.paintLast(g, curr, old.directionTo(curr));
     }
 
-    private Position paintSnakeBody(Graphics g, Position toPaint, Position old) {
-	th.paintBodyPart(g, toPaint, BoardPanel.reverseDirection(toPaint, old));
-	return toPaint;
-    }
-
-    static Direction reverseDirection(Position f, Position s) {
-	if (f.x() == s.x()) {
-	    if (f.y() < s.y()) {
-		return Direction.DOWN;
-	    } else {
-		return Direction.UP;
-	    }
-	} else {
-	    if (f.x() < s.x()) {
-		return Direction.RIGHT;
-	    } else {
-		return Direction.LEFT;
-	    }
-	}
+    private BodyParts chooseBodyPart(Direction leftDirection,
+	    Direction rightDirection) {
+	return BodyParts.valueOf(rightDirection.name() + leftDirection.name());
     }
 
     public void keyPressed(KeyEvent e) {
@@ -134,8 +133,8 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
     @Deprecated
     private void paintStats(Graphics g) {
 	g.setColor(Color.red);
-	g.drawString("Speed: " + sb.getSpeed(), 10, 10);
-	g.drawString("Level: " + sb.getLevel(), 10, 30);
+	g.drawString("Speed: " + sb.getSpeed(), 610, 30);
+	g.drawString("Level: " + sb.getLevel(), 610, 50);
     }
 
 }

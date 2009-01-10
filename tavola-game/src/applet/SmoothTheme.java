@@ -1,10 +1,13 @@
 package applet;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
+
+import commons.BodyParts;
 import commons.Direction;
 import commons.Position;
 
@@ -13,65 +16,92 @@ import commons.Position;
  * 
  */
 public final class SmoothTheme extends DefaultTheme {
-    private Image body_up;
-    private Image body_down;
-    private Image body_right;
-    private Image body_left;
-    private Image head_up;
-    private Image head_down;
-    private Image head_right;
-    private Image head_left;
+
+    private BufferedImage[] bodyTx;
+    private BufferedImage[] headTx;
+    private BufferedImage[] lastTx;
+    private BufferedImage[] bonusTx;
+    final private int numOfBonuses = 2;
+    private int bonusNum;
+    private Position oldBonus;
 
     public SmoothTheme() {
 	super();
-	body_up = loadImage("/applet/textures/BODY_UP.png");
-	body_down = loadImage("/applet/textures/BODY_DOWN.png");
-	body_right = loadImage("/applet/textures/BODY_RIGHT.png");
-	body_left = loadImage("/applet/textures/BODY_LEFT.png");
-	head_up = loadImage("/applet/textures/HEAD_UP.png");
-	head_down = loadImage("/applet/textures/HEAD_DOWN.png");
-	head_right = loadImage("/applet/textures/HEAD_RIGHT.png");
-	head_left = loadImage("/applet/textures/HEAD_LEFT.png");
+	bonusNum = 0;
+	oldBonus = null;
+	bodyTx = new BufferedImage[12];
+	headTx = new BufferedImage[4];
+	lastTx = new BufferedImage[4];
+	bonusTx = new BufferedImage[numOfBonuses];
+	for (BodyParts parts : BodyParts.values()) {
+	    bodyTx[parts.ordinal()] = loadImage("/applet/textures/BODY_"
+		    + parts.name() + ".png");
+
+	}
+	for (Direction dir : Direction.values()) {
+	    headTx[dir.ordinal()] = loadImage("/applet/textures/HEAD_"
+		    + dir.name() + ".png");
+	}
+	for (Direction dir : Direction.values()) {
+	    lastTx[dir.ordinal()] = loadImage("/applet/textures/LAST_"
+		    + dir.name() + ".png");
+	}
+	for (int i = 0; i < numOfBonuses; i++) {
+	    bonusTx[i] = loadImage("/applet/textures/BONUS_" + i + ".png");
+	}
     }
 
-    // "/applet/textures/head.png"
-    // if (url == null) {
-    // System.out.print("not working:");
-    // }
-    // Toolkit.getDefaultToolkit();
-    // img = Toolkit.getDefaultToolkit().createImage(url);
-    // g.drawImage(img, head.x() * 10, head.y() * 10, 14, 14, null,
-    // null);
-
-    private Image loadImage(String path) {
+    private BufferedImage loadImage(String path) {
 	URL url = BoardPanel.class.getResource(path);
-	return Toolkit.getDefaultToolkit().createImage(url);
+	try {
+	    return ImageIO.read(url);
+	} catch (IOException e) {
+	    return null;
+	}
     }
 
     @Override
-    public void paintBodyPart(Graphics g, Position toPaint,
-	    Direction reverseDirection) {
-	if (toPaint != null) {
-	    switch (reverseDirection) {
-	    case RIGHT:
-		g.drawImage(body_right, toPaint.x() * fieldSize, toPaint.y()
-			* fieldSize, fieldSize, fieldSize, null, null);
-		break;
-	    case LEFT:
-		g.drawImage(body_left, toPaint.x() * fieldSize, toPaint.y()
-			* fieldSize, fieldSize, fieldSize, null, null);
-		break;
-	    case UP:
-		g.drawImage(body_up, toPaint.x() * fieldSize, toPaint.y()
-			* fieldSize, fieldSize, fieldSize, null, null);
-		break;
-	    case DOWN:
-		g.drawImage(body_down, toPaint.x() * fieldSize, toPaint.y()
-			* fieldSize, fieldSize, fieldSize, null, null);
-		break;
-	    default:
-		break;
-	    }
+    public void paintBodyPart(Graphics g, Position part, BodyParts bp) {
+	if (part != null) {
+	    g.drawImage(bodyTx[bp.ordinal()], part.x() * fieldSize, part.y()
+		    * fieldSize, fieldSize, fieldSize, null, null);
+	}
+    }
+
+    @Override
+    public void paintHead(Graphics g, Position head, Direction dir) {
+	if (head != null) {
+	    g.drawImage(headTx[dir.ordinal()], head.x() * fieldSize, head.y()
+		    * fieldSize, fieldSize, fieldSize, null, null);
+	}
+    }
+
+    @Override
+    public void paintLast(Graphics g, Position last, Direction dir) {
+	if (last != null) {
+	    g.drawImage(lastTx[dir.ordinal()], last.x() * fieldSize, last.y()
+		    * fieldSize, fieldSize, fieldSize, null, null);
+	}
+    }
+
+    @Override
+    public void paintBonus(Graphics g, Position bonus) {
+	if (oldBonus != bonus) {
+	    changeBonus();
+	    oldBonus = bonus;
+	}
+	if (bonus != null) {
+	    g.drawImage(bonusTx[bonusNum], bonus.x() * fieldSize - fieldSize
+		    / 2, bonus.y() * fieldSize - fieldSize / 2, fieldSize * 2,
+		    fieldSize * 2, null, null);
+	}
+
+    }
+
+    private void changeBonus() {
+	bonusNum++;
+	if (bonusNum >= numOfBonuses) {
+	    bonusNum = 0;
 	}
     }
 }
