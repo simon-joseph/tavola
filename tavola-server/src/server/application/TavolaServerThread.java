@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import server.protocol.TavolaMiddleProtocol;
+
+import com.danga.MemCached.MemCachedClient;
+
 import data.game.Player;
 
 /**
@@ -80,13 +83,14 @@ public class TavolaServerThread extends Thread {
   private String authentication(String cookie) {
     // TODO Auto-generated method stub
 
-    /*
-     * MemCachedClient cache = new MemCachedClient(); String cacheKey =
-     * cache.get(cookie); if (cacheKey == null) { return null; } return
-     * cacheKey.split(" ")[0];
-     */
+    MemCachedClient cache = new MemCachedClient();
+    String cacheKey = cache.get(cookie).toString();
 
-    return cookie;
+    if (cacheKey == null) {
+      return null;
+    }
+
+    return cacheKey.split(" ")[0];
 
   }
 
