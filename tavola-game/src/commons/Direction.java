@@ -45,4 +45,37 @@ public enum Direction {
 	    return new Position(0, 0);
 	}
     }
+
+    @Override
+    public String toString() {
+	if (this == UP) {
+	    return "0";
+	}
+	if (this == RIGHT) {
+	    return "1";
+	}
+	if (this == DOWN) {
+	    return "2";
+	}
+	return "3";
+    }
+
+    public static Direction fromString(String s) {
+	if (s != null) {
+	    if (s.equals("0")) {
+		return Direction.UP;
+	    }
+	    if (s.equals("1")) {
+		return Direction.RIGHT;
+	    }
+	    if (s.equals("2")) {
+		return Direction.DOWN;
+	    }
+	    if (s.equals("3")) {
+		return Direction.LEFT;
+	    }
+	}
+	throw new IllegalArgumentException();
+    }
+
 }
