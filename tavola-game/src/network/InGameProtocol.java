@@ -46,7 +46,7 @@ public class InGameProtocol implements Runnable {
 
 			ArrayList<String> moves = new ArrayList<String>();
 			while ((s = pipe.readln()) != null
-				&& s.matches("^[a-zA-Z0-9]+ [0,1,2,3]?$")) {
+				&& s.matches("^[0123]?$")) {
 			    moves.add(s);
 			}
 

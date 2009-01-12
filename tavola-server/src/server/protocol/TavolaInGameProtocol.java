@@ -2,8 +2,7 @@ package server.protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import data.game.Game;
 import data.game.Player;
@@ -37,7 +36,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
     game.setRunning(true);
     int moveId = 0;
 
-    Map<String, String> moves = new HashMap<String, String>();
+    ArrayList<String> moves = new ArrayList<String>();
 
     while (true) {
       for (Player p : game.getPlayers()) {
@@ -62,7 +61,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
           final String[] moveSplited = move.split(" ");
 
           if (moveSplited[0].equals("MOVE") /* && move[1].equals(moveId) */) {
-            moves.put(p.getId(), moveSplited[2]);
+            moves.add(moveSplited[2]);
           } else {
             throw new InvalidInGameProtocolException();
           }
@@ -73,10 +72,10 @@ public class TavolaInGameProtocol implements TavolaProtocol {
           p.getPrintWriter().println("MOVES " + moveId);
           System.out.println("MOVES " + moveId);
 
-          for (Player p2 : game.getPlayers()) {
-            p.getPrintWriter()
-                .println(p2.getId() + " " + moves.get(p2.getId()));
-            System.out.println(p2.getId() + " " + moves.get(p2.getId()));
+          for (int i = 0; i < game.getPlayers().size(); i++) {
+            p.getPrintWriter().println(moves.get(i));
+            // System.out.println(game.getPlayers().get(i) + " " +
+            // moves.get(i));
           }
           p.getPrintWriter().println("END");
         }

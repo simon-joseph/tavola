@@ -130,7 +130,7 @@ public class PlayerBoard {
     public void setDirections(String[] array) {
 	ArrayList<Direction> moves = new ArrayList<Direction>();
 	for (int i = 0; i < array.length; i++) {
-	    moves.add(Direction.fromString(array[i].split(" ")[1]));
+	    moves.add(Direction.fromString(array[i]));
 	}
 	setSnakesDirections(moves.toArray(new Direction[] {}));
     }
