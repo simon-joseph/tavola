@@ -9,6 +9,7 @@ import java.net.Socket;
 import server.protocol.TavolaMiddleProtocol;
 
 import com.danga.MemCached.MemCachedClient;
+import com.danga.MemCached.SockIOPool;
 
 import data.game.Player;
 
@@ -77,6 +78,12 @@ public class TavolaServerThread extends Thread {
 
   }
 
+  static {
+    SockIOPool s = com.danga.MemCached.SockIOPool.getInstance();
+    s.setServers(new String[] { "127.0.0.1:11211" });
+    s.initialize();
+  }
+
   /**
    * @return player's id
    */
@@ -84,7 +91,7 @@ public class TavolaServerThread extends Thread {
     // TODO Auto-generated method stub
 
     MemCachedClient cache = new MemCachedClient();
-    String cacheKey = cache.get(cookie).toString();
+    String cacheKey = (String) cache.get(cookie);
 
     if (cacheKey == null) {
       return null;

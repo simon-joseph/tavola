@@ -15,7 +15,7 @@ public class Player {
   private Game game;
   private Thread serverThread;
   private BufferedReader in;
-  private Integer lastMessageId = 0;
+  private Integer lastMessageId = -1;
 
   public Player(String id, PrintWriter printWriter) {
     this.id = id;

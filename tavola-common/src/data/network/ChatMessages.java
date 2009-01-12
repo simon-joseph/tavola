@@ -71,12 +71,13 @@ public class ChatMessages {
     if (ChatMessages.messages == null) {
       ChatMessages.messages = new ArrayList<Message>();
     }
-    if (ChatMessages.messages.size() <= lastMessageId) {
+    if (ChatMessages.messages.size() <= lastMessageId + 1) {
       return new Message[0];
     }
-    Message[] ret = new Message[ChatMessages.messages.size() - lastMessageId];
-    for (int i = 0; i < ChatMessages.messages.size() - lastMessageId; ++i) {
-      ret[i] = ChatMessages.messages.get(i + lastMessageId);
+    Message[] ret = new Message[ChatMessages.messages.size() - lastMessageId
+        - 1];
+    for (int i = 0; i < ChatMessages.messages.size() - lastMessageId - 1; ++i) {
+      ret[i] = ChatMessages.messages.get(i + lastMessageId + 1);
     }
     return ret;
   }
