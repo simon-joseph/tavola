@@ -39,12 +39,14 @@ public class TavolaInGameProtocol implements TavolaProtocol {
     ArrayList<String> moves = new ArrayList<String>();
 
     while (true) {
+
       for (Player p : game.getPlayers()) {
         synchronized (p) {
-          System.out.println("NEXT " + moveId);
+          // System.out.println("NEXT " + moveId);
           p.getPrintWriter().println("NEXT " + moveId);
         }
       }
+      moves.clear();
       for (Player p : game.getPlayers()) {
         synchronized (p) {
           /*
@@ -56,7 +58,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
           if (move == null) {
             // ?! TODO
           }
-          System.out.println(move);
+          // System.out.println(move);
 
           final String[] moveSplited = move.split(" ");
 
@@ -70,18 +72,18 @@ public class TavolaInGameProtocol implements TavolaProtocol {
       for (Player p : game.getPlayers()) {
         synchronized (p) {
           p.getPrintWriter().println("MOVES " + moveId);
-          System.out.println("MOVES " + moveId);
+          // System.out.println("MOVES " + moveId);
 
           for (int i = 0; i < game.getPlayers().size(); i++) {
             p.getPrintWriter().println(moves.get(i));
-            // System.out.println(game.getPlayers().get(i) + " " +
+            // System.out.println("pp " + moves.get(i));
             // moves.get(i));
           }
           p.getPrintWriter().println("END");
         }
       }
 
-      Thread.sleep(100);
+      Thread.sleep(50);
       moveId++;
     }
   }

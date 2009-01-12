@@ -14,7 +14,7 @@ public class Pipe {
   }
 
   synchronized public void println(String s) {
-    System.out.println("sent to pipe: " + s);
+    // System.out.println("sent to pipe: " + s);
     pw.println(s);
   }
 
@@ -25,7 +25,7 @@ public class Pipe {
 
   synchronized public String readln() throws IOException {
     String ans = br.readLine();
-    System.out.println("pipe received: " + ans);
+    // System.out.println("pipe received: " + ans);
     return ans;
   }
 }

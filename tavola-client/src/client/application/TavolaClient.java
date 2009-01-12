@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class TavolaClient {
 
-  public static final String DEFAULT_HOST = "localhost";
+  public static final String DEFAULT_HOST = "192.168.4.197";
   public static final Integer DEFAULT_PORT = 4444;
 
   private Pipe pipe;

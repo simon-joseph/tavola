@@ -27,10 +27,9 @@ public class PlayerBoard {
 	size = all;
 	snakes = new Player[all];
 	snakesDirections = new Direction[all];
-	snakesDirections[0] = Direction.RIGHT;
-	snakesDirections[1] = Direction.RIGHT;
-	snakesDirections[2] = Direction.LEFT;
-	snakesDirections[3] = Direction.LEFT;
+	for (int i = 0; i < all; i++) {
+	    snakesDirections[i] = Direction.RIGHT;
+	}
 	initialize();
     }
 

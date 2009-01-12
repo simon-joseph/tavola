@@ -33,8 +33,8 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	SnakeBoardApplet.clicked = false;
 	// serwerze! ja chce grac!
 	// TODO pobierz informacje od serwera
-	playerBoard = new PlayerBoard(4, 1);
-	speed = 10;
+	playerBoard = new PlayerBoard(2, 1);
+	speed = 30;
 	initGUI();
     }
 
