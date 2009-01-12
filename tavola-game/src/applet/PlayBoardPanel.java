@@ -1,7 +1,7 @@
 package applet;
 
-import game.Snake;
-import game.SnakeBoard;
+import game.Player;
+import game.PlayerBoard;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,29 +22,22 @@ import commons.Position;
  * 
  */
 @SuppressWarnings("serial")
-class BoardPanel extends JPanel implements KeyListener, ActionListener {
+class PlayBoardPanel extends JPanel implements KeyListener, ActionListener {
 
     private DefaultTheme th;
-    private SnakeBoard sb;
+    private PlayerBoard sb;
+    private Direction myNextTurn;
 
-    public BoardPanel(SnakeBoard s) {
+    public PlayBoardPanel(PlayerBoard s) {
 	super();
 	init(s);
     }
 
-    public void init(SnakeBoard s) {
+    public void init(PlayerBoard s) {
 	sb = s;
-	th = new SmoothTheme();
-	// setPreferredSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
-	// th.fieldSize * sb.HEIGHT + 1));
-	// setMaximumSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
-	// th.fieldSize
-	// * sb.HEIGHT + 1));
+	th = new DefaultTheme();
 	setSize(new Dimension(th.fieldSize * sb.WIDTH + 1, th.fieldSize
 		* sb.HEIGHT + 1));
-	// setLayout(new FlowLayout());
-	// add(new PauseButton(this));
-	// add(new ExitButton(this));
 	setVisible(false);
     }
 
@@ -56,7 +49,8 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
     private void paintBoard(Graphics g) {
 	drawBackground(g);
 	th.paintBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
-	paintSnake(g, sb.getSnake());
+	for(int i = 0; i < sb.getSize(); i++)
+	    paintSnake(g, sb.getSnake(i), i);
 	th.paintBonus(g, sb.getBonus());
 	th.paintStatBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintStats(g);
@@ -67,21 +61,21 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 	super.paintComponent(g);
     }
 
-    private void paintSnake(Graphics g, Snake s) {
+    private void paintSnake(Graphics g, Player s, int id) {
 	Position old = s.getHead();
 	Position curr;
 	Position next;
-	th.paintHead(g, s.getHead(), s.getDirection(), 0);
+	th.paintHead(g, s.getHead(), s.getDirection(), id);
 	for (int i = 0; i < s.getBody().size() - 1; i++) {
 	    curr = s.getBody().get(i);
 	    next = s.getBody().get(i + 1);
 	    BodyParts bodyPart = chooseBodyPart(curr.directionTo(old), curr
 		    .directionTo(next));
-	    th.paintBodyPart(g, curr, bodyPart, 0);
+	    th.paintBodyPart(g, curr, bodyPart, id);
 	    old = curr;
 	}
 	curr = s.getBody().getLast();
-	th.paintLast(g, curr, old.directionTo(curr), 0);
+	th.paintLast(g, curr, old.directionTo(curr), id);
     }
 
     private BodyParts chooseBodyPart(Direction leftDirection,
@@ -89,20 +83,29 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 	return BodyParts.valueOf(rightDirection.name() + leftDirection.name());
     }
 
+    // TODO: tutaj to wysylamy ten ruch do serwera
     public void keyPressed(KeyEvent e) {
 
 	switch (e.getKeyCode()) {
 	case KeyEvent.VK_UP:
-	    sb.setSnakeDirection(Direction.UP);
+	    // serwerze, ruszylem sie do gory
+	    // sb.setSnakeDirection(Direction.UP);
+	    myNextTurn = Direction.UP;
 	    break;
 	case KeyEvent.VK_DOWN:
-	    sb.setSnakeDirection(Direction.DOWN);
+	    //	  serwerze, ruszylem sie w dol
+	    // sb.setSnakeDirection(Direction.DOWN);
+	    myNextTurn = Direction.DOWN;
 	    break;
 	case KeyEvent.VK_LEFT:
-	    sb.setSnakeDirection(Direction.LEFT);
+	    //	  serwerze, ruszylem sie w lewo
+	    // sb.setSnakeDirection(Direction.LEFT);
+	    myNextTurn = Direction.LEFT;
 	    break;
 	case KeyEvent.VK_RIGHT:
-	    sb.setSnakeDirection(Direction.RIGHT);
+	    //	  serwerze, ruszylem sie w prawo
+	    // sb.setSnakeDirection(Direction.RIGHT);
+	    myNextTurn = Direction.RIGHT;
 	    break;
 	default:
 	    break;
@@ -133,8 +136,13 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
     @Deprecated
     private void paintStats(Graphics g) {
 	g.setColor(Color.red);
-	g.drawString("Speed: " + sb.getSpeed(), 610, 30);
-	g.drawString("Level: " + sb.getLevel(), 610, 50);
+	// TODO predkosc ustalac bedzie server, leveli chyba nie bedzie
+	// g.drawString("Speed: " + sb.getSpeed(), 610, 30);
+	// g.drawString("Level: " + sb.getLevel(), 610, 50);
+    }
+
+    public Direction getMyNextTurn() {
+        return myNextTurn;
     }
 
 }

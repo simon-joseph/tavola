@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import commons.BodyParts;
 import commons.Direction;
 import commons.Position;
+import commons.SnakeColor;
 
 /**
  * @author sla + agl
@@ -29,9 +30,9 @@ public class DefaultTheme {
      * @param reverseDirection
      * @param direction
      */
-    public void paintBodyPart(Graphics g, Position part, BodyParts bodyPart) {
+    public void paintBodyPart(Graphics g, Position part, BodyParts bodyPart, int id) {
 	if (part != null) {
-	    g.setColor(Color.pink);
+	    g.setColor(SnakeColor.toColor(id));
 	    g.fillOval(part.x() * fieldSize, part.y() * fieldSize, fieldSize,
 		    fieldSize);
 	}
@@ -42,9 +43,9 @@ public class DefaultTheme {
      * @param head
      * @param direction
      */
-    public void paintHead(Graphics g, Position head, Direction direction) {
+    public void paintHead(Graphics g, Position head, Direction direction, int id) {
 	if (head != null) {
-	    g.setColor(Color.orange);
+	    g.setColor(SnakeColor.toColor(id));
 	    g.fillOval(head.x() * fieldSize, head.y() * fieldSize, fieldSize,
 		    fieldSize);
 	}
@@ -54,9 +55,9 @@ public class DefaultTheme {
      * @param g
      * @param last
      */
-    public void paintLast(Graphics g, Position last, Direction direction) {
+    public void paintLast(Graphics g, Position last, Direction direction, int id) {
 	if (last != null) {
-	    g.setColor(Color.pink);
+	    g.setColor(SnakeColor.toColor(id));
 	    g.fillOval(last.x() * fieldSize, last.y() * fieldSize, fieldSize,
 		    fieldSize);
 	}

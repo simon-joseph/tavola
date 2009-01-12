@@ -61,7 +61,7 @@ public final class SmoothTheme extends DefaultTheme {
     }
 
     @Override
-    public void paintBodyPart(Graphics g, Position part, BodyParts bp) {
+    public void paintBodyPart(Graphics g, Position part, BodyParts bp, int id) {
 	if (part != null) {
 	    g.drawImage(bodyTx[bp.ordinal()], part.x() * fieldSize, part.y()
 		    * fieldSize, fieldSize, fieldSize, null, null);
@@ -69,7 +69,7 @@ public final class SmoothTheme extends DefaultTheme {
     }
 
     @Override
-    public void paintHead(Graphics g, Position head, Direction dir) {
+    public void paintHead(Graphics g, Position head, Direction dir, int id) {
 	if (head != null) {
 	    g.drawImage(headTx[dir.ordinal()], head.x() * fieldSize, head.y()
 		    * fieldSize, fieldSize, fieldSize, null, null);
@@ -77,7 +77,7 @@ public final class SmoothTheme extends DefaultTheme {
     }
 
     @Override
-    public void paintLast(Graphics g, Position last, Direction dir) {
+    public void paintLast(Graphics g, Position last, Direction dir, int id) {
 	if (last != null) {
 	    g.drawImage(lastTx[dir.ordinal()], last.x() * fieldSize, last.y()
 		    * fieldSize, fieldSize, fieldSize, null, null);
