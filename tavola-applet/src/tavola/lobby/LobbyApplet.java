@@ -251,10 +251,21 @@ public class LobbyApplet extends JApplet {
 
   public LobbyApplet() {
     super();
+
+  }
+
+  @Override
+  public void init() {
+
     try {
       initTavolaClient();
-      if (!new HelloGameMessage("aaaa"/* getParameter("ticket") */)
-          .send(tavolaClient.getPipe())) {
+
+      String ticket = getParameter("ticket");
+      if (ticket == null) {
+        ticket = "anonymous";
+      }
+
+      if (!new HelloGameMessage(ticket).send(tavolaClient.getPipe())) {
         add(new JLabel("Zaloguj się ponownie..."));
         return;
       }
@@ -265,7 +276,7 @@ public class LobbyApplet extends JApplet {
       add(new JLabel("Przepraszamy, problemy techniczne."));
       return;
     }
-    setSize(500, 500);
+    // setSize(500, 500);
     setLayout(new BorderLayout());
 
     gamesPane = new JTabbedPane();
@@ -287,6 +298,27 @@ public class LobbyApplet extends JApplet {
     }
     gamePanel.add(players, BorderLayout.CENTER);
     JPanel btnsPanel = new JPanel();
+
+    JButton readyGameBtn = new JButton("Ready game");
+    readyGameBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        try {
+          tavolaClient.getPipe().readln();
+          tavolaClient.getPipe().println("GAME_STARTED");
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        PlayerBoardApplet inst = new PlayerBoardApplet(tavolaClient.getPipe());
+        frame.getContentPane().add(inst);
+        ((JComponent) frame.getContentPane()).setPreferredSize(inst.getSize());
+        frame.pack();
+        frame.setVisible(true);
+
+      }
+    });
 
     JButton startGameBtn = new JButton("Start game");
     startGameBtn.addActionListener(new ActionListener() {
@@ -317,7 +349,9 @@ public class LobbyApplet extends JApplet {
         frame.setVisible(true);
       }
     });
+
     btnsPanel.add(startGameBtn);
+    btnsPanel.add(readyGameBtn);
     JButton cancelGameBtn = new JButton("Cancel");
     btnsPanel.add(cancelGameBtn);
     cancelGameBtn.addActionListener(new ActionListener() {
