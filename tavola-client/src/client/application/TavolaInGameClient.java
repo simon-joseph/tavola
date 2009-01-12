@@ -1,6 +1,8 @@
 package client.application;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import client.protocol.InvalidProtocolException;
@@ -18,7 +20,6 @@ public class TavolaInGameClient implements Runnable {
     this.pipe = pipe;
   }
 
-  @Override
   public void run() {
 
     int moveId = 0;
@@ -26,13 +27,13 @@ public class TavolaInGameClient implements Runnable {
     try {
       while (!termination) {
         String s;
-        if (TavolaClient.inGame && (s = pipe.readln()) != null) {
+        if ((s = pipe.readln()) != null) {
 
           if (s.matches("^NEXT [0-9]+$")
               && Integer.parseInt(s.substring(5)) == moveId) {
 
             pipe.println("MOVE " + String.valueOf(moveId) + " "
-                + TavolaClient.getLastMove());
+                + TavolaInGameClient.getLastMove());
 
             s = pipe.readln();
             if (s == null || !s.equals("MOVES " + String.valueOf(moveId))) {
@@ -49,7 +50,7 @@ public class TavolaInGameClient implements Runnable {
               throw new InvalidProtocolException();
             }
 
-            TavolaClient.nextMoves(moves.toArray(new String[] {}));
+            TavolaInGameClient.nextMoves(moves.toArray(new String[] {}));
             moveId++;
 
           } else {
@@ -78,6 +79,20 @@ public class TavolaInGameClient implements Runnable {
 
   public void kill() {
     termination = true;
+  }
+
+  public static String getLastMove() {
+    // TODO Auto-generated method stub
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    return "0"; // snakeBoard.getSnake().getDirection(); ??
+  }
+
+  public static void nextMoves(String[] array) {
+    // TODO Auto-generated method stub
+    System.out.println("MOVES");
+    for (String s : array) {
+      System.out.println(s);
+    }
   }
 
 }

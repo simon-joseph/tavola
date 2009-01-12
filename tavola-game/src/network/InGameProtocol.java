@@ -18,7 +18,6 @@ public class InGameProtocol implements Runnable {
 	this.board = board;
     }
 
-    @Override
     public void run() {
 
 	int moveId = 0;

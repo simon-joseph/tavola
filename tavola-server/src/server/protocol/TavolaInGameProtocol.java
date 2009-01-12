@@ -54,6 +54,9 @@ public class TavolaInGameProtocol implements TavolaProtocol {
            * .getInputStream())).readLine();
            */
           String move = p.getIn().readLine();
+          if (move == null) {
+            // ?! TODO
+          }
           System.out.println(move);
 
           final String[] moveSplited = move.split(" ");

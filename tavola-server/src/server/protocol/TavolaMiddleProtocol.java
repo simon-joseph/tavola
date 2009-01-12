@@ -61,7 +61,7 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
     inGameProtocol = new TavolaInGameProtocol(this.player, this, in);
   }
 
-  @Override
+  
   public String processInput(String input) {
     return preGameProtocol.processInput(input);
   }

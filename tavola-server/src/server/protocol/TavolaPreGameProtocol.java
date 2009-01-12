@@ -6,12 +6,13 @@ import java.util.List;
 import server.application.TavolaServer;
 import data.game.Game;
 import data.game.Player;
+import data.network.ChatMessages;
 import data.network.TavolaProtocol;
 
 /**
  * @author rafal.paliwoda
  * 
- * TODO kod wymaga rekaktoryzacji
+ *         TODO kod wymaga rekaktoryzacji
  */
 public class TavolaPreGameProtocol implements TavolaProtocol {
 
@@ -31,7 +32,17 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
     final StringBuffer result = new StringBuffer();
     final List<Game> games = TavolaServer.getGames();
 
-    if (isConnected == false) {
+    if (input.matches("^MSG .*$")) {
+      ChatMessages.add(player.getId(), input.substring(4));
+      result.append("OK");
+    } else if (input.equals("GET_MSGS")) {
+      for (ChatMessages.Message msg : ChatMessages.getMessages(player
+          .getLastMessageId())) {
+        result.append(msg.getAuthor() + ":" + msg.getContent() + "\n");
+        player.setLastMessageId(msg.getId());
+      }
+      result.append("END");
+    } else if (isConnected == false) {
 
       // LIST GAMES
       if (input.equals("LIST_GAMES")) {

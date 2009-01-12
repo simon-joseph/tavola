@@ -25,16 +25,16 @@ public class TavolaClientTest extends TestCase {
   protected void setUp() throws Exception {
 
     try {
-      socket = new Socket("192.168.4.178", TavolaClient.PORT);
+      socket = new Socket(TavolaClient.DEFAULT_HOST, TavolaClient.DEFAULT_PORT);
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       // TavolaClient.setConnected(true);
     } catch (UnknownHostException e) {
-      System.err.println("Unknown host " + TavolaClient.HOST);
+      System.err.println("Unknown host " + TavolaClient.DEFAULT_HOST);
       System.exit(1);
     } catch (IOException e) {
       System.err.println("Couldn't get I/O for the connection to: "
-          + TavolaClient.HOST);
+          + TavolaClient.DEFAULT_HOST);
       System.exit(1);
     }
 
@@ -67,6 +67,11 @@ public class TavolaClientTest extends TestCase {
     new JoinGameMessage(br.readLine()).send(pipe);
   }
 
+  public void testListGames() throws IOException, InvalidProtocolException {
+    testHello();
+    new ListGameMessage().send(pipe);
+  }
+
   public void testUser() throws IOException, InvalidProtocolException,
       InterruptedException {
     testHello();
@@ -81,7 +86,6 @@ public class TavolaClientTest extends TestCase {
         String s2 = pipe.readln();
         if (s2.equals("START_GAME")) {
           pipe.println("GAME_STARTED");
-          TavolaClient.inGame = true;
           TavolaInGameClient inGameClient = new TavolaInGameClient(pipe);
           Thread t = new Thread(inGameClient);
           t.start();

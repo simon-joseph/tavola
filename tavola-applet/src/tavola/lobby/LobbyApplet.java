@@ -23,15 +23,18 @@ import javax.swing.JTextField;
 
 import applet.SnakeBoardApplet;
 import client.application.CreateGameMessage;
+import client.application.GetMessagesGameMessage;
 import client.application.HelloGameMessage;
 import client.application.JoinGameMessage;
 import client.application.LeaveGameMessage;
 import client.application.ListGameMessage;
+import client.application.MessageGameMessage;
 import client.application.StartGameMessage;
 import client.application.TavolaClient;
 import client.application.TavolaInGameClient;
 import client.protocol.InvalidProtocolException;
 import data.game.Game;
+import data.network.ChatMessages;
 
 /**
  * @author polchawa
@@ -48,8 +51,8 @@ public class LobbyApplet extends JApplet {
 
   private JPanel createChatPanel() {
     final JPanel chatPanel = new JPanel(new BorderLayout());
-    chatPanel.add(new JScrollPane(new JList(new ChatMessagesListModel())),
-        BorderLayout.CENTER);
+    final ChatMessagesListModel model = new ChatMessagesListModel();
+    chatPanel.add(new JScrollPane(new JList(model)), BorderLayout.CENTER);
 
     final JPanel sayPanel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
@@ -59,7 +62,51 @@ public class LobbyApplet extends JApplet {
     gbc.weightx = 1;
     gbc.weighty = 1;
     gbc.gridx = 1;
-    sayPanel.add(new JTextField(), gbc);
+    final JTextField messageString = new JTextField();
+    sayPanel.add(messageString, gbc);
+    gbc.weightx = gbc.weighty = 0;
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.gridx = 2;
+    final JButton sendBtn = new JButton("Send");
+    sendBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          new MessageGameMessage(messageString.getText()).send(tavolaClient
+              .getPipe());
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        } catch (InvalidProtocolException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+    sayPanel.add(sendBtn, gbc);
+
+    gbc.gridx = 3;
+    final JButton receiveBtn = new JButton("Receive");
+    receiveBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ChatMessages.Message[] messages = null;
+        try {
+          messages = new GetMessagesGameMessage().send(tavolaClient.getPipe());
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+          return;
+        } catch (InvalidProtocolException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+          return;
+        }
+        for (ChatMessages.Message message : messages) {
+          model.addMessage(message.getAuthor(), message.getContent());
+        }
+      }
+    });
+    sayPanel.add(receiveBtn, gbc);
+
     chatPanel.add(sayPanel, BorderLayout.SOUTH);
     return chatPanel;
   }

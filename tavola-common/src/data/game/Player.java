@@ -15,6 +15,7 @@ public class Player {
   private Game game;
   private Thread serverThread;
   private BufferedReader in;
+  private Integer lastMessageId = 0;
 
   public Player(String id, PrintWriter printWriter) {
     this.id = id;
@@ -77,10 +78,18 @@ public class Player {
 
   /**
    * @param in
-   *            the in to set
+   *          the in to set
    */
   public void setIn(BufferedReader in) {
     this.in = in;
+  }
+
+  public Integer getLastMessageId() {
+    return lastMessageId;
+  }
+
+  public void setLastMessageId(Integer lastMessageId) {
+    this.lastMessageId = lastMessageId;
   }
 
 }

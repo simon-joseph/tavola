@@ -7,11 +7,13 @@ import data.game.Player;
 public class JoinGameMessage extends GameMessage<Player[]> {
 
   private String id;
+  private boolean failed = false;
 
   @Override
   protected boolean endOfAnswer(String s) {
     // TODO Auto-generated method stub
-    return s != null && s.equals("END");
+    return s != null
+        && (s.equals("END") || s.equals("CANNOT JOIN GAME") && (failed = true));
   }
 
   public JoinGameMessage(String id) {
@@ -31,15 +33,11 @@ public class JoinGameMessage extends GameMessage<Player[]> {
     if (answerStrings.length < 1) {
       throw new InvalidProtocolException();
     }
-    Player[] players = new Player[answerStrings.length - 1];
-    for (int i = 0; i < players.length; ++i) {
-      if (answerStrings[i].equals("END")) {
-        if (i < players.length - 1) {
-          throw new InvalidProtocolException();
-        } else {
-          break;
-        }
-      }
+    if (failed) {
+      return new Player[0];
+    }
+    Player[] players = new Player[answerStrings.length];
+    for (int i = 0; i < players.length - 1; ++i) {
       String[] a = answerStrings[i].split(" ");
       players[i] = new Player(a[0], null/* a[1] */);
     }
