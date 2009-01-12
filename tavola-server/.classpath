@@ -6,6 +6,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tavola-common"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/java_memcached-release_2.0.1.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/186841/Pulpit/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

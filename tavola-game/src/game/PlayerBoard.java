@@ -33,15 +33,16 @@ public class PlayerBoard {
 
     // TODO: rozszerzyc na wszystkie weze
     public void initialize() {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; i++) {
 	    snakes[i] = new Player(i, 3, WIDTH, HEIGHT);
+	}
 	initBoard();
     }
 
     // TODO javadoc
     /**
-         * Initiates an empty board with one bonus.
-         */
+     * Initiates an empty board with one bonus.
+     */
     private void initBoard() {
 	board = new int[WIDTH][HEIGHT];
 	for (int w = 0; w < WIDTH; w++) {
@@ -58,7 +59,8 @@ public class PlayerBoard {
 	    snakes[i].changeDirection(snakesDirections[i]);
 	    snakes[i].move();
 	    for (int j = 0; j < snakes[i].getBody().size(); j++) {
-		board[snakes[i].getBody().get(j).x()][snakes[i].getBody().get(j).y()] = 1;
+		board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
+			.get(j).y()] = 1;
 	    }
 	    board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
 	    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
@@ -73,10 +75,11 @@ public class PlayerBoard {
     }
 
     public void setSnakesDirections(Direction[] directions) {
-	for (int i = 0; i < snakes.length; i++)
+	for (int i = 0; i < snakes.length; i++) {
 	    if (!snakesDirections[i].opposite(directions[i])) {
 		snakesDirections[i] = directions[i];
 	    }
+	}
     }
 
     public int[][] getBoard() {
@@ -84,25 +87,25 @@ public class PlayerBoard {
     }
 
     /**
-         * @return the bonus
-         */
+     * @return the bonus
+     */
     public Position getBonus() {
 	return bonus;
     }
-    
+
     public void setBonus(Position bonusPosition) {
 	bonus = bonusPosition;
     }
 
     public int getSize() {
-        return size;
+	return size;
     }
 
     public void setSize(int size) {
-        this.size = size;
+	this.size = size;
     }
 
     public int getPlayerId() {
-        return playerId;
+	return playerId;
     }
 }

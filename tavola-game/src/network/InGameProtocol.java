@@ -3,6 +3,10 @@ package network;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import applet.PlayBoardPanel;
+import client.application.Pipe;
+import client.protocol.InvalidProtocolException;
+
 /**
  * @author Piotr Staszak
  */
@@ -10,12 +14,12 @@ import java.util.ArrayList;
 public class InGameProtocol implements Runnable {
 
     private Pipe pipe;
-    private BoardPanel board;
+    private PlayBoardPanel board;
     private volatile boolean termination = false;
 
-    public InGameProtocol(Pipe pipe, BoardPanel board) {
+    public InGameProtocol(Pipe pipe, PlayBoardPanel board2) {
 	this.pipe = pipe;
-	this.board = board;
+	board = board2;
     }
 
     public void run() {
@@ -31,7 +35,7 @@ public class InGameProtocol implements Runnable {
 			    && Integer.parseInt(s.substring(5)) == moveId) {
 
 			pipe.println("MOVE " + String.valueOf(moveId) + " "
-				+ board.getDirection());
+				+ board.getMyNextTurn());
 
 			s = pipe.readln();
 			if (s == null

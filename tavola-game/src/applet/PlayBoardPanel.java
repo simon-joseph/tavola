@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -22,11 +23,12 @@ import commons.Position;
  * 
  */
 @SuppressWarnings("serial")
-class PlayBoardPanel extends JPanel implements KeyListener, ActionListener {
+public class PlayBoardPanel extends JPanel implements KeyListener,
+	ActionListener {
 
     private DefaultTheme th;
     private PlayerBoard sb;
-    private Direction myNextTurn;
+    private Direction myNextTurn = Direction.RIGHT;
 
     public PlayBoardPanel(PlayerBoard s) {
 	super();
@@ -49,8 +51,9 @@ class PlayBoardPanel extends JPanel implements KeyListener, ActionListener {
     private void paintBoard(Graphics g) {
 	drawBackground(g);
 	th.paintBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
-	for(int i = 0; i < sb.getSize(); i++)
+	for (int i = 0; i < sb.getSize(); i++) {
 	    paintSnake(g, sb.getSnake(i), i);
+	}
 	th.paintBonus(g, sb.getBonus());
 	th.paintStatBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintStats(g);
@@ -93,17 +96,17 @@ class PlayBoardPanel extends JPanel implements KeyListener, ActionListener {
 	    myNextTurn = Direction.UP;
 	    break;
 	case KeyEvent.VK_DOWN:
-	    //	  serwerze, ruszylem sie w dol
+	    // serwerze, ruszylem sie w dol
 	    // sb.setSnakeDirection(Direction.DOWN);
 	    myNextTurn = Direction.DOWN;
 	    break;
 	case KeyEvent.VK_LEFT:
-	    //	  serwerze, ruszylem sie w lewo
+	    // serwerze, ruszylem sie w lewo
 	    // sb.setSnakeDirection(Direction.LEFT);
 	    myNextTurn = Direction.LEFT;
 	    break;
 	case KeyEvent.VK_RIGHT:
-	    //	  serwerze, ruszylem sie w prawo
+	    // serwerze, ruszylem sie w prawo
 	    // sb.setSnakeDirection(Direction.RIGHT);
 	    myNextTurn = Direction.RIGHT;
 	    break;
@@ -142,7 +145,15 @@ class PlayBoardPanel extends JPanel implements KeyListener, ActionListener {
     }
 
     public Direction getMyNextTurn() {
-        return myNextTurn;
+	return myNextTurn;
+    }
+
+    public void setDirections(String[] array) {
+	ArrayList<Direction> moves = new ArrayList<Direction>();
+	for (int i = 0; i < array.length; i++) {
+	    moves.add(Direction.fromString(array[i].split(" ")[1]));
+	}
+	sb.setSnakesDirections(moves.toArray(new Direction[] {}));
     }
 
 }

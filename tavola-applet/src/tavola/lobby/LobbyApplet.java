@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import applet.SnakeBoardApplet;
+import applet.PlayerBoardApplet;
 import client.application.CreateGameMessage;
 import client.application.GetMessagesGameMessage;
 import client.application.HelloGameMessage;
@@ -31,7 +31,6 @@ import client.application.ListGameMessage;
 import client.application.MessageGameMessage;
 import client.application.StartGameMessage;
 import client.application.TavolaClient;
-import client.application.TavolaInGameClient;
 import client.protocol.InvalidProtocolException;
 import data.game.Game;
 import data.network.ChatMessages;
@@ -304,15 +303,14 @@ public class LobbyApplet extends JApplet {
           e1.printStackTrace();
           return;
         }
-        // ???
-        TavolaInGameClient inGameClient = new TavolaInGameClient(tavolaClient
-            .getPipe());
-        Thread t = new Thread(inGameClient);
-        t.start();
-
+        /*
+         * // ??? TavolaInGameClient inGameClient = new
+         * TavolaInGameClient(tavolaClient .getPipe()); Thread t = new
+         * Thread(inGameClient); t.start();
+         */
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        SnakeBoardApplet inst = new SnakeBoardApplet();
+        PlayerBoardApplet inst = new PlayerBoardApplet(tavolaClient.getPipe());
         frame.getContentPane().add(inst);
         ((JComponent) frame.getContentPane()).setPreferredSize(inst.getSize());
         frame.pack();
