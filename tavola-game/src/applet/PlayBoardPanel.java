@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -28,7 +27,6 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 
     private DefaultTheme th;
     private PlayerBoard sb;
-    private Direction myNextTurn = Direction.RIGHT;
 
     public PlayBoardPanel(PlayerBoard s) {
 	super();
@@ -93,22 +91,22 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 	case KeyEvent.VK_UP:
 	    // serwerze, ruszylem sie do gory
 	    // sb.setSnakeDirection(Direction.UP);
-	    myNextTurn = Direction.UP;
+	    sb.setMyNextTurn(Direction.UP);
 	    break;
 	case KeyEvent.VK_DOWN:
 	    // serwerze, ruszylem sie w dol
 	    // sb.setSnakeDirection(Direction.DOWN);
-	    myNextTurn = Direction.DOWN;
+	    sb.setMyNextTurn(Direction.DOWN);
 	    break;
 	case KeyEvent.VK_LEFT:
 	    // serwerze, ruszylem sie w lewo
 	    // sb.setSnakeDirection(Direction.LEFT);
-	    myNextTurn = Direction.LEFT;
+	    sb.setMyNextTurn(Direction.LEFT);
 	    break;
 	case KeyEvent.VK_RIGHT:
 	    // serwerze, ruszylem sie w prawo
 	    // sb.setSnakeDirection(Direction.RIGHT);
-	    myNextTurn = Direction.RIGHT;
+	    sb.setMyNextTurn(Direction.RIGHT);
 	    break;
 	default:
 	    break;
@@ -142,18 +140,6 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 	// TODO predkosc ustalac bedzie server, leveli chyba nie bedzie
 	// g.drawString("Speed: " + sb.getSpeed(), 610, 30);
 	// g.drawString("Level: " + sb.getLevel(), 610, 50);
-    }
-
-    public Direction getMyNextTurn() {
-	return myNextTurn;
-    }
-
-    public void setDirections(String[] array) {
-	ArrayList<Direction> moves = new ArrayList<Direction>();
-	for (int i = 0; i < array.length; i++) {
-	    moves.add(Direction.fromString(array[i].split(" ")[1]));
-	}
-	sb.setSnakesDirections(moves.toArray(new Direction[] {}));
     }
 
 }

@@ -1,9 +1,10 @@
 package network;
 
+import game.PlayerBoard;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
-import applet.PlayBoardPanel;
 import client.application.Pipe;
 import client.protocol.InvalidProtocolException;
 
@@ -14,10 +15,10 @@ import client.protocol.InvalidProtocolException;
 public class InGameProtocol implements Runnable {
 
     private Pipe pipe;
-    private PlayBoardPanel board;
+    private PlayerBoard board;
     private volatile boolean termination = false;
 
-    public InGameProtocol(Pipe pipe, PlayBoardPanel board2) {
+    public InGameProtocol(Pipe pipe, PlayerBoard board2) {
 	this.pipe = pipe;
 	board = board2;
     }

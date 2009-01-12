@@ -40,7 +40,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 
     public PlayerBoardApplet(Pipe pipe) {
 	this();
-	InGameProtocol inGameClient = new InGameProtocol(pipe, board);
+	InGameProtocol inGameClient = new InGameProtocol(pipe, playerBoard);
 	Thread t = new Thread(inGameClient);
 	t.start();
     }

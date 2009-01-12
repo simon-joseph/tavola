@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import commons.Direction;
 import commons.Position;
 
@@ -18,6 +20,7 @@ public class PlayerBoard {
     private Position bonus;
     private int[][] board;
     private Direction[] snakesDirections; // TODO: tablica kierunkow wezy
+    private Direction myNextTurn = Direction.RIGHT;
 
     public PlayerBoard(int all, int me) {
 	playerId = me;
@@ -75,7 +78,7 @@ public class PlayerBoard {
     }
 
     public void setSnakesDirections(Direction[] directions) {
-	for (int i = 0; i < snakes.length; i++) {
+	for (int i = 0; i < directions.length; i++) {
 	    if (!snakesDirections[i].opposite(directions[i])) {
 		snakesDirections[i] = directions[i];
 	    }
@@ -107,5 +110,28 @@ public class PlayerBoard {
 
     public int getPlayerId() {
 	return playerId;
+    }
+
+    /**
+     * @return the myNextTurn
+     */
+    public Direction getMyNextTurn() {
+	return myNextTurn;
+    }
+
+    /**
+     * @param myNextTurn
+     *                the myNextTurn to set
+     */
+    public void setMyNextTurn(Direction myNextTurn) {
+	this.myNextTurn = myNextTurn;
+    }
+
+    public void setDirections(String[] array) {
+	ArrayList<Direction> moves = new ArrayList<Direction>();
+	for (int i = 0; i < array.length; i++) {
+	    moves.add(Direction.fromString(array[i].split(" ")[1]));
+	}
+	setSnakesDirections(moves.toArray(new Direction[] {}));
     }
 }
