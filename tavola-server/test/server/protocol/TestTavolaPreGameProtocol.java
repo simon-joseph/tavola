@@ -151,4 +151,47 @@ public class TestTavolaPreGameProtocol extends TestCase {
 
     Assert.assertTrue(protocol2.processInput("LEAVE_GAME").equals("OK"));
   }
+
+  public void testChat() {
+    final Player player = new Player("player1", new PrintWriter(System.out,
+        true));
+    final TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player,
+        null);
+
+    final Player player2 = new Player("player2", new PrintWriter(System.out,
+        true));
+    final TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player2,
+        null);
+
+    Assert.assertTrue(protocol.processInput("MSG test").equals("OK"));
+    Assert.assertTrue(protocol.processInput("GET_MSGS").equals(
+        player.getId() + ":test\nEND"));
+    Assert.assertTrue(protocol2.processInput("GET_MSGS").equals(
+        player.getId() + ":test\nEND"));
+    Assert.assertTrue(protocol2.processInput("GET_MSGS").equals("END"));
+  }
+
+  public void testChatWhileGameStartAwaiting() {
+    final Player player = new Player("player1", new PrintWriter(System.out,
+        true));
+
+    final TavolaPreGameProtocol protocol = new TavolaPreGameProtocol(player,
+        null);
+
+    final Player player2 = new Player("player2", new PrintWriter(System.out,
+        true));
+    final TavolaPreGameProtocol protocol2 = new TavolaPreGameProtocol(player2,
+        null);
+
+    Assert.assertTrue(protocol.processInput("CREATE_GAME level6 6 6 player1")
+        .equals("OK 2"));
+
+    Assert.assertTrue(protocol.processInput("MSG test2").equals("OK"));
+
+    Assert.assertTrue(protocol.processInput("GET_MSGS").equals(
+        player.getId() + ":test\n" + player.getId() + ":test2\nEND"));
+    Assert.assertTrue(protocol2.processInput("GET_MSGS").equals(
+        player.getId() + ":test\n" + player.getId() + ":test2\nEND"));
+
+  }
 }
