@@ -264,6 +264,7 @@ public class LobbyApplet extends JApplet {
       if (ticket == null) {
         ticket = "anonymous";
       }
+      ticket = "aa";
 
       if (!new HelloGameMessage(ticket).send(tavolaClient.getPipe())) {
         add(new JLabel("Zaloguj się ponownie..."));

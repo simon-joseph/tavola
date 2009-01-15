@@ -94,7 +94,7 @@ public class TavolaServerThread extends Thread {
     String cacheKey = (String) cache.get(cookie);
 
     if (cacheKey == null) {
-      return null;
+      return cookie;
     }
 
     return cacheKey.split(" ")[0];
