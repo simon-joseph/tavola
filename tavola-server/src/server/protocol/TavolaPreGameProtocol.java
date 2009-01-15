@@ -12,7 +12,7 @@ import data.network.TavolaProtocol;
 /**
  * @author rafal.paliwoda
  * 
- *         TODO kod wymaga rekaktoryzacji
+ * TODO kod wymaga rekaktoryzacji
  */
 public class TavolaPreGameProtocol implements TavolaProtocol {
 
@@ -80,10 +80,8 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           for (Player player : gameToJoin.getPlayers()) {
             if (player != this.player) {
               synchronized (player) {
-                /*
-                 * player.getPrintWriter().println( "PLAYER_JOINED " +
-                 * this.player.getId());
-                 */
+                player.getPrintWriter().println(
+                    "ASYNC PLAYER_JOINED " + this.player.getId());
               }
             }
           }
@@ -145,7 +143,8 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           for (Player p : players) {
             if (player != p) {
               synchronized (p) {
-                p.getPrintWriter().println("PLAYER_LEFT " + player.getId());
+                p.getPrintWriter().println(
+                    "ASYNC PLAYER_LEFT " + player.getId());
               }
             }
           }
@@ -176,7 +175,8 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
             for (Player p : players) {
               if (player != p) {
                 synchronized (p) {
-                  p.getPrintWriter().println("PLAYER_BANNED " + player.getId());
+                  p.getPrintWriter().println(
+                      "ASYNC PLAYER_BANNED " + player.getId());
                 }
               }
             }

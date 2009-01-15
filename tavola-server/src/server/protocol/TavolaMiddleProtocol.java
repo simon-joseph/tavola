@@ -25,7 +25,7 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
     game.setRunning(true);
     for (Player p : game.getPlayers()) {
       synchronized (p) {
-        p.getPrintWriter().println("START_GAME");
+        p.getPrintWriter().println("ASYNC START_GAME");
         /*
          * if (p != player) {
          * 
@@ -61,7 +61,6 @@ public class TavolaMiddleProtocol implements TavolaProtocol {
     inGameProtocol = new TavolaInGameProtocol(this.player, this, in);
   }
 
-  
   public String processInput(String input) {
     return preGameProtocol.processInput(input);
   }

@@ -17,7 +17,7 @@ public class StartGameMessage extends GameMessage<Boolean> {
   @Override
   protected boolean endOfAnswer(String s) {
     // TODO Auto-generated method stub
-    return s != null;
+    return true;
   }
 
   /*

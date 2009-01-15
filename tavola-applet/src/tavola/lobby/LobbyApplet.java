@@ -29,8 +29,10 @@ import client.application.JoinGameMessage;
 import client.application.LeaveGameMessage;
 import client.application.ListGameMessage;
 import client.application.MessageGameMessage;
+import client.application.Pipe;
 import client.application.StartGameMessage;
 import client.application.TavolaClient;
+import client.protocol.AsyncMessagesHandler;
 import client.protocol.InvalidProtocolException;
 import data.game.Game;
 import data.network.ChatMessages;
@@ -201,6 +203,62 @@ public class LobbyApplet extends JApplet {
     }
   }
 
+  private volatile boolean gameStarted = false;
+
+  private class GameStartedChecker implements Runnable {
+    public void run() {
+      tavolaClient.getPipe().startAsyncMessagesReader(
+          new GameStartAwaitingClientAsyncMessagesHandler());
+
+      while (true) {
+        if (gameStarted) {
+          tavolaClient.getPipe().stopAsyncMessagesReader();
+          JFrame frame = new JFrame();
+          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          PlayerBoardApplet inst = new PlayerBoardApplet(tavolaClient.getPipe());
+          frame.getContentPane().add(inst);
+          ((JComponent) frame.getContentPane())
+              .setPreferredSize(inst.getSize());
+          frame.pack();
+          frame.setVisible(true);
+          return;
+        } else {
+          try {
+            Thread.sleep(10);
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+  }
+
+  private class GameStartAwaitingClientAsyncMessagesHandler implements
+      AsyncMessagesHandler {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see client.protocol.AsyncMessagesHandler#handleMessage(java.lang.String)
+     */
+    @Override
+    public void handleMessage(String s, Pipe pipe) {
+      if (s.startsWith("START_GAME")) {
+        pipe.println("GAME_STARTED");
+        gameStarted = true;
+
+      } else if (s.startsWith("PLAYER_JOINED ")) {
+
+      } else if (s.startsWith("PLAYER_BANNED ")) {
+
+      } else {
+
+      }
+    }
+
+  }
+
   private JPanel createJoinGamePanel() {
     final JPanel formPanel = new JPanel(new BorderLayout());
     final JPanel panel = new JPanel();
@@ -231,6 +289,14 @@ public class LobbyApplet extends JApplet {
           }
           gamesPane.setVisible(false);
           gamePanel.setVisible(true);
+          Thread t = new Thread(new GameStartedChecker());
+          t.start();
+          try {
+            t.join();
+          } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
         }
       }
     });
@@ -264,7 +330,7 @@ public class LobbyApplet extends JApplet {
       if (ticket == null) {
         ticket = "anonymous";
       }
-      ticket = "aa";
+      ticket = "aabbbb";
 
       if (!new HelloGameMessage(ticket).send(tavolaClient.getPipe())) {
         add(new JLabel("Zaloguj się ponownie..."));
@@ -305,18 +371,10 @@ public class LobbyApplet extends JApplet {
       public void actionPerformed(ActionEvent arg0) {
         try {
           tavolaClient.getPipe().readln();
-          tavolaClient.getPipe().println("GAME_STARTED");
         } catch (IOException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlayerBoardApplet inst = new PlayerBoardApplet(tavolaClient.getPipe());
-        frame.getContentPane().add(inst);
-        ((JComponent) frame.getContentPane()).setPreferredSize(inst.getSize());
-        frame.pack();
-        frame.setVisible(true);
 
       }
     });
@@ -326,7 +384,6 @@ public class LobbyApplet extends JApplet {
       public void actionPerformed(ActionEvent e) {
         try {
           new StartGameMessage().send(tavolaClient.getPipe());
-          tavolaClient.getPipe().println("GAME_STARTED");
         } catch (IOException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -341,13 +398,14 @@ public class LobbyApplet extends JApplet {
          * TavolaInGameClient(tavolaClient .getPipe()); Thread t = new
          * Thread(inGameClient); t.start();
          */
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlayerBoardApplet inst = new PlayerBoardApplet(tavolaClient.getPipe());
-        frame.getContentPane().add(inst);
-        ((JComponent) frame.getContentPane()).setPreferredSize(inst.getSize());
-        frame.pack();
-        frame.setVisible(true);
+        Thread t = new Thread(new GameStartedChecker());
+        t.start();
+        try {
+          t.join();
+        } catch (InterruptedException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
       }
     });
 

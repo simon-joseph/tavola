@@ -34,7 +34,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	// serwerze! ja chce grac!
 	// TODO pobierz informacje od serwera
 	playerBoard = new PlayerBoard(2, 1);
-	speed = 70;
+	speed = 80;
 	initGUI();
     }
 

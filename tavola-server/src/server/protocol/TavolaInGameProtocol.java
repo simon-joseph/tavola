@@ -85,7 +85,11 @@ public class TavolaInGameProtocol implements TavolaProtocol {
         }
       }
 
-      Thread.sleep(50 - (System.currentTimeMillis() - time));
+      long sleep = 100 - (System.currentTimeMillis() - time);
+
+      if (sleep > 0) {
+        Thread.sleep(sleep);
+      }
       moveId++;
     }
   }
