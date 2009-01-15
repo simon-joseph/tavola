@@ -80,8 +80,10 @@ public class TavolaPreGameProtocol implements TavolaProtocol {
           for (Player player : gameToJoin.getPlayers()) {
             if (player != this.player) {
               synchronized (player) {
-                player.getPrintWriter().println(
-                    "PLAYER_JOINED " + this.player.getId());
+                /*
+                 * player.getPrintWriter().println( "PLAYER_JOINED " +
+                 * this.player.getId());
+                 */
               }
             }
           }
