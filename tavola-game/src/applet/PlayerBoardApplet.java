@@ -34,7 +34,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	// serwerze! ja chce grac!
 	// TODO pobierz informacje od serwera
 	playerBoard = new PlayerBoard(2, 1);
-	speed = 30;
+	speed = 70;
 	initGUI();
     }
 
@@ -61,7 +61,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	    if (SnakeBoardApplet.clicked) {
 		// TODO pobierz ruchy od serwera i wywolaj setSnakesDiractions,
 		// setBonus
-		playerBoard.update();
+		// playerBoard.update();
 		requestFocus();
 		board.repaint();
 	    }

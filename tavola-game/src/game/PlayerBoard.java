@@ -132,5 +132,6 @@ public class PlayerBoard {
 	    moves.add(Direction.fromString(array[i]));
 	}
 	setSnakesDirections(moves.toArray(new Direction[] {}));
+	update();
     }
 }
