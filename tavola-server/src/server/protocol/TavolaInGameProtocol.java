@@ -40,6 +40,8 @@ public class TavolaInGameProtocol implements TavolaProtocol {
 
     while (true) {
 
+      Long time = System.currentTimeMillis();
+
       for (Player p : game.getPlayers()) {
         synchronized (p) {
           // System.out.println("NEXT " + moveId);
@@ -83,7 +85,7 @@ public class TavolaInGameProtocol implements TavolaProtocol {
         }
       }
 
-      Thread.sleep(50);
+      Thread.sleep(50 - (System.currentTimeMillis() - time));
       moveId++;
     }
   }
