@@ -5,14 +5,14 @@ import game.PlayerBoard;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 
-import network.InGameProtocol;
-import client.application.Pipe;
-
 import commons.Direction;
+
+import data.network.MessagesPipe;
 
 /**
  * @author sla + agl
@@ -28,6 +28,14 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
     private PlayerBoard playerBoard;
     private long speed;
 
+    public String getMyNextTurn() {
+	return playerBoard.getMyNextTurn().toString();
+    }
+
+    public void setDirections(List<String> directions) {
+	playerBoard.setDirections(directions.toArray(new String[] {}));
+    }
+
     public PlayerBoardApplet() {
 	super();
 	SnakeBoardApplet.clicked = false;
@@ -38,11 +46,11 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	initGUI();
     }
 
-    public PlayerBoardApplet(Pipe pipe) {
+    public PlayerBoardApplet(MessagesPipe pipe) {
 	this();
-	InGameProtocol inGameClient = new InGameProtocol(pipe, playerBoard);
-	Thread t = new Thread(inGameClient);
-	t.start();
+	// InGameProtocol inGameClient = new InGameProtocol(pipe, playerBoard);
+	// Thread t = new Thread(inGameClient);
+	// t.start();
     }
 
     public void ruszSie() {

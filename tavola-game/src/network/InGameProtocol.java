@@ -2,11 +2,11 @@ package network;
 
 import game.PlayerBoard;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import client.application.Pipe;
-import client.protocol.InvalidProtocolException;
+import data.network.ConnectionLostException;
+import data.network.Pipe;
+import data.network.RequestSendingException;
 
 /**
  * @author Piotr Staszak
@@ -41,7 +41,7 @@ public class InGameProtocol implements Runnable {
 			s = pipe.readln();
 			if (s == null
 				|| !s.equals("MOVES " + String.valueOf(moveId))) {
-			    throw new InvalidProtocolException();
+			    throw new RequestSendingException();
 			}
 
 			ArrayList<String> moves = new ArrayList<String>();
@@ -51,22 +51,25 @@ public class InGameProtocol implements Runnable {
 			}
 
 			if (s == null || !s.equals("END")) {
-			    throw new InvalidProtocolException();
+			    throw new RequestSendingException();
 			}
 
 			board.setDirections(moves.toArray(new String[] {}));
 			moveId++;
 
 		    } else {
-			throw new InvalidProtocolException();
+			throw new RequestSendingException();
 		    }
 
 		}
 	    }
-	} catch (IOException e) {
+	} catch (RequestSendingException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
-	} catch (InvalidProtocolException e) {
+	} catch (NumberFormatException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (ConnectionLostException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}

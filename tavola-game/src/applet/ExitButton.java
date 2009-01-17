@@ -11,6 +11,8 @@ import javax.swing.JButton;
  * 
  */
 public final class ExitButton extends JButton {
+    public static final long serialVersionUID = 1;
+
     public final static String cmdName = "EXIT";
 
     public ExitButton(ActionListener al) {

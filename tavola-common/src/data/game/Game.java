@@ -5,13 +5,13 @@ import java.util.List;
 /**
  * @author rafal.paliwoda
  * 
- * game and players settings
+ *         game and players settings
  */
 public class Game {
 
   private String id;
 
-  final List<Player> players;
+  private List<Player> players;
 
   private String levelId;
 
@@ -113,6 +113,20 @@ public class Game {
   public String toString() {
     return id + " " + levelId + " " + maxPlayersCount + " " + maxBonusesCount
         + " " + creatorId;
+  }
+
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+
+  public void selectNewCreator() {
+    for (Player p : players) {
+      if (!p.getId().equals(creatorId)) {
+        creatorId = p.getId();
+        return;
+      }
+    }
+    creatorId = null;
   }
 
 }

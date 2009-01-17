@@ -22,21 +22,23 @@ public final class Player implements IPlayer {
     private Position last;
     private Direction direction;
     private LinkedList<Position> body;
-    private int id;
-    //TODO: id weza
+
+    // private int id;
+    // TODO: id weza
 
     public Player(int i, int length, int w, int h) {
-	id = i;
+	// id = i;
 	delay = length;
 	body = new LinkedList<Position>();
-	if(i < 2)
-	    this.direction = Direction.RIGHT;
-	else
-	    this.direction = Direction.LEFT;
+	if (i < 2) {
+	    direction = Direction.RIGHT;
+	} else {
+	    direction = Direction.LEFT;
+	}
 	System.out.println("NUMER WEZA: " + i);
-	System.out.println("SZEROKOSC: " + (w/4 + (w * ((int)(i/2)))/2));
-	System.out.println("WYSOKOSC: " + (h/4 + (h * (i%2))/2));
-	this.head = new Position(w/4 + (w * ((int) (i/2)))/2, h/4 + (h * (i%2)/2));
+	System.out.println("SZEROKOSC: " + (w / 4 + w * (i / 2) / 2));
+	System.out.println("WYSOKOSC: " + (h / 4 + h * (i % 2) / 2));
+	head = new Position(w / 4 + w * (i / 2) / 2, h / 4 + h * (i % 2) / 2);
 	last = null;
     }
 
@@ -65,7 +67,7 @@ public final class Player implements IPlayer {
 	} else {
 	    delay--;
 	}
-	assert(direction != null);
+	assert direction != null;
 	head.add(direction.toPosition());
     }
 

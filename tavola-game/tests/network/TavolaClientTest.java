@@ -9,15 +9,17 @@ import java.net.UnknownHostException;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import client.application.CreateGameMessage;
-import client.application.HelloGameMessage;
-import client.application.Pipe;
-import client.application.TavolaClient;
-import client.protocol.InvalidProtocolException;
+import client.application.Client;
+import client.protocol.CreateGameRequest;
+import client.protocol.HelloRequest;
+import data.network.ConnectionLostException;
+import data.network.MessagesPipe;
+import data.network.Pipe;
+import data.network.RequestSendingException;
 
 public class TavolaClientTest extends TestCase {
 
-    private Pipe pipe;
+    private MessagesPipe pipe;
 
     private Socket socket = null;
 
@@ -29,23 +31,22 @@ public class TavolaClientTest extends TestCase {
     protected void setUp() throws Exception {
 
 	try {
-	    socket = new Socket(TavolaClient.DEFAULT_HOST,
-		    TavolaClient.DEFAULT_PORT);
+	    socket = new Socket(Client.DEFAULT_HOST, Client.DEFAULT_PORT);
 	    out = new PrintWriter(socket.getOutputStream(), true);
 	    in = new BufferedReader(new InputStreamReader(socket
 		    .getInputStream()));
 	    // TavolaClient.setConnected(true);
 	} catch (UnknownHostException e) {
-	    System.err.println("Unknown host " + TavolaClient.DEFAULT_HOST);
+	    System.err.println("Unknown host " + Client.DEFAULT_HOST);
 	    System.exit(1);
 	} catch (IOException e) {
 	    System.err.println("Couldn't get I/O for the connection to: "
-		    + TavolaClient.DEFAULT_HOST);
+		    + Client.DEFAULT_HOST);
 	    System.exit(1);
 	}
 
-	pipe = new Pipe(in, out);
-	pipe.readln(); // VERSION xxx
+	pipe = new MessagesPipe(new Pipe(in, out));
+	pipe.readMessage(null); // VERSION xxx
     }
 
     @Override
@@ -55,50 +56,56 @@ public class TavolaClientTest extends TestCase {
 	socket.close();
     }
 
-    public void testHello() throws IOException, InvalidProtocolException {
+    public void testHello() throws IOException, RequestSendingException,
+	    ConnectionLostException {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String ticket = br.readLine();
-	Assert.assertTrue(new HelloGameMessage(ticket).send(pipe));// kopytko*/
+	Assert.assertTrue(new HelloRequest(ticket).send(pipe));// kopytko*/
     }
 
-    public void testCreateGame() throws IOException, InvalidProtocolException {
+    public void testCreateGame() throws IOException, RequestSendingException,
+	    ConnectionLostException {
 	testHello();
 	Assert
-		.assertTrue(new CreateGameMessage("testLevel", 4, 5,
+		.assertTrue(new CreateGameRequest("testLevel", 4, 5,
 			"emptyTheme").send(pipe) != null);
     }
 
-    public void testJoinGame() throws IOException, InvalidProtocolException {
+    public void testJoinGame() throws IOException, RequestSendingException,
+	    ConnectionLostException {
 	testHello();
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	// BufferedReader br = new BufferedReader(new
+	// InputStreamReader(System.in));
 	// new JoinGameMessage(br.readLine()).send(pipe);
     }
 
-    public void testListGames() throws IOException, InvalidProtocolException {
+    public void testListGames() throws IOException, RequestSendingException,
+	    ConnectionLostException {
 	testHello();
 	// new ListGameMessage().send(pipe);
     }
 
-    public void testUser() throws IOException, InvalidProtocolException,
-	    InterruptedException {
+    public void testUser() throws IOException, RequestSendingException,
+	    InterruptedException, ConnectionLostException {
 	testHello();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	while (true) {
 	    String s3 = br.readLine();
 	    if (!s3.equals("")) {
-		pipe.println(s3);
+		// pipe.println(s3);
 	    }
 
 	    do {
-		String s2 = pipe.readln();
-		if (s2.equals("START_GAME")) {
-		    pipe.println("GAME_STARTED");
-		    InGameProtocol inGameClient = new InGameProtocol(pipe, null);
-		    Thread t = new Thread(inGameClient);
-		    t.start();
-		    t.join();
-		}
-	    } while (pipe.readyToRead());
+		// String s2 = pipe.readln();
+		// if (s2.equals("START_GAME")) {
+		// pipe.println("GAME_STARTED");
+		// InGameProtocol inGameClient = new InGameProtocol(pipe,
+		// null);
+		// Thread t = new Thread(inGameClient);
+		// t.start();
+		// t.join();
+		// }
+	    } while (true);// pipe.readyToRead());
 	}
 
     }

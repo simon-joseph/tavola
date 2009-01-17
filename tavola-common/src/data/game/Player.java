@@ -1,7 +1,6 @@
 package data.game;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
+import data.network.MessagesPipe;
 
 /**
  * @author rafal.paliwoda
@@ -9,35 +8,15 @@ import java.io.PrintWriter;
  */
 public class Player {
 
-  private String name; // TODO
+  private String name;
   private String id;
-  private PrintWriter printWriter;
-  private Game game;
-  private Thread serverThread;
-  private BufferedReader in;
-  private Integer lastMessageId = -1;
 
-  public Player(String id, PrintWriter printWriter) {
+  private Game game = null;
+  private MessagesPipe messagesPipe = null;
+
+  public Player(String id, String name) {
     this.id = id;
-    game = null;
-    this.printWriter = printWriter;
-  }
-
-  public Player(String id, PrintWriter printWriter, Thread serverThread,
-      BufferedReader in) {
-    this.id = id;
-    game = null;
-    this.printWriter = printWriter;
-    this.serverThread = serverThread;
-    this.in = in;
-  }
-
-  public Thread getServerThread() {
-    return serverThread;
-  }
-
-  public void setServerThread(Thread serverThread) {
-    this.serverThread = serverThread;
+    this.name = name;
   }
 
   public String getId() {
@@ -48,48 +27,35 @@ public class Player {
     this.id = id;
   }
 
-  public PrintWriter getPrintWriter() {
-    return printWriter;
-  }
-
-  public void setPrintWriter(PrintWriter printWriter) {
-    this.printWriter = printWriter;
-  }
-
   public Game getGame() {
     return game;
   }
 
   public void setGame(Game game) {
+    if (game == null && this.game.getCreatorId().equals(id)) {
+      this.game.selectNewCreator();
+    }
     this.game = game;
   }
 
   @Override
   public String toString() {
-    return getId();
+    return getName();
   }
 
-  /**
-   * @return the in
-   */
-  public BufferedReader getIn() {
-    return in;
+  public String getName() {
+    return name;
   }
 
-  /**
-   * @param in
-   *          the in to set
-   */
-  public void setIn(BufferedReader in) {
-    this.in = in;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Integer getLastMessageId() {
-    return lastMessageId;
+  public MessagesPipe getMessagesPipe() {
+    return messagesPipe;
   }
 
-  public void setLastMessageId(Integer lastMessageId) {
-    this.lastMessageId = lastMessageId;
+  public void setMessagesPipe(MessagesPipe messagesPipe) {
+    this.messagesPipe = messagesPipe;
   }
-
 }
