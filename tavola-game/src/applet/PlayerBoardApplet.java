@@ -34,12 +34,12 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	playerBoard.setDirections(directions.toArray(new String[] {}));
     }
 
-    public PlayerBoardApplet(int all, int me, int seed) {
+    public PlayerBoardApplet(int all, int me, int seed, int maxBonuses) {
 	super();
 	SnakeBoardApplet.clicked = false;
 	// serwerze! ja chce grac!
 	// TODO pobierz informacje od serwera
-	playerBoard = new PlayerBoard(all, me, seed);
+	playerBoard = new PlayerBoard(all, me, seed, maxBonuses);
 	speed = 80;
 	initGUI();
     }

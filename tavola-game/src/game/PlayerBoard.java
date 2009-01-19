@@ -24,8 +24,10 @@ public class PlayerBoard {
     private Direction[] snakesDirections; // TODO: tablica kierunkow wezy
     private Direction myNextTurn = Direction.RIGHT;
     private Random generator;
+    private int maxBonuses;
 
-    public PlayerBoard(int all, int me, int seed) {
+    public PlayerBoard(int all, int me, int seed, int mb) {
+	maxBonuses = mb;
 	generator = new Random(seed);
 	playerId = me;
 	size = all;
@@ -68,6 +70,9 @@ public class PlayerBoard {
 		for (int j = 0; j < snakes[i].getBody().size(); j++) {
 		    board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
 			    .get(j).y()] = 1;
+		}
+		if (maxBonuses == 0) {
+		    snakes[i].setDelay(snakes[i].getDelay() + 1);
 		}
 		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
 		if (stopConditions(i)) {
