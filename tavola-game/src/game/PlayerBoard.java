@@ -43,8 +43,8 @@ public class PlayerBoard {
 
     // TODO javadoc
     /**
-     * Initiates an empty board with one bonus.
-     */
+         * Initiates an empty board with one bonus.
+         */
     private void initBoard() {
 	board = new int[WIDTH][HEIGHT];
 	for (int w = 0; w < WIDTH; w++) {
@@ -58,18 +58,32 @@ public class PlayerBoard {
     // TODO ruszyc wszystkie weze
     public void update() {
 	for (int i = 0; i < size; i++) {
-	    snakes[i].changeDirection(snakesDirections[i]);
-	    snakes[i].move();
-	    for (int j = 0; j < snakes[i].getBody().size(); j++) {
-		board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
-			.get(j).y()] = 1;
+	    if (snakes[i].isAlive()) {
+		snakes[i].changeDirection(snakesDirections[i]);
+		snakes[i].move();
+		for (int j = 0; j < snakes[i].getBody().size(); j++) {
+		    board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
+			    .get(j).y()] = 1;
+		}
+		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
+		if (stopConditions(i)) {
+		    snakes[i].setAlive(false);
+		    if (i == playerId)
+			myNextTurn = Direction.DEATH;
+		} else {
+		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
+			snakes[i].setDelay(snakes[i].getDelay() + 1);
+		    }
+		}
+		board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 	    }
-	    board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
-	    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
-		snakes[i].setDelay(snakes[i].getDelay() + 1);
-	    }
-	    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 	}
+    }
+
+    private boolean stopConditions(int i) {
+	Position p = snakes[i].getHead();
+	return p.x() < 0 || p.x() >= WIDTH || p.y() < 0 || p.y() >= HEIGHT
+		|| board[p.x()][p.y()] != 0 && board[p.x()][p.y()] != 3;
     }
 
     public Player getSnake(int i) {
@@ -89,8 +103,8 @@ public class PlayerBoard {
     }
 
     /**
-     * @return the bonus
-     */
+         * @return the bonus
+         */
     public Position getBonus() {
 	return bonus;
     }
@@ -112,16 +126,16 @@ public class PlayerBoard {
     }
 
     /**
-     * @return the myNextTurn
-     */
+         * @return the myNextTurn
+         */
     public Direction getMyNextTurn() {
 	return myNextTurn;
     }
 
     /**
-     * @param myNextTurn
-     *                the myNextTurn to set
-     */
+         * @param myNextTurn
+         *                the myNextTurn to set
+         */
     public void setMyNextTurn(Direction myNextTurn) {
 	this.myNextTurn = myNextTurn;
     }

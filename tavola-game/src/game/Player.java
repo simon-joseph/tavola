@@ -17,6 +17,7 @@ import commons.Position;
 
 public final class Player implements IPlayer {
 
+    private boolean alive;
     private int delay;
     private Position head;
     private Position last;
@@ -40,6 +41,7 @@ public final class Player implements IPlayer {
 	System.out.println("WYSOKOSC: " + (h / 4 + h * (i % 2) / 2));
 	head = new Position(w / 4 + w * (i / 2) / 2, h / 4 + h * (i % 2) / 2);
 	last = null;
+	alive = true;
     }
 
     /*
@@ -112,5 +114,13 @@ public final class Player implements IPlayer {
      */
     public LinkedList<Position> getBody() {
 	return body;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

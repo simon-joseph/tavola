@@ -7,7 +7,7 @@ package commons;
  * 
  */
 public enum Direction {
-    DOWN, RIGHT, LEFT, UP, ;
+    DOWN, RIGHT, LEFT, UP, DEATH;
 
     /**
      * @param direction
