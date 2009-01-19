@@ -24,7 +24,19 @@ public class GamePanel extends JPanel {
   public GamePanel(Player player) {
     this.player = player;
     setLayout(new BorderLayout());
-    playerBoardApplet = new PlayerBoardApplet();
+    int playerPosition = 0;
+    for (Player p : player.getGame().getPlayers()) {
+      if (p == player) {
+        break;
+      }
+      playerPosition++;
+    }
+    int allPlayersCount = player.getGame().getPlayers().size();
+    if (playerPosition >= allPlayersCount) {
+      // TODO: pomyslec co tutaj
+      throw new RuntimeException("todo");
+    }
+    playerBoardApplet = new PlayerBoardApplet(allPlayersCount, playerPosition);
     add(playerBoardApplet, BorderLayout.CENTER);
     validate();
   }
@@ -42,5 +54,9 @@ public class GamePanel extends JPanel {
       }
     });
     return clientInGameRequestsHandler;
+  }
+
+  public boolean isGameOver() {
+    return playerBoardApplet.isGameOver();
   }
 }

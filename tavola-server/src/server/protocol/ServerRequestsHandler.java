@@ -82,7 +82,7 @@ public class ServerRequestsHandler extends RequestsHandler {
     String cacheKey = (String) cache.get(cookie);
 
     if (cacheKey == null) {
-      return new String[] { cookie, cookie }; // tymczasowo
+      return new String[] { cookie, cookie }; // null;
     }
 
     return cacheKey.split(" ", 2);

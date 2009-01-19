@@ -12,8 +12,6 @@ import javax.swing.JApplet;
 
 import commons.Direction;
 
-import data.network.MessagesPipe;
-
 /**
  * @author sla + agl
  */
@@ -36,21 +34,14 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	playerBoard.setDirections(directions.toArray(new String[] {}));
     }
 
-    public PlayerBoardApplet() {
+    public PlayerBoardApplet(int all, int me) {
 	super();
 	SnakeBoardApplet.clicked = false;
 	// serwerze! ja chce grac!
 	// TODO pobierz informacje od serwera
-	playerBoard = new PlayerBoard(2, 1);
+	playerBoard = new PlayerBoard(all, me);
 	speed = 80;
 	initGUI();
-    }
-
-    public PlayerBoardApplet(MessagesPipe pipe) {
-	this();
-	// InGameProtocol inGameClient = new InGameProtocol(pipe, playerBoard);
-	// Thread t = new Thread(inGameClient);
-	// t.start();
     }
 
     public void ruszSie() {
@@ -70,7 +61,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 		// TODO pobierz ruchy od serwera i wywolaj setSnakesDiractions,
 		// setBonus
 		// playerBoard.update();
-		requestFocus();
+		// requestFocus();
 		board.repaint();
 	    }
 	    try {
@@ -109,7 +100,7 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	    new Thread(this).start();
 	}
     }
-    
+
     public boolean isGameOver() {
 	return playerBoard.isGameOver();
     }

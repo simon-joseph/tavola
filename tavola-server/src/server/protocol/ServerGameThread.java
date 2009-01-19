@@ -13,6 +13,7 @@ import data.network.RequestSendingException;
  * 
  */
 public class ServerGameThread extends Thread {
+  private static final Object DEATH_MESSAGE = "DEATH";
   private final Game game;
 
   public ServerGameThread(Game game) {
@@ -51,6 +52,9 @@ public class ServerGameThread extends Thread {
                 } else {
                   playersMoves.notifyAll();
                 }
+              }
+              if (move.equals(ServerGameThread.DEATH_MESSAGE)) {
+                return;
               }
               new ShowMovesRequest(playersMoves).send(player.getMessagesPipe());
 

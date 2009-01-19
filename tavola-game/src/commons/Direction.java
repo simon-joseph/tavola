@@ -57,7 +57,10 @@ public enum Direction {
 	if (this == DOWN) {
 	    return "2";
 	}
-	return "3";
+	if (this == LEFT) {
+	    return "3";
+	}
+	return "DEATH";
     }
 
     public static Direction fromString(String s) {
@@ -73,6 +76,9 @@ public enum Direction {
 	    }
 	    if (s.equals("3")) {
 		return Direction.LEFT;
+	    }
+	    if (s.equals("DEATH")) {
+		return Direction.DEATH;
 	    }
 	}
 	throw new IllegalArgumentException();

@@ -44,8 +44,8 @@ public class PlayerBoard {
 
     // TODO javadoc
     /**
-         * Initiates an empty board with one bonus.
-         */
+     * Initiates an empty board with one bonus.
+     */
     private void initBoard() {
 	board = new int[WIDTH][HEIGHT];
 	for (int w = 0; w < WIDTH; w++) {
@@ -69,7 +69,7 @@ public class PlayerBoard {
 		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
 		if (stopConditions(i)) {
 		    snakes[i].setAlive(false);
-		    if (i == playerId){
+		    if (i == playerId) {
 			myNextTurn = Direction.DEATH;
 			gameOver = true;
 		    }
@@ -77,8 +77,8 @@ public class PlayerBoard {
 		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
 			snakes[i].setDelay(snakes[i].getDelay() + 1);
 		    }
+		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 		}
-		board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 	    }
 	}
     }
@@ -106,8 +106,8 @@ public class PlayerBoard {
     }
 
     /**
-         * @return the bonus
-         */
+     * @return the bonus
+     */
     public Position getBonus() {
 	return bonus;
     }
@@ -129,16 +129,16 @@ public class PlayerBoard {
     }
 
     /**
-         * @return the myNextTurn
-         */
+     * @return the myNextTurn
+     */
     public Direction getMyNextTurn() {
 	return myNextTurn;
     }
 
     /**
-         * @param myNextTurn
-         *                the myNextTurn to set
-         */
+     * @param myNextTurn
+     *            the myNextTurn to set
+     */
     public void setMyNextTurn(Direction myNextTurn) {
 	this.myNextTurn = myNextTurn;
     }
@@ -153,10 +153,10 @@ public class PlayerBoard {
     }
 
     public boolean isGameOver() {
-        return gameOver;
+	return gameOver;
     }
 
     public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+	this.gameOver = gameOver;
     }
 }

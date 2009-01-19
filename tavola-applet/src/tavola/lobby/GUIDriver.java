@@ -102,15 +102,20 @@ public class GUIDriver {
   }
 
   public void startGame(GamePanel gamePanel) {
-    gamesPane.setVisible(false);
-    chatPanel.setVisible(false);
-    gameStartAwaitingPanel.setVisible(false);
-
     applet.setVisible(false);
     applet.remove(gamesPane);
     applet.remove(chatPanel);
     applet.remove(gameStartAwaitingPanel);
     applet.add(gamePanel);
+    applet.setVisible(true);
+    applet.validate();
+  }
+
+  public void stopGame(GamePanel gamePanel) {
+    applet.setVisible(false);
+    applet.remove(gamePanel);
+    applet.add(chatPanel);
+    applet.add(gamesPane);
     applet.setVisible(true);
     applet.validate();
   }

@@ -37,10 +37,24 @@ public class GameStartAwaitingPanel extends JPanel {
 
   private void startGame() {
     game.setRunning(true);
-    GamePanel gamePanel = new GamePanel(client.getPlayer());
+    final GamePanel gamePanel = new GamePanel(client.getPlayer());
     client.getClientRequestsHandler().setClientInGameRequestsHandler(
         gamePanel.createClientInGameRequestsHandler());
     driver.startGame(gamePanel);
+
+    new Thread(new Runnable() {
+      public void run() {
+        while (!gamePanel.isGameOver()) {
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException exception) {
+            // ignore
+          }
+        }
+        LoggerHelper.get().info("GameOver!");
+        driver.stopGame(gamePanel);
+      }
+    }).start();
   }
 
   private void createStartGameButton() {
