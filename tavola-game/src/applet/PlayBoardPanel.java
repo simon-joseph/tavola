@@ -25,7 +25,7 @@ import commons.Position;
 public class PlayBoardPanel extends JPanel implements KeyListener,
 	ActionListener {
 
-    private DefaultTheme th;
+    private LighterTheme th;
     private PlayerBoard sb;
 
     public PlayBoardPanel(PlayerBoard s) {
@@ -35,7 +35,7 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 
     public void init(PlayerBoard s) {
 	sb = s;
-	th = new DefaultTheme();
+	th = new LighterTheme();
 	setSize(new Dimension(th.fieldSize * sb.WIDTH + 1, th.fieldSize
 		* sb.HEIGHT + 1));
 	setVisible(false);

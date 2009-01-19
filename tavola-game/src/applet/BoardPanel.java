@@ -34,7 +34,7 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 
     public void init(SnakeBoard s) {
 	sb = s;
-	th = new SmoothTheme();
+	th = new LighterTheme();
 	// setPreferredSize(new Dimension(th.fieldSize * sb.WIDTH + 1,
 	// th.fieldSize * sb.HEIGHT + 1));
 	// setMaximumSize(new Dimension(th.fieldSize * sb.WIDTH + 1,

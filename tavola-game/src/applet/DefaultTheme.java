@@ -30,7 +30,8 @@ public class DefaultTheme {
      * @param reverseDirection
      * @param direction
      */
-    public void paintBodyPart(Graphics g, Position part, BodyParts bodyPart, int id) {
+    public void paintBodyPart(Graphics g, Position part, BodyParts bodyPart,
+	    int id) {
 	if (part != null) {
 	    g.setColor(SnakeColor.toColor(id));
 	    g.fillOval(part.x() * fieldSize, part.y() * fieldSize, fieldSize,
@@ -38,11 +39,6 @@ public class DefaultTheme {
 	}
     }
 
-    /**
-     * @param g
-     * @param head
-     * @param direction
-     */
     public void paintHead(Graphics g, Position head, Direction direction, int id) {
 	if (head != null) {
 	    g.setColor(SnakeColor.toColor(id));
@@ -51,10 +47,6 @@ public class DefaultTheme {
 	}
     }
 
-    /**
-     * @param g
-     * @param last
-     */
     public void paintLast(Graphics g, Position last, Direction direction, int id) {
 	if (last != null) {
 	    g.setColor(SnakeColor.toColor(id));
