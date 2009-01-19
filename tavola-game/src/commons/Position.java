@@ -7,7 +7,7 @@ package commons;
  * @author sla
  * 
  */
-public final class Position {
+public final class Position extends Object {
 
     private int horizontal;
     private int vertical;
@@ -78,7 +78,8 @@ public final class Position {
 	this.vertical = vertical;
     }
     
-    public boolean equals(Position p) {
-	return (vertical == p.vertical && horizontal == p.horizontal);
+    @Override
+    public boolean equals(Object p) {
+	return (vertical == ((Position) p).vertical && horizontal == ((Position) p).horizontal);
     }
 }
