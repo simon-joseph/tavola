@@ -62,6 +62,7 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 	super.paintComponent(g);
     }
 
+    // FIXME tu coś jest źle - potrafi wygenerować BodyPart.UPUP
     private void paintSnake(Graphics g, Player s, int id) {
 	Position old = s.getHead();
 	Position curr;

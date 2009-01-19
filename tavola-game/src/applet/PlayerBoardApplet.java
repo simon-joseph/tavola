@@ -65,9 +65,9 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 		board.repaint();
 	    }
 	    try {
-		Thread.sleep(100);
+		Thread.sleep(10);
 		// TODO: predkosc tez serwer ustala
-		Thread.sleep(playerBoard.INITIAL_MOVE_TIME - speed);
+		// Thread.sleep(playerBoard.INITIAL_MOVE_TIME - speed);
 	    } catch (InterruptedException e) {
 		break;
 	    }
