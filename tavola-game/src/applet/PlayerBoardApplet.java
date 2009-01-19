@@ -109,5 +109,9 @@ public class PlayerBoardApplet extends JApplet implements Runnable,
 	    new Thread(this).start();
 	}
     }
+    
+    public boolean isGameOver() {
+	return playerBoard.isGameOver();
+    }
 
 }

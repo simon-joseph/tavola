@@ -15,6 +15,7 @@ public class PlayerBoard {
     public final int HEIGHT = 35;
 
     private int playerId;
+    private boolean gameOver;
     private int size;
     private Player[] snakes; // TODO: tablica wezy
     private Position bonus;
@@ -68,8 +69,10 @@ public class PlayerBoard {
 		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
 		if (stopConditions(i)) {
 		    snakes[i].setAlive(false);
-		    if (i == playerId)
+		    if (i == playerId){
 			myNextTurn = Direction.DEATH;
+			gameOver = true;
+		    }
 		} else {
 		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
 			snakes[i].setDelay(snakes[i].getDelay() + 1);
@@ -147,5 +150,13 @@ public class PlayerBoard {
 	}
 	setSnakesDirections(moves.toArray(new Direction[] {}));
 	update();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }
