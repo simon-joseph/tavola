@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -85,13 +86,10 @@ public final class SmoothTheme extends DefaultTheme {
     }
 
     @Override
-    public void paintBonus(Graphics g, Position bonus) {
-	if (oldBonus != bonus) {
-	    changeBonus();
-	    oldBonus = bonus;
-	}
-	if (bonus != null) {
-	    g.drawImage(bonusTx[bonusNum], bonus.x() * fieldSize - fieldSize
+    public void paintBonus(Graphics g, Vector<Position> bonuses) {
+	if (bonuses != null) {
+	    for(Position bonus : bonuses)
+		g.drawImage(bonusTx[bonusNum], bonus.x() * fieldSize - fieldSize
 		    / 2, bonus.y() * fieldSize - fieldSize / 2, fieldSize * 2,
 		    fieldSize * 2, null, null);
 	}

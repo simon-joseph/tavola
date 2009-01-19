@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -75,13 +76,10 @@ public final class LighterTheme extends DefaultTheme {
     }
 
     @Override
-    public void paintBonus(Graphics g, Position bonus) {
-	if (oldBonus != bonus) {
-	    changeBonus();
-	    oldBonus = bonus;
-	}
-	if (bonus != null) {
-	    g.drawImage(bonusTx[bonusNum], bonus.x() * f, bonus.y() * f, f,
+    public void paintBonus(Graphics g, Vector<Position> bonuses) {
+	if (bonuses != null) {
+	    for(Position bonus : bonuses)
+		g.drawImage(bonusTx[bonusNum], bonus.x() * f, bonus.y() * f, f,
 		    f , null, null);
 	}
 

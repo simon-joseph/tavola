@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 import commons.Direction;
 import commons.Position;
@@ -19,16 +20,20 @@ public class PlayerBoard {
     private boolean gameOver;
     private int size;
     private Player[] snakes; // TODO: tablica wezy
-    private Position bonus;
+    private Vector<Position> bonuses;
     private int[][] board;
     private Direction[] snakesDirections; // TODO: tablica kierunkow wezy
     private Direction myNextTurn = Direction.RIGHT;
     private Random generator;
     private int maxBonuses;
+    private int bonusesOnBoard;
 
     public PlayerBoard(int all, int me, int seed, int mb) {
 	maxBonuses = mb;
+	bonusesOnBoard = 0;
 	generator = new Random(seed);
+	generateBonus();
+	bonuses = new Vector<Position>();
 	playerId = me;
 	size = all;
 	snakes = new Player[all];
@@ -84,12 +89,15 @@ public class PlayerBoard {
 		} else {
 		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
 			snakes[i].setDelay(snakes[i].getDelay() + 1);
-			generateBonus();
+			bonuses.remove(new Position(snakes[i].getHead().x(), snakes[i].getHead().y()));
+			bonusesOnBoard--;
 		    }
 		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 		}
+		
 	    }
 	}
+	generateBonus();
     }
 
     private boolean stopConditions(int i) {
@@ -117,12 +125,8 @@ public class PlayerBoard {
     /**
      * @return the bonus
      */
-    public Position getBonus() {
-	return bonus;
-    }
-
-    public void setBonus(Position bonusPosition) {
-	bonus = bonusPosition;
+    public Vector<Position> getBonuses() {
+	return bonuses;
     }
 
     public int getSize() {
@@ -173,13 +177,13 @@ public class PlayerBoard {
      * Randomly selects an empty field on the board and puts a bonus there.
      */
     private void generateBonus() {
-	while (true) {
+	while (bonusesOnBoard < maxBonuses) {
 	    int i = generator.nextInt(WIDTH - 1);
 	    int j = generator.nextInt(HEIGHT - 1);
 	    if (board[i][j] == 0) {
 		board[i][j] = 3;
-		bonus = new Position(i, j);
-		break;
+		bonuses.add(new Position(i, j));
+		bonusesOnBoard++;
 	    }
 	}
     }

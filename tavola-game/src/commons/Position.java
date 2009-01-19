@@ -77,4 +77,8 @@ public final class Position {
     public void setVertical(int vertical) {
 	this.vertical = vertical;
     }
+    
+    public boolean equals(Position p) {
+	return (vertical == p.vertical && horizontal == p.horizontal);
+    }
 }

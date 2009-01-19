@@ -57,7 +57,7 @@ class BoardPanel extends JPanel implements KeyListener, ActionListener {
 	drawBackground(g);
 	th.paintBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintSnake(g, sb.getSnake());
-	th.paintBonus(g, sb.getBonus());
+	//th.paintBonus(g, sb.getBonuses());
 	th.paintStatBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintStats(g);
     }

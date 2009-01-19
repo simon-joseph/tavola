@@ -52,7 +52,7 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 	for (int i = 0; i < sb.getSize(); i++) {
 	    paintSnake(g, sb.getSnake(i), i);
 	}
-	th.paintBonus(g, sb.getBonus());
+	th.paintBonus(g, sb.getBonuses());
 	th.paintStatBoard(g, sb.WIDTH * th.fieldSize, sb.HEIGHT * th.fieldSize);
 	paintStats(g);
     }

@@ -2,6 +2,7 @@ package applet;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Vector;
 
 import commons.BodyParts;
 import commons.Direction;
@@ -16,10 +17,11 @@ public class DefaultTheme {
     public final Color background = new Color(100, 100, 150);
     public final int fieldSize = 10;
 
-    public void paintBonus(Graphics g, Position bonus) {
-	if (bonus != null) {
+    public void paintBonus(Graphics g, Vector<Position> bonuses) {
+	if (bonuses != null) {
 	    g.setColor(Color.green);
-	    g.fillOval(bonus.x() * fieldSize, bonus.y() * fieldSize, fieldSize,
+	    for(Position bonus : bonuses)
+		g.fillOval(bonus.x() * fieldSize, bonus.y() * fieldSize, fieldSize,
 		    fieldSize);
 	}
     }
