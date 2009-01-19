@@ -39,9 +39,10 @@ public class ListGamesRequest extends Request<List<Game>> {
       final String gameId = args[0];
       final String levelId = args[1];
       final String creatorId = args[4];
+      final String gameType = args[5];
 
       games.addLast(new Game(gameId, null, levelId, maxPlayersCount,
-          maxBonusesCount, creatorId, null, 0));
+          maxBonusesCount, creatorId, null, 0, gameType));
     }
     return games;
   }

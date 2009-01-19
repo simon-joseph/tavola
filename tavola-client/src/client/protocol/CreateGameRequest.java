@@ -7,15 +7,17 @@ public class CreateGameRequest extends Request<String> {
   private int maxPlayersCount;
   private int bonusesCount;
   private String theme;
+  private String gameType;
 
   public final static String GAMES_LIMIT_EXCEEDED = "GAMES_LIMIT_EXCEEDED";
 
   public CreateGameRequest(String levelId, int maxPlayersCount,
-      int bonusesCount, String theme) {
+      int bonusesCount, String theme, String gameType) {
     this.levelId = levelId;
     this.maxPlayersCount = maxPlayersCount;
     this.bonusesCount = bonusesCount;
     this.theme = theme;
+    this.gameType = gameType;
   }
 
   @Override
@@ -26,7 +28,7 @@ public class CreateGameRequest extends Request<String> {
   @Override
   protected String getQueryString() {
     return "CREATE_GAME " + levelId + " " + maxPlayersCount + " "
-        + bonusesCount + " " + theme;
+        + bonusesCount + " " + theme + " " + gameType;
   }
 
   @Override

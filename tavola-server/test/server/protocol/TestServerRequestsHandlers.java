@@ -26,9 +26,10 @@ public class TestServerRequestsHandlers extends TestCase {
 
     Server.clearGames();
 
-    Game game = new Game("somegame1", null, "level2", 2, 3, "player1", null, 5);
+    Game game = new Game("somegame1", null, "level2", 2, 3, "player1", null, 5,
+        "snake");
     Game game2 = new Game("anothergame2", null, "level1", 4, 30, "player2",
-        null, 99);
+        null, 99, "snake");
 
     Server.addGame(game);
     Server.addGame(game2);
@@ -51,8 +52,9 @@ public class TestServerRequestsHandlers extends TestCase {
         .get(0));
 
     List<String> answer = protocol.handleRequest("LIST_GAMES");
-    Assert.assertEquals("somegame1 level2 2 3 player1", answer.get(0));
-    Assert.assertEquals("anothergame2 level1 4 30 player2", answer.get(1));
+    Assert.assertEquals("somegame1 level2 2 3 player1 snake", answer.get(0));
+    Assert
+        .assertEquals("anothergame2 level1 4 30 player2 snake", answer.get(1));
     Assert.assertEquals("END", answer.get(2));
   }
 
@@ -76,33 +78,36 @@ public class TestServerRequestsHandlers extends TestCase {
         "CREATE_GAME 5 s5 d5").get(0));
 
     Assert.assertEquals("UNKNOWN_COMMAND", protocol.handleRequest(
-        "CREATE_GAME 5 5 5 5 5").get(0));
+        "CREATE_GAME 5 5 5 5").get(0));
+
+    Assert.assertEquals("UNKNOWN_COMMAND", protocol.handleRequest(
+        "CREATE_GAME 5 5 5 5 5 5").get(0));
 
     for (int i = 0; i < 4; i++) {
       ServerRequestsHandler serverRequestsHandler = new ServerRequestsHandler();
       serverRequestsHandler.setPlayer(new Player("asd", "asd"));
       Assert.assertEquals("OK " + (i + 2), serverRequestsHandler.handleRequest(
-          "CREATE_GAME a5 5 5 h5").get(0));
+          "CREATE_GAME a5 5 5 h5 snake").get(0));
 
     }
 
     Assert.assertEquals("OK 6", protocol2.handleRequest(
-        "CREATE_GAME level6 6 6 player1").get(0));
+        "CREATE_GAME level6 6 6 player1 snake").get(0));
 
     for (int i = 5; i < 8; i++) {
       ServerRequestsHandler serverRequestsHandler = new ServerRequestsHandler();
       serverRequestsHandler.setPlayer(new Player("asd", "asd"));
       Assert.assertEquals("OK " + (i + 2), serverRequestsHandler.handleRequest(
-          "CREATE_GAME 5 5 5 5").get(0));
+          "CREATE_GAME 5 5 5 5 snake").get(0));
 
     }
 
     ServerRequestsHandler serverRequestsHandler = new ServerRequestsHandler();
     serverRequestsHandler.setPlayer(new Player("asd", "asd"));
     Assert.assertEquals("GAMES_LIMIT_EXCEEDED", serverRequestsHandler
-        .handleRequest("CREATE_GAME 5 5 5 5").get(0));
+        .handleRequest("CREATE_GAME 5 5 5 5 snake").get(0));
 
-    Assert.assertEquals("6 level6 6 6 player1", Server.getGames().get(6)
+    Assert.assertEquals("6 level6 6 6 player1 snake", Server.getGames().get(6)
         .toString());
   }
 
@@ -133,7 +138,7 @@ public class TestServerRequestsHandlers extends TestCase {
     protocol4.setPlayer(player4);
 
     Assert.assertEquals("OK 2", protocol.handleRequest(
-        "CREATE_GAME level6 6 6 player1").get(0));
+        "CREATE_GAME level6 6 6 player1 snake").get(0));
 
     Assert.assertEquals("UNKNOWN_COMMAND", protocol.handleRequest(
         "JOIN_GAME game99").get(0));
@@ -177,7 +182,7 @@ public class TestServerRequestsHandlers extends TestCase {
         .get(0));
 
     Assert.assertEquals("OK 2", protocol.handleRequest(
-        "CREATE_GAME level6 6 6 player1").get(0));
+        "CREATE_GAME level6 6 6 player1 snake").get(0));
 
     List<String> answer = protocol2.handleRequest("JOIN_GAME 2");
     Assert.assertEquals("player1 player1", answer.get(0));
@@ -224,7 +229,7 @@ public class TestServerRequestsHandlers extends TestCase {
     protocol2.setPlayer(player2);
 
     Assert.assertEquals("OK 2", protocol.handleRequest(
-        "CREATE_GAME level6 6 6 player1").get(0));
+        "CREATE_GAME level6 6 6 player1 snake").get(0));
 
     Assert.assertEquals("OK", protocol.handleRequest("CHAT MSG test2").get(0));
   }

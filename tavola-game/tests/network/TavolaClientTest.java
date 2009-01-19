@@ -66,9 +66,8 @@ public class TavolaClientTest extends TestCase {
     public void testCreateGame() throws IOException, RequestSendingException,
 	    ConnectionLostException {
 	testHello();
-	Assert
-		.assertTrue(new CreateGameRequest("testLevel", 4, 5,
-			"emptyTheme").send(pipe) != null);
+	Assert.assertTrue(new CreateGameRequest("testLevel", 4, 5,
+		"emptyTheme", "snake").send(pipe) != null);
     }
 
     public void testJoinGame() throws IOException, RequestSendingException,
@@ -85,28 +84,4 @@ public class TavolaClientTest extends TestCase {
 	// new ListGameMessage().send(pipe);
     }
 
-    public void testUser() throws IOException, RequestSendingException,
-	    InterruptedException, ConnectionLostException {
-	testHello();
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	while (true) {
-	    String s3 = br.readLine();
-	    if (!s3.equals("")) {
-		// pipe.println(s3);
-	    }
-
-	    do {
-		// String s2 = pipe.readln();
-		// if (s2.equals("START_GAME")) {
-		// pipe.println("GAME_STARTED");
-		// InGameProtocol inGameClient = new InGameProtocol(pipe,
-		// null);
-		// Thread t = new Thread(inGameClient);
-		// t.start();
-		// t.join();
-		// }
-	    } while (true);// pipe.readyToRead());
-	}
-
-    }
 }

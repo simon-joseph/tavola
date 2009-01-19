@@ -32,7 +32,6 @@ public class PlayerBoard {
 	maxBonuses = mb;
 	bonusesOnBoard = 0;
 	generator = new Random(seed);
-	generateBonus();
 	bonuses = new Vector<Position>();
 	playerId = me;
 	size = all;
@@ -42,6 +41,7 @@ public class PlayerBoard {
 	    snakesDirections[i] = Direction.RIGHT;
 	}
 	initialize();
+	generateBonus();
     }
 
     // TODO: rozszerzyc na wszystkie weze
@@ -89,12 +89,13 @@ public class PlayerBoard {
 		} else {
 		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
 			snakes[i].setDelay(snakes[i].getDelay() + 1);
-			bonuses.remove(new Position(snakes[i].getHead().x(), snakes[i].getHead().y()));
+			bonuses.remove(new Position(snakes[i].getHead().x(),
+				snakes[i].getHead().y()));
 			bonusesOnBoard--;
 		    }
 		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 		}
-		
+
 	    }
 	}
 	generateBonus();

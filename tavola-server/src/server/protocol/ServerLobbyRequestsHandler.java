@@ -88,7 +88,7 @@ public class ServerLobbyRequestsHandler extends RequestsHandler {
 
       // CREATE GAME
     } else if (input.matches("CREATE_GAME [a-zA-Z0-9]+ [a-zA-Z0-9]+"
-        + " [a-zA-Z0-9]+ [a-zA-Z0-9]+$")) {
+        + " [a-zA-Z0-9]+ [a-zA-Z0-9]+ [a-zA-Z0-9]+$")) {
 
       try {
 
@@ -98,13 +98,14 @@ public class ServerLobbyRequestsHandler extends RequestsHandler {
         String levelId = temp[1];
         int maxPlayersCount = Integer.valueOf(temp[2]);
         int maxBonusesCount = Integer.valueOf(temp[3]);
+        String gameType = temp[5];
         String creatorId = player.getId();
 
         ArrayList<Player> players = new ArrayList<Player>();
         players.add(player);
 
         Game newGame = new Game(id, players, levelId, maxPlayersCount,
-            maxBonusesCount, creatorId, null, 3);
+            maxBonusesCount, creatorId, null, 3, gameType);
 
         if (Server.addGame(newGame)) {
           player.setGame(newGame);

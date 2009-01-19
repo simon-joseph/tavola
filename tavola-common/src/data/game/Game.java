@@ -25,15 +25,17 @@ public class Game {
 
   private int speed;
   private int seed;
+  private String gameType;
 
   private boolean isRunning;
 
   public Game(String id, List<Player> players, String levelId,
       int maxPlayersCount, int maxBonusesCount, String creatorId,
-      GameState gameState, int speed) {
+      GameState gameState, int speed, String gameType) {
     this.id = id;
     this.players = players;
     this.levelId = levelId;
+    this.gameType = gameType;
     this.maxPlayersCount = maxPlayersCount;
     this.maxBonusesCount = maxBonusesCount;
     this.creatorId = creatorId;
@@ -113,7 +115,7 @@ public class Game {
   @Override
   public String toString() {
     return id + " " + levelId + " " + maxPlayersCount + " " + maxBonusesCount
-        + " " + creatorId;
+        + " " + creatorId + " " + gameType;
   }
 
   public void setPlayers(List<Player> players) {
@@ -136,6 +138,14 @@ public class Game {
 
   public void setSeed(int seed) {
     this.seed = seed;
+  }
+
+  public String getGameType() {
+    return gameType;
+  }
+
+  public void setGameType(String gameType) {
+    this.gameType = gameType;
   }
 
 }

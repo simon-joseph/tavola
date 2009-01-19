@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import applet.PlayerBoardApplet;
 import client.protocol.ClientInGameRequestsHandler;
 import client.protocol.SnakesDriver;
+import data.game.Game;
 import data.game.Player;
 
 /**
@@ -24,20 +25,26 @@ public class GamePanel extends JPanel {
   public GamePanel(Player player) {
     this.player = player;
     setLayout(new BorderLayout());
+
+    final Game game = player.getGame();
     int playerPosition = 0;
-    for (Player p : player.getGame().getPlayers()) {
+    for (Player p : game.getPlayers()) {
       if (p == player) {
         break;
       }
       playerPosition++;
     }
-    int allPlayersCount = player.getGame().getPlayers().size();
+    int allPlayersCount = game.getPlayers().size();
     if (playerPosition >= allPlayersCount) {
       // TODO: pomyslec co tutaj
       throw new RuntimeException("todo");
     }
+    int maxBonusesCount = 0;
+    if (game.getGameType().equals("snake")) {
+      maxBonusesCount = game.getMaxBonusesCount();
+    }
     playerBoardApplet = new PlayerBoardApplet(allPlayersCount, playerPosition,
-        player.getGame().getSeed());
+        game.getSeed(), maxBonusesCount);
     add(playerBoardApplet, BorderLayout.CENTER);
     validate();
   }

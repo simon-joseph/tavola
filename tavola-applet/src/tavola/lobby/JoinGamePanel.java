@@ -38,8 +38,8 @@ public class JoinGamePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     public GamesTableModel() {
-      final String[] columnNames = new String[] { "id", "max players",
-          "max bonuses", "theme", "name" };
+      final String[] columnNames = new String[] { "name", "max players",
+          "max bonuses", "type", "" };
       for (String columnName : columnNames) {
         addColumn(columnName);
       }
@@ -54,9 +54,9 @@ public class JoinGamePanel extends JPanel {
   private void addGame(Game game) {
     games.add(game.getId());
 
-    gamesTableModel.addRow(new Object[] { game.getId(),
+    gamesTableModel.addRow(new Object[] { game.getLevelId(),
         game.getMaxPlayersCount(), game.getMaxBonusesCount(),
-        game.getLevelId(), game });
+        game.getGameType(), game });
 
   }
 

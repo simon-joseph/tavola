@@ -38,10 +38,14 @@ public class CreateGamePanel extends JPanel {
     panel.add(new JLabel("Max bonuses: "));
     final JComboBox maxBonuses = new JComboBox(new Integer[] { 1, 2, 4, 8, 16 });
     panel.add(maxBonuses);
-    panel.add(new JLabel("Map: "));
-    final JComboBox levelId = new JComboBox(new String[] { "Damnit",
-        "Nukethemall", "Littleplanet", "Dogz" });
-    panel.add(levelId);
+    panel.add(new JLabel("Game type: "));
+    final JComboBox gameType = new JComboBox(new String[] { "tron", "snake" });
+    panel.add(gameType);
+    /*
+     * panel.add(new JLabel("Map: ")); final JComboBox levelId = new
+     * JComboBox(new String[] { "Damnit", "Nukethemall", "Littleplanet", "Dogz"
+     * }); panel.add(levelId);
+     */
 
     add(panel, BorderLayout.CENTER);
 
@@ -54,11 +58,12 @@ public class CreateGamePanel extends JPanel {
           String gameNameString = gameName.getText();
           Integer maxPlayersInteger = (Integer) maxPlayers.getSelectedItem();
           Integer maxBonusesInteger = (Integer) maxBonuses.getSelectedItem();
-          String levelIdString = (String) levelId.getSelectedItem();
+          String gameTypeString = (String) gameType.getSelectedItem();
+          String levelIdString = "todo";// (String) levelId.getSelectedItem();
 
           String gameId = new CreateGameRequest(gameNameString,
-              maxPlayersInteger, maxBonusesInteger, levelIdString).send(client
-              .getMessagesPipe());
+              maxPlayersInteger, maxBonusesInteger, levelIdString,
+              gameTypeString).send(client.getMessagesPipe());
           if (gameId == null) {
             LoggerHelper.get().info("Creating game failed.");
             return;
@@ -69,7 +74,7 @@ public class CreateGamePanel extends JPanel {
 
           Game game = new Game(gameId, players, levelIdString,
               maxPlayersInteger, maxBonusesInteger, client.getPlayer().getId(),
-              null, 0);
+              null, 0, gameTypeString);
           client.getPlayer().setGame(game);
 
           GameStartAwaitingPanel gameStartAwaitingPanel = new GameStartAwaitingPanel(
