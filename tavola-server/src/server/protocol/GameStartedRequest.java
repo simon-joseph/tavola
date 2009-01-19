@@ -8,6 +8,12 @@ import data.network.Request;
  */
 public class GameStartedRequest extends Request<Boolean> {
 
+  private final int seed;
+
+  public GameStartedRequest(int seed) {
+    this.seed = seed;
+  }
+
   @Override
   protected boolean endOfAnswer(String s) {
     return s != null;
@@ -15,7 +21,7 @@ public class GameStartedRequest extends Request<Boolean> {
 
   @Override
   protected String getQueryString() {
-    return "GAME_STARTED";
+    return "GAME_STARTED " + seed;
   }
 
   @Override

@@ -24,6 +24,7 @@ public class Game {
   private GameState gameState;
 
   private int speed;
+  private int seed;
 
   private boolean isRunning;
 
@@ -127,6 +128,14 @@ public class Game {
       }
     }
     creatorId = null;
+  }
+
+  public int getSeed() {
+    return seed;
+  }
+
+  public void setSeed(int seed) {
+    this.seed = seed;
   }
 
 }

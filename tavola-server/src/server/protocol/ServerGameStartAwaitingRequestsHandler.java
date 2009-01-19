@@ -2,6 +2,7 @@ package server.protocol;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import server.application.Server;
 import data.game.Game;
@@ -97,15 +98,19 @@ public class ServerGameStartAwaitingRequestsHandler extends RequestsHandler {
     return result;
   }
 
+  private Random random = new Random(System.currentTimeMillis());
+
   private void startGame(Game game) {
 
     game.setRunning(true);
+
+    int seed = random.nextInt();
 
     for (Player p : game.getPlayers()) {
       if (p != player) {
         synchronized (p) {
           try {
-            new GameStartedRequest().send(p.getMessagesPipe());
+            new GameStartedRequest(seed).send(p.getMessagesPipe());
           } catch (RequestSendingException e) {
             // TODO Auto-generated catch block
           } catch (ConnectionLostException e) {

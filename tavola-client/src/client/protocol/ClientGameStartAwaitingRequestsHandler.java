@@ -16,6 +16,7 @@ import data.network.RequestsHandler;
 public class ClientGameStartAwaitingRequestsHandler extends RequestsHandler {
   private static final String PLAYER_JOINED = "PLAYER_JOINED";
   private static final String PLAYER_LEFT = "PLAYER_LEFT";
+  private static final String GAME_STARTED = "GAME_STARTED";
 
   private final Player player;
 
@@ -86,7 +87,18 @@ public class ClientGameStartAwaitingRequestsHandler extends RequestsHandler {
           break;
         }
       }
-    } else if (input.equals("GAME_STARTED")) {
+    } else if (input
+        .startsWith(ClientGameStartAwaitingRequestsHandler.GAME_STARTED + " ")) {
+      int seed = 0;
+      try {
+        seed = Integer.parseInt(input
+            .substring(ClientGameStartAwaitingRequestsHandler.GAME_STARTED
+                .length() + 1));
+      } catch (NumberFormatException e) {
+        // ignorujemy polecenie od serwera bo jest syntax error
+        return null;
+      }
+      player.getGame().setSeed(seed);
       for (GameListener listener : gameStarted.getListeners(GameListener.class)) {
         listener.gameActionPerformed(player.getGame());
       }
@@ -94,5 +106,4 @@ public class ClientGameStartAwaitingRequestsHandler extends RequestsHandler {
     }
     return null;
   }
-
 }

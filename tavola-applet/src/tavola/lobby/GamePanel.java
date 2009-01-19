@@ -36,7 +36,8 @@ public class GamePanel extends JPanel {
       // TODO: pomyslec co tutaj
       throw new RuntimeException("todo");
     }
-    playerBoardApplet = new PlayerBoardApplet(allPlayersCount, playerPosition);
+    playerBoardApplet = new PlayerBoardApplet(allPlayersCount, playerPosition,
+        player.getGame().getSeed());
     add(playerBoardApplet, BorderLayout.CENTER);
     validate();
   }
