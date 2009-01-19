@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import commons.Direction;
 import commons.Position;
@@ -22,8 +23,10 @@ public class PlayerBoard {
     private int[][] board;
     private Direction[] snakesDirections; // TODO: tablica kierunkow wezy
     private Direction myNextTurn = Direction.RIGHT;
+    private Random generator;
 
-    public PlayerBoard(int all, int me) {
+    public PlayerBoard(int all, int me, int seed) {
+	generator = new Random(seed);
 	playerId = me;
 	size = all;
 	snakes = new Player[all];
@@ -76,6 +79,7 @@ public class PlayerBoard {
 		} else {
 		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
 			snakes[i].setDelay(snakes[i].getDelay() + 1);
+			generateBonus();
 		    }
 		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 		}
@@ -158,5 +162,20 @@ public class PlayerBoard {
 
     public void setGameOver(boolean gameOver) {
 	this.gameOver = gameOver;
+    }
+
+    /**
+     * Randomly selects an empty field on the board and puts a bonus there.
+     */
+    private void generateBonus() {
+	while (true) {
+	    int i = generator.nextInt(WIDTH - 1);
+	    int j = generator.nextInt(HEIGHT - 1);
+	    if (board[i][j] == 0) {
+		board[i][j] = 3;
+		bonus = new Position(i, j);
+		break;
+	    }
+	}
     }
 }
