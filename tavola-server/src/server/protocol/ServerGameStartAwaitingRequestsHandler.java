@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import server.application.Server;
+import server.application.ServerGameThread;
 import data.game.Game;
 import data.game.Player;
 import data.network.ConnectionLostException;

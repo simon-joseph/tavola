@@ -1,8 +1,10 @@
-package server.protocol;
+package server.application;
 
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+import server.protocol.NextMoveRequest;
+import server.protocol.ShowMovesRequest;
 import data.game.Game;
 import data.game.Player;
 import data.network.ConnectionLostException;
@@ -14,6 +16,7 @@ import data.network.RequestSendingException;
  */
 public class ServerGameThread extends Thread {
   private static final Object DEATH_MESSAGE = "DEATH";
+  protected static final long SINGLE_TURN_TIME_MS = 200;
   private final Game game;
 
   public ServerGameThread(Game game) {
@@ -73,7 +76,8 @@ public class ServerGameThread extends Thread {
                 }
               }
 
-              long sleep = 1000 - (System.currentTimeMillis() - startTime);
+              long sleep = ServerGameThread.SINGLE_TURN_TIME_MS
+                  - (System.currentTimeMillis() - startTime);
 
               if (sleep > 0) {
                 try {

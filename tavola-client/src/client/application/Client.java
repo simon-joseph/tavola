@@ -6,12 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
 
 import client.protocol.ClientRequestsHandler;
 import data.game.Player;
 import data.network.ConnectionLostException;
-import data.network.LoggerHelper;
 import data.network.MessagesPipe;
 import data.network.Pipe;
 
@@ -55,7 +53,7 @@ public class Client {
       }
       throw new ConnectionLostException();
     }
-    LoggerHelper.init("tavola", Level.ALL);
+    // LoggerHelper.init("tavola", Level.ALL);
     Pipe pipe = new Pipe(in, out);
     pipe.readln(); // VERSION xxx
     messagesPipe = new MessagesPipe(pipe);

@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import data.game.Game;
 import data.game.Player;
-import data.network.LoggerHelper;
 
 /**
  * @author rafal.paliwoda
@@ -36,7 +34,7 @@ public final class Server {
       System.err.println("Could not listen on port: " + Server.PORT);
       System.exit(-1);
     }
-    LoggerHelper.init("tavola", Level.ALL);
+    // LoggerHelper.init("tavola", Level.ALL);
     assert serverSocket != null;
     try {
       while (Server.listening) {
