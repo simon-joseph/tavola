@@ -76,9 +76,7 @@ public class PlayerBoard {
 		    board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
 			    .get(j).y()] = 1;
 		}
-		if (maxBonuses == 0) {
-		    snakes[i].setDelay(snakes[i].getDelay() + 1);
-		}
+
 		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
 		if (stopConditions(i)) {
 		    snakes[i].setAlive(false);
@@ -92,6 +90,9 @@ public class PlayerBoard {
 			bonuses.remove(new Position(snakes[i].getHead().x(),
 				snakes[i].getHead().y()));
 			bonusesOnBoard--;
+		    }
+		    if (maxBonuses == 0) {
+			snakes[i].setDelay(snakes[i].getDelay() + 1);
 		    }
 		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
 		}
