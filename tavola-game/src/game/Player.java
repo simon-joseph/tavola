@@ -36,10 +36,28 @@ public final class Player implements IPlayer {
 	} else {
 	    direction = Direction.LEFT;
 	}
-	System.out.println("NUMER WEZA: " + i);
-	System.out.println("SZEROKOSC: " + (w / 4 + w * (i / 2) / 2));
-	System.out.println("WYSOKOSC: " + (h / 4 + h * (i % 2) / 2));
-	head = new Position(w / 4 + w * (i / 2) / 2, h / 4 + h * (i % 2) / 2);
+	//System.out.println("NUMER WEZA: " + i);
+	//System.out.println("SZEROKOSC: " + (w / 4 + w * (i / 2) / 2));
+	//System.out.println("WYSOKOSC: " + (h / 4 + h * (i % 2) / 2));
+	//head = new Position(w / 4 + w * (i / 2) / 2, h / 4 + h * (i % 2) / 2);
+	switch(i){
+	case 0:
+	    head = new Position(15, 15);
+	    break;
+	case 1:
+	    head = new Position(30, 15);
+	    break;
+	case 2:
+	    head = new Position(15, 25);
+	    break;
+	case 3:
+	    head = new Position(30, 25);
+	    break;
+	    default:
+		head = new Position(10, 10);
+	    
+	}
+	    
 	last = null;
 	alive = true;
     }
