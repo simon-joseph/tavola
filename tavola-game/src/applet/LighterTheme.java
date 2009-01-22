@@ -78,9 +78,12 @@ public final class LighterTheme extends DefaultTheme {
     @Override
     public void paintBonus(Graphics g, Vector<Position> bonuses) {
 	if (bonuses != null) {
-	    for(Position bonus : bonuses)
-		g.drawImage(bonusTx[bonusNum], bonus.x() * f, bonus.y() * f, f,
-		    f , null, null);
+	    // for(Position bonus : bonuses)
+	    for (int i = 0; i < bonuses.size(); i++) {
+		g.drawImage(bonusTx[bonusNum], bonuses.get(i).x() * f, bonuses
+			.get(i).y()
+			* f, f, f, null, null);
+	    }
 	}
 
     }
