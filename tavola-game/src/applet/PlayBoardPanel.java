@@ -62,26 +62,28 @@ public class PlayBoardPanel extends JPanel implements KeyListener,
 	super.paintComponent(g);
     }
 
-    // FIXME tu coś jest źle - potrafi wygenerować BodyPart.UPUP
     private void paintSnake(Graphics g, Player s, int id) {
 	Position old = s.getHead();
 	Position curr;
 	Position next;
 	th.paintHead(g, s.getHead(), s.getDirection(), id);
-	for (int i = 0; i < s.getBody().size() - 1; i++) {
-	    curr = s.getBody().get(i);
-	    next = s.getBody().get(i + 1);
-	    BodyParts bodyPart = chooseBodyPart(curr.directionTo(old), curr
-		    .directionTo(next));
-	    th.paintBodyPart(g, curr, bodyPart, id);
-	    old = curr;
+	if (s.getBody() != null) {
+	    for (int i = 0; i < s.getBody().size() - 1; i++) {
+		curr = s.getBody().get(i);
+		next = s.getBody().get(i + 1);
+		BodyParts bodyPart = chooseBodyPart(curr.directionTo(old), curr
+			.directionTo(next));
+		th.paintBodyPart(g, curr, bodyPart, id);
+		old = s.getBody().get(i);
+	    }
+	    curr = s.getBody().getLast();
+	    th.paintLast(g, curr, old.directionTo(curr), id);
 	}
-	curr = s.getBody().getLast();
-	th.paintLast(g, curr, old.directionTo(curr), id);
     }
 
     private BodyParts chooseBodyPart(Direction leftDirection,
 	    Direction rightDirection) {
+	assert leftDirection != rightDirection;
 	return BodyParts.valueOf(rightDirection.name() + leftDirection.name());
     }
 

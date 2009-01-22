@@ -77,9 +77,15 @@ public final class Position extends Object {
     public void setVertical(int vertical) {
 	this.vertical = vertical;
     }
-    
+
     @Override
     public boolean equals(Object p) {
-	return (vertical == ((Position) p).vertical && horizontal == ((Position) p).horizontal);
+	return vertical == ((Position) p).vertical
+		&& horizontal == ((Position) p).horizontal;
+    }
+
+    @Override
+    public String toString() {
+	return String.valueOf(horizontal) + ":" + String.valueOf(vertical);
     }
 }
