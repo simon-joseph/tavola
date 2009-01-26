@@ -33,9 +33,7 @@ public class RandomIntsGenerator {
 	y ^= y << 15 & 4022730752L;
 	y ^= y >> 18;
 	index = (index + 1) % 624;
-	int t = (int) (y & (1L << 32) - 1);
-	System.out.println("random returns " + t);
-	return t;
+	return (int) (y & (1L << 32) - 1);
     }
 
     public int nextInt(int maxValue) {
