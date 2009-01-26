@@ -1,5 +1,6 @@
 package server.protocol;
 
+import data.network.LoggerHelper;
 import data.network.Request;
 
 /**
@@ -12,6 +13,7 @@ public class GameStartedRequest extends Request<Boolean> {
 
   public GameStartedRequest(int seed) {
     this.seed = seed;
+    LoggerHelper.get().info("seed = " + seed);
   }
 
   @Override

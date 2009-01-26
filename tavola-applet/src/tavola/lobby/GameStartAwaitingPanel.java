@@ -63,7 +63,7 @@ public class GameStartAwaitingPanel extends JPanel {
       public void actionPerformed(ActionEvent e) {
         try {
           if (new StartGameRequest().send(client.getMessagesPipe())) {
-            startGame();
+            // startGame();
           } else {
             // server returned FAILED
           }

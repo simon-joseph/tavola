@@ -1,7 +1,6 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
 
 import commons.Direction;
@@ -24,14 +23,14 @@ public class PlayerBoard {
     private int[][] board;
     private Direction[] snakesDirections; // TODO: tablica kierunkow wezy
     private Direction myNextTurn = Direction.RIGHT;
-    private Random generator;
+    private RandomIntsGenerator generator;
     private int maxBonuses;
     private int bonusesOnBoard;
 
     public PlayerBoard(int all, int me, int seed, int mb) {
 	maxBonuses = mb;
 	bonusesOnBoard = 0;
-	generator = new Random(seed);
+	generator = new RandomIntsGenerator(seed);
 	bonuses = new Vector<Position>();
 	playerId = me;
 	size = all;
@@ -69,33 +68,33 @@ public class PlayerBoard {
     // TODO ruszyc wszystkie weze
     public void update() {
 	for (int i = 0; i < size; i++) {
-	    if (snakes[i].isAlive()) {
-		snakes[i].changeDirection(snakesDirections[i]);
-		snakes[i].move();
-		for (int j = 0; j < snakes[i].getBody().size(); j++) {
-		    board[snakes[i].getBody().get(j).x()][snakes[i].getBody()
-			    .get(j).y()] = 1;
-		}
+		if (snakes[i].isAlive()) {
+		    snakes[i].changeDirection(snakesDirections[i]);
+		    snakes[i].move();
+		    for (int j = 0; j < snakes[i].getBody().size(); j++) {
+			board[snakes[i].getBody().get(j).x()][snakes[i]
+				.getBody().get(j).y()] = 1;
+		    }
 
-		board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
-		if (stopConditions(i)) {
-		    snakes[i].setAlive(false);
-		    if (i == playerId) {
-			myNextTurn = Direction.DEATH;
-			gameOver = true;
-		    }
-		} else {
-		    if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
-			snakes[i].setDelay(snakes[i].getDelay() + 1);
-			bonuses.remove(new Position(snakes[i].getHead().x(),
-				snakes[i].getHead().y()));
-			bonusesOnBoard--;
-		    }
-		    if (maxBonuses == 0) {
-			snakes[i].setDelay(snakes[i].getDelay() + 1);
-		    }
-		    board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
-		}
+		    board[snakes[i].getLast().x()][snakes[i].getLast().y()] = 0;
+		    if (stopConditions(i)) {
+			snakes[i].setAlive(false);
+			if (i == playerId) {
+			    myNextTurn = Direction.DEATH;
+			    gameOver = true;
+			}
+		    } else {
+			if (board[snakes[i].getHead().x()][snakes[i].getHead().y()] == 3) {
+			    snakes[i].setDelay(snakes[i].getDelay() + 1);
+			    bonuses.remove(new Position(snakes[i].getHead().x(),
+			    snakes[i].getHead().y()));
+			    bonusesOnBoard--;
+			}
+			if (maxBonuses == 0) {
+			    snakes[i].setDelay(snakes[i].getDelay() + 1);
+			}
+			board[snakes[i].getHead().x()][snakes[i].getHead().y()] = 2;
+		  }
 
 	    }
 	}

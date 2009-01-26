@@ -108,15 +108,13 @@ public class ServerGameStartAwaitingRequestsHandler extends RequestsHandler {
     int seed = random.nextInt();
 
     for (Player p : game.getPlayers()) {
-      if (p != player) {
-        synchronized (p) {
-          try {
-            new GameStartedRequest(seed).send(p.getMessagesPipe());
-          } catch (RequestSendingException e) {
-            // TODO Auto-generated catch block
-          } catch (ConnectionLostException e) {
-            // TODO Auto-generated catch block
-          }
+      synchronized (p) {
+        try {
+          new GameStartedRequest(seed).send(p.getMessagesPipe());
+        } catch (RequestSendingException e) {
+          // TODO Auto-generated catch block
+        } catch (ConnectionLostException e) {
+          // TODO Auto-generated catch block
         }
       }
     }

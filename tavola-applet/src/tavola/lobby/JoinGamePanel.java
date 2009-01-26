@@ -92,7 +92,7 @@ public class JoinGamePanel extends JPanel {
 
     gamesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     add(new JScrollPane(gamesTable), BorderLayout.CENTER);
-    gamesTable.setFillsViewportHeight(true);
+    // gamesTable.setFillsViewportHeight(true);
 
     final JPanel btnsPanel = new JPanel();
 

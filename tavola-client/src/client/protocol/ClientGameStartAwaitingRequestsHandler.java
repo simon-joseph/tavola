@@ -7,6 +7,7 @@ import javax.swing.event.EventListenerList;
 
 import data.game.Player;
 import data.game.PlayerListener;
+import data.network.LoggerHelper;
 import data.network.RequestsHandler;
 
 /**
@@ -98,6 +99,7 @@ public class ClientGameStartAwaitingRequestsHandler extends RequestsHandler {
         // ignorujemy polecenie od serwera bo jest syntax error
         return null;
       }
+      LoggerHelper.get().info("seed = " + seed);
       player.getGame().setSeed(seed);
       for (GameListener listener : gameStarted.getListeners(GameListener.class)) {
         listener.gameActionPerformed(player.getGame());
